@@ -524,11 +524,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
     }//GEN-LAST:event_btListarTodosActionPerformed
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-       try {
-            gerIG.carregarTabelaConsultas(tbConsultas);
-        } catch (ClassNotFoundException | SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Erro ao carregar pacientes " + ex.getMessage() );
-        }
+
     }//GEN-LAST:event_formComponentShown
 
     

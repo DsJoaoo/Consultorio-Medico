@@ -7,7 +7,6 @@ package view;
 import control.ControllerView;
 import control.Functions;
 import domain.Paciente;
-import domain.Pessoa;
 import java.awt.Color;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
@@ -509,8 +508,10 @@ public class DlgCadPaciente extends javax.swing.JDialog {
     
     private void btEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEditarActionPerformed
         int opcao = tbPacientes.getSelectedRow();
-        if(opcao >= 0){  
-            pacienteSelecionado = (Paciente) tbPacientes.getValueAt(opcao, 1);
+        if(opcao >= 0){ 
+             pacienteSelecionado = (Paciente) tbPacientes.getValueAt(opcao, 1);
+
+           
             
             
             setCor();

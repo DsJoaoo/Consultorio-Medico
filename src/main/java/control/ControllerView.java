@@ -104,21 +104,7 @@ public class ControllerView {
          
         tabela.setRowCount(0);
             for (Paciente p : lista) {
-                Object dados[] = {p.getIdPessoa(), p.toString(), p.getCpf(), p.getEmail(), p.getDataNascimento(), p.getSexo(), p.getTelefone()};
-                tabela.addRow(dados);
-            }  
-    }
-    
-    
-    public void carregarTabelaConsultas(JTable tbConsultas) throws ClassNotFoundException, SQLException {
-        List<Consulta> lista = gerDominio.listarConsultas();
-        DefaultTableModel tabela = (DefaultTableModel) tbConsultas.getModel();
-        tabela.setRowCount(0);
-            for (Consulta consulta : lista) {
-                Object dados[] = {consulta.getIdConsulta(), consulta.getData(), consulta.getHora(), consulta.getNomePaciente(),
-                                  consulta.getNomeFuncionario(), consulta.getNomeMedico(), consulta.getTipoDeConsulta(),
-                                  consulta.getValor()
-                                };
+                Object dados[] = {p.getIdPessoa(), p, p.getCpf(), p.getEmail(), p.getDataNascimento(), p.getSexo(), p.getTelefone()};
                 tabela.addRow(dados);
             }  
     }

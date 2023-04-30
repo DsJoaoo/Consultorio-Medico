@@ -4,9 +4,7 @@
  */
 package domain;
 
-import domain.Funcionario;
-import domain.Medico;
-import domain.Paciente;
+
 import java.util.Date;
 import java.sql.Time;
 

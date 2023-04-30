@@ -8,15 +8,66 @@ package domain;
  *
  * @author joaop
  */
-public class Paciente extends Pessoa{
+public class Paciente{
+    private int idPessoa;
+    private String nomePessoa;
+    private String telefone;
+    private String email;
+    private String cpf;
     private String dataNascimento;
     private String sexo;
 
-    public Paciente(int idPessoa, String nomePessoa, String cpf, String email, String dataNascimento,  String sexo,   String telefone) {
-        super(idPessoa, nomePessoa, telefone, email, cpf);
+    public Paciente(int idPessoa, String nomePessoa, String telefone, String email, String cpf, String dataNascimento, String sexo) {
+        this.idPessoa = idPessoa;
+        this.nomePessoa = nomePessoa;
+        this.telefone = telefone;
+        this.email = email;
+        this.cpf = cpf;
         this.dataNascimento = dataNascimento;
         this.sexo = sexo;
     }
+
+    public int getIdPessoa() {
+        return idPessoa;
+    }
+
+    public void setIdPessoa(int idPessoa) {
+        this.idPessoa = idPessoa;
+    }
+
+    public String getNomePessoa() {
+        return nomePessoa;
+    }
+
+    public void setNomePessoa(String nomePessoa) {
+        this.nomePessoa = nomePessoa;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+
 
     public String getSexo() {
         return sexo;

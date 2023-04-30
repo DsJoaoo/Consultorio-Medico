@@ -16,8 +16,6 @@ import java.util.List;
  * @author joaop
  */
 public class ControllerDomain {
-    private final ConsultaDao consultaDao;
-    private final FuncionarioDao funcionarioDao;
     private final MedicoDao medicoDao;
     private final PacienteDao pacienteDao;
     private final TipoConsultaDao tipoDao;    
@@ -27,8 +25,6 @@ public class ControllerDomain {
         ConexaoSingleton.getInstance();
         pacienteDao = new PacienteDao();
         medicoDao = new MedicoDao();
-        funcionarioDao = new FuncionarioDao();
-        consultaDao = new ConsultaDao();
         tipoDao = new TipoConsultaDao();
     }
 
@@ -39,14 +35,7 @@ public class ControllerDomain {
     public List<Medico> listarMedicos() throws ClassNotFoundException, SQLException {
         return medicoDao.listar();
     }
-    
-    public List<Consulta> listarConsultas() throws ClassNotFoundException, SQLException {
-        return consultaDao.listar(this);
-    }
-    
-    public List<Funcionario> listarFuncioarios() throws ClassNotFoundException, SQLException {
-        return funcionarioDao.listar();
-    }
+   
     
     public List<TipoConsulta> listarTiposDisponiveis() throws ClassNotFoundException, SQLException {
         return tipoDao.listar();
@@ -56,11 +45,7 @@ public class ControllerDomain {
         Paciente buscado = pacienteDao.buscarPacientePorId(id);
         return buscado;
     }
-    
-    public Funcionario buscarFuncionarioPorId(int id){
-        Funcionario buscado = funcionarioDao.buscarFuncionarioPorId(id);
-        return buscado;
-    }
+
     
     public Medico buscarMedicoPorId(int id){
         Medico buscado = medicoDao.buscarMedicoPorId(id);
