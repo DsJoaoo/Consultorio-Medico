@@ -70,7 +70,6 @@ public class DlgCadPaciente extends javax.swing.JDialog {
         btLimpar = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JSeparator();
         ListarPaciente = new javax.swing.JPanel();
-        lbPesquisar = new javax.swing.JLabel();
         txtPesquisa = new javax.swing.JTextField();
         btLupa = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
@@ -83,6 +82,7 @@ public class DlgCadPaciente extends javax.swing.JDialog {
         btEditar = new javax.swing.JButton();
         btExcluir = new javax.swing.JButton();
         btListarTodos = new javax.swing.JButton();
+        cmbOpcao = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -241,7 +241,7 @@ public class DlgCadPaciente extends javax.swing.JDialog {
         btLimpar.setText("Limpar");
         btLimpar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                habilitarBotoes(evt);
+                btLimparActionPerformed(evt);
             }
         });
         jpBotoes.add(btLimpar, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 10, 150, 40));
@@ -278,11 +278,6 @@ public class DlgCadPaciente extends javax.swing.JDialog {
         jtpTelas.addTab("Cadastrar Paciente", CadastroPaciente);
 
         ListarPaciente.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        lbPesquisar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lbPesquisar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbPesquisar.setText("Pesquisar nome");
-        ListarPaciente.add(lbPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 150, 40));
         ListarPaciente.add(txtPesquisa, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 10, 340, 40));
 
         btLupa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaces/imgs/icons/lupa24-icon.png"))); // NOI18N
@@ -363,6 +358,9 @@ public class DlgCadPaciente extends javax.swing.JDialog {
         });
         ListarPaciente.add(btListarTodos, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 10, 40, 40));
 
+        cmbOpcao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nome", "Data", "ID", "CPF" }));
+        ListarPaciente.add(cmbOpcao, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 80, 40));
+
         jtpTelas.addTab("Listar Pacientes", ListarPaciente);
 
         getContentPane().add(jtpTelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 37, 610, 390));
@@ -374,8 +372,7 @@ public class DlgCadPaciente extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void atualizarTabela(){
-    }
+ 
     
     
     private void habilitarBotoes() {
@@ -386,10 +383,10 @@ public class DlgCadPaciente extends javax.swing.JDialog {
             jpID.setVisible(false);
         }else{
             limparCampos();
-            jtpTelas.setSelectedIndex(1);
+            jtpTelas.setSelectedIndex(0);
             btAtualizar.setVisible(true);
             btConfirmar.setVisible(false);
-            jpID.setVisible(true);
+            jpID.setVisible(false);
         }
     }
     
@@ -401,9 +398,8 @@ public class DlgCadPaciente extends javax.swing.JDialog {
         jpSexo.setForeground(Color.black);
         lbDataNascimento.setForeground(Color.black);
         lbTelefone.setForeground(Color.black);
-        jpSexo.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Sexo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 14))); // NOI18N
-        lbPesquisar.setForeground(Color.black);
-        lbPesquisar.setForeground(Color.black);
+        jpSexo.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Sexo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 14))); 
+        cmbOpcao.setForeground(Color.black);
     }
     
     
@@ -411,7 +407,7 @@ public class DlgCadPaciente extends javax.swing.JDialog {
         setCor();
         String msgErro = "";
         if(txtPesquisa.getText().isEmpty()){
-            lbPesquisar.setForeground(Color.red);
+            cmbOpcao.setForeground(Color.red);
             msgErro += "Insira um nome!\n";
         }
         
@@ -509,30 +505,22 @@ public class DlgCadPaciente extends javax.swing.JDialog {
     private void btEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEditarActionPerformed
         int opcao = tbPacientes.getSelectedRow();
         if(opcao >= 0){ 
-             pacienteSelecionado = (Paciente) tbPacientes.getValueAt(opcao, 1);
-
-           
-            
-            
+             pacienteSelecionado = (Paciente) tbPacientes.getValueAt(opcao, 1);          
             setCor();
-            txtIdPaciente.setText(tbPacientes.getValueAt(opcao, 0).toString());
-            txtNome.setText(tbPacientes.getValueAt(opcao, 1).toString());
-            txtCPF.setText(tbPacientes.getValueAt(opcao, 2).toString());
-            txtEmail.setText(tbPacientes.getValueAt(opcao, 3).toString());
+            habilitarBotoes();
+            txtIdPaciente.setText(String.valueOf(pacienteSelecionado.getIdPessoa()));
+            txtNome.setText(pacienteSelecionado.getNomePessoa());
+            txtCPF.setText(pacienteSelecionado.getCpf());
+            txtEmail.setText(pacienteSelecionado.getEmail());
             
-            if(tbPacientes.getValueAt(opcao, 5).toString().equals("Masculino")){
+            if(pacienteSelecionado.getSexo().equals("Masculino")){
                 chkMasculino.setSelected(true);
             }else{
                 chkFemino.setSelected(true);
             }
-            txtDataNascimento.setText(Functions.formatarDataParaInterface(tbPacientes.getValueAt(opcao, 4).toString()));
-            txtTelefone.setText(Functions.removerCaracteresTelefone(tbPacientes.getValueAt(opcao, 6).toString()));
-           
-            btAtualizar.setVisible(true);
-            jpID.setVisible(true);
-            btConfirmar.setVisible(false);
+            txtDataNascimento.setText(Functions.formatarDataParaInterface(pacienteSelecionado.getDataNascimento()));
+            txtTelefone.setText(Functions.removerCaracteresTelefone(pacienteSelecionado.getTelefone()));
             
-            jtpTelas.setSelectedIndex(0);
         }else{
             JOptionPane.showMessageDialog(this,"Selecione uma linha.", "Pesquisar cliente", JOptionPane.ERROR_MESSAGE  );
         }
@@ -559,6 +547,8 @@ public class DlgCadPaciente extends javax.swing.JDialog {
         String sexo = Functions.checarBotao(grpSexo);
         if(validarCampos()){
             //Cadastra no banco
+            pacienteSelecionado = null;
+            habilitarBotoes();
         }
     }//GEN-LAST:event_btAtualizarActionPerformed
 
@@ -584,9 +574,9 @@ public class DlgCadPaciente extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_formComponentShown
 
-    private void habilitarBotoes(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_habilitarBotoes
-        // TODO add your handling code here:
-    }//GEN-LAST:event_habilitarBotoes
+    private void btLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLimparActionPerformed
+        habilitarBotoes();
+    }//GEN-LAST:event_btLimparActionPerformed
 
     
     
@@ -604,6 +594,7 @@ public class DlgCadPaciente extends javax.swing.JDialog {
     private javax.swing.JButton btNovo;
     private javax.swing.JCheckBox chkFemino;
     private javax.swing.JCheckBox chkMasculino;
+    private javax.swing.JComboBox<String> cmbOpcao;
     private javax.swing.ButtonGroup grpSexo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -628,7 +619,6 @@ public class DlgCadPaciente extends javax.swing.JDialog {
     private javax.swing.JLabel lbEmail;
     private javax.swing.JLabel lbID;
     private javax.swing.JLabel lbNome;
-    private javax.swing.JLabel lbPesquisar;
     private javax.swing.JLabel lbTelefone;
     private javax.swing.JTable tbPacientes;
     private javax.swing.JFormattedTextField txtCPF;
