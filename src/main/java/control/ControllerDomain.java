@@ -4,7 +4,6 @@
  */
 package control;
 
-import domain.Consulta;
 import domain.TipoConsulta;
 import dao.*;
 import domain.*;
@@ -22,7 +21,7 @@ public class ControllerDomain {
     
     public ControllerDomain() throws ClassNotFoundException, SQLException {
         // TESTE
-        ConexaoSingleton.getInstance();
+        ConexaoHibernate.getSessionFactory();
         pacienteDao = new PacienteDao();
         medicoDao = new MedicoDao();
         tipoDao = new TipoConsultaDao();

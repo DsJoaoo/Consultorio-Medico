@@ -1,6 +1,5 @@
 package control;
 
-import domain.Consulta;
 import com.formdev.flatlaf.FlatLightLaf;
 import domain.Paciente;
 import view.*;

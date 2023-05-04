@@ -4,19 +4,37 @@
  */
 package domain;
 
+import java.io.*;
 import java.util.Date;
+import javax.persistence.*;
 
 /**
  *
  * @author joaop
  */
-public class Funcionario{
+@Entity
+public class Funcionario implements Serializable{
+    @Id
+    @GeneratedValue ( strategy = GenerationType.IDENTITY)
     private int idPessoa;
+    
+    @Column (name="nomeFuncionario", length = 250, nullable = false)
     private String nomePessoa;
+    
+    @Column (length = 11, nullable = false)
     private String telefone;
+    
+    @Column ( unique = true, length = 50, nullable = false)
     private String email;
+     
+    @Column ( unique = true, updatable = false, length = 14) 
     private String cpf;
+    
+    @Column (nullable = true)
+    @Temporal (TemporalType.DATE)
     private Date dataAdmissao;
+    
+    @Column (length = 30, nullable = false)
     private String Senha;
 
     public Funcionario(int idPessoa, String nomePessoa, String telefone, String email, String cpf, Date dataAdmissao, String Senha) {
