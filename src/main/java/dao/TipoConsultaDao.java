@@ -4,8 +4,8 @@
  */
 package dao;
 
+import domain.Paciente;
 import domain.TipoConsulta;
-import domain.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -33,24 +33,8 @@ public class TipoConsultaDao {
     
     
     public TipoConsulta buscarTipoConsultaPorId(int id) {
-        Connection con = ConexaoSingleton.getInstance();
-        TipoConsulta tipoConsulta = null;
-        String sql = "SELECT * FROM TipoConsulta WHERE idTipoConsulta = ?";
-        try (PreparedStatement smt = con.prepareStatement(sql)) {
-            smt.setInt(1, id);
-            ResultSet resultado = smt.executeQuery();
-            if (resultado.next()) {
-                tipoConsulta = new TipoConsulta(
-                resultado.getInt("idTipoConsulta"),
-                resultado.getString("nomeTipoConsulta"),
-                resultado.getDouble("valorConsulta")
-                );
-                
-            }
-                smt.close();
-        } catch (Exception e) {
-            System.out.println("Erro ao buscar tipo de consulta por id: " + e.getMessage());
-        }
-        return tipoConsulta;
+        
+        return null;
+        
     }   
 }
