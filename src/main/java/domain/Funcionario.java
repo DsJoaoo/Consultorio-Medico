@@ -5,7 +5,9 @@
 package domain;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.*;
 
 /**
@@ -16,9 +18,9 @@ import javax.persistence.*;
 public class Funcionario implements Serializable{
     @Id
     @GeneratedValue ( strategy = GenerationType.IDENTITY)
-    private int idPessoa;
+    private int idFuncionario;
     
-    @Column (name="nomeFuncionario", length = 250, nullable = false)
+    @Column (name="nomeFuncionario", length = 50, nullable = false)
     private String nomePessoa;
     
     @Column (length = 11, nullable = false)
@@ -36,9 +38,14 @@ public class Funcionario implements Serializable{
     
     @Column (length = 30, nullable = false)
     private String Senha;
+    
+    @OneToMany (mappedBy = "funcionario", fetch = FetchType.LAZY)
+    private List<Consulta> consulta = new ArrayList();
 
-    public Funcionario(int idPessoa, String nomePessoa, String telefone, String email, String cpf, Date dataAdmissao, String Senha) {
-        this.idPessoa = idPessoa;
+    public Funcionario() {
+    }
+
+    public Funcionario(String nomePessoa, String telefone, String email, String cpf, Date dataAdmissao, String Senha) {
         this.nomePessoa = nomePessoa;
         this.telefone = telefone;
         this.email = email;
@@ -47,12 +54,12 @@ public class Funcionario implements Serializable{
         this.Senha = Senha;
     }
 
-    public int getIdPessoa() {
-        return idPessoa;
+    public int getIdFuncionario() {
+        return idFuncionario;
     }
 
-    public void setIdPessoa(int idPessoa) {
-        this.idPessoa = idPessoa;
+    public void setIdFuncionario(int idFuncionario) {
+        this.idFuncionario = idFuncionario;
     }
 
     public String getNomePessoa() {
@@ -87,9 +94,6 @@ public class Funcionario implements Serializable{
         this.cpf = cpf;
     }
 
-    
-
-
     public Date getDataAdmissao() {
         return dataAdmissao;
     }
@@ -104,6 +108,15 @@ public class Funcionario implements Serializable{
 
     public void setSenha(String Senha) {
         this.Senha = Senha;
-    } 
+    }
+
+    public List<Consulta> getConsulta() {
+        return consulta;
+    }
+
+    public void setConsulta(List<Consulta> consulta) {
+        this.consulta = consulta;
+    }
+
 
 }

@@ -53,5 +53,9 @@ Contributor(s):
     <property name="hibernate.query.factory_class">org.hibernate.hql.internal.classic.ClassicQueryTranslatorFactory</property>
     <property name="hibernate.hbm2ddl.auto">create</property>
     <mapping class="domain.Funcionario"/>
+    <mapping class="domain.Paciente"/>
+    <mapping class="domain.Medico"/>
+    <mapping class="domain.TipoConsulta"/>
+    <mapping class="domain.Consulta"/>
   </session-factory>
 </hibernate-configuration>
