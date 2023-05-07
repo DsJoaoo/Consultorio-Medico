@@ -28,18 +28,24 @@ public class TipoConsulta implements Serializable{
     private double valor;
     
     
+    @Column (nullable = false)
+    private boolean isPlano;
+    
+    
     @OneToMany (mappedBy = "tipoConsulta", fetch = FetchType.LAZY)
     private List<Consulta> consulta = new ArrayList();
 
     public TipoConsulta() {
     }
 
-    
-    public TipoConsulta( String descricao, double valor) {
+    public TipoConsulta(String descricao, double valor, boolean isPlano) {
         this.descricao = descricao;
         this.valor = valor;
+        this.isPlano = isPlano;
     }
 
+    
+    
     public int getIdTipoConsulta() {
         return idTipoConsulta;
     }
@@ -63,6 +69,24 @@ public class TipoConsulta implements Serializable{
     public void setValor(double valor) {
         this.valor = valor;
     }
+
+    public boolean isIsPlano() {
+        return isPlano;
+    }
+
+    public void setIsPlano(boolean isPlano) {
+        this.isPlano = isPlano;
+    }
+
+    public List<Consulta> getConsulta() {
+        return consulta;
+    }
+
+    public void setConsulta(List<Consulta> consulta) {
+        this.consulta = consulta;
+    }
+
+   
 
     
 

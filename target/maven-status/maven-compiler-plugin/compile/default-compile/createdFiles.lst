@@ -35,6 +35,7 @@ view\DlgCadConsulta$2.class
 view\DlgCadConsulta$8.class
 view\DlgCadMedico$8.class
 dao\MedicoDao.class
+.netbeans_automatic_build
 view\DlgCadPaciente$9.class
 view\DlgCadFuncionario$9.class
 dao\ConexaoHibernate.class

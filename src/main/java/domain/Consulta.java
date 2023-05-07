@@ -22,7 +22,7 @@ public class Consulta implements Serializable {
     private int idConsulta;
     
     
-     @Column (nullable = true)
+    @Column (nullable = true)
     @Temporal (TemporalType.DATE)
     private Date dataConsulta;
     
