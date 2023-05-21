@@ -5,14 +5,13 @@
 package view;
 
 import control.ControllerView;
-import control.Functions;
 import java.awt.Color;
 import javax.swing.JOptionPane;
 /**
  *
  * @author joaop
  */
-public class DlgCadServico extends javax.swing.JDialog {
+public class DlgTipoConsulta extends javax.swing.JDialog {
     private ControllerView gerIG;
     /**
      * Creates new form DlgCliente
@@ -20,7 +19,7 @@ public class DlgCadServico extends javax.swing.JDialog {
      * @param modal
      * @param controller
      */
-    public DlgCadServico(java.awt.Frame parent, boolean modal, ControllerView controller) {
+    public DlgTipoConsulta(java.awt.Frame parent, boolean modal, ControllerView controller) {
         super(parent, modal);
         initComponents();
         gerIG = controller;
@@ -36,6 +35,7 @@ public class DlgCadServico extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        grpSimNao = new javax.swing.ButtonGroup();
         jtpTelas = new javax.swing.JTabbedPane();
         CadastroServico = new javax.swing.JPanel();
         jpDados = new javax.swing.JPanel();
@@ -46,7 +46,10 @@ public class DlgCadServico extends javax.swing.JDialog {
         jpNome = new javax.swing.JPanel();
         lbNome = new javax.swing.JLabel();
         txtNome = new javax.swing.JTextField();
-        jpEmail = new javax.swing.JPanel();
+        jpPlano = new javax.swing.JPanel();
+        btNao = new javax.swing.JRadioButton();
+        btSim = new javax.swing.JRadioButton();
+        jpPreco = new javax.swing.JPanel();
         lbPreco = new javax.swing.JLabel();
         txtPreco = new javax.swing.JFormattedTextField();
         jpBotoes = new javax.swing.JPanel();
@@ -104,18 +107,41 @@ public class DlgCadServico extends javax.swing.JDialog {
         jpNome.setLayout(new java.awt.GridLayout(1, 2, -120, 15));
 
         lbNome.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lbNome.setText("Nome");
+        lbNome.setText("Descriçao");
         jpNome.add(lbNome);
         jpNome.add(txtNome);
 
-        jpEmail.setLayout(new java.awt.GridLayout(1, 2, -120, 15));
+        jpPlano.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "É plano de saúde?", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 18))); // NOI18N
+        jpPlano.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        grpSimNao.add(btNao);
+        btNao.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btNao.setText("Não");
+        btNao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btNaoActionPerformed(evt);
+            }
+        });
+        jpPlano.add(btNao, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 20, 80, 30));
+
+        grpSimNao.add(btSim);
+        btSim.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btSim.setText("Sim");
+        btSim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btSimActionPerformed(evt);
+            }
+        });
+        jpPlano.add(btSim, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 100, 30));
+
+        jpPreco.setLayout(new java.awt.GridLayout(1, 2, -120, 15));
 
         lbPreco.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lbPreco.setText("Preço");
-        jpEmail.add(lbPreco);
+        jpPreco.add(lbPreco);
 
         txtPreco.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
-        jpEmail.add(txtPreco);
+        jpPreco.add(txtPreco);
 
         javax.swing.GroupLayout jpInfoDadosLayout = new javax.swing.GroupLayout(jpInfoDados);
         jpInfoDados.setLayout(jpInfoDadosLayout);
@@ -124,9 +150,12 @@ public class DlgCadServico extends javax.swing.JDialog {
             .addGroup(jpInfoDadosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jpInfoDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jpID, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
-                    .addComponent(jpNome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jpEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jpInfoDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jpPreco, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jpNome, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
+                        .addComponent(jpID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jpPlano, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 10, Short.MAX_VALUE))
         );
         jpInfoDadosLayout.setVerticalGroup(
             jpInfoDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -136,13 +165,15 @@ public class DlgCadServico extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(jpNome, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jpEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addComponent(jpPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jpPlano, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
-        jpDados.add(jpInfoDados, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 320, 180));
+        jpDados.add(jpInfoDados, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 350, 220));
 
-        CadastroServico.add(jpDados, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 369, 230));
+        CadastroServico.add(jpDados, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 369, 250));
 
         jpBotoes.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         jpBotoes.setOpaque(false);
@@ -178,14 +209,13 @@ public class DlgCadServico extends javax.swing.JDialog {
         });
         jpBotoes.add(btLimpar, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 10, 120, 40));
 
-        CadastroServico.add(jpBotoes, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 260, 387, 60));
+        CadastroServico.add(jpBotoes, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 387, 60));
 
         jSeparator3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        CadastroServico.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 390, 10));
+        CadastroServico.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 260, 390, 10));
 
         jtpTelas.addTab("Cadastrar Serviço", CadastroServico);
 
-        ListarPreco.setBackground(new java.awt.Color(255, 255, 255));
         ListarPreco.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         ListarPreco.add(txtPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 10, 140, 40));
 
@@ -200,7 +230,6 @@ public class DlgCadServico extends javax.swing.JDialog {
         jSeparator1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         ListarPreco.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 260, 400, 10));
 
-        jpServico.setBackground(new java.awt.Color(255, 255, 255));
         jpServico.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Serviços", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 18))); // NOI18N
         jpServico.setLayout(new java.awt.BorderLayout());
         jpServico.setOpaque(false);
@@ -231,7 +260,6 @@ public class DlgCadServico extends javax.swing.JDialog {
         jSeparator2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         ListarPreco.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 390, 10));
 
-        jpBotoes1.setBackground(new java.awt.Color(255, 255, 255));
         jpBotoes1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         jpBotoes1.setOpaque(false);
 
@@ -421,6 +449,14 @@ public class DlgCadServico extends javax.swing.JDialog {
         //lista todos que estão no banco
     }//GEN-LAST:event_btListarTodosActionPerformed
 
+    private void btNaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNaoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btNaoActionPerformed
+
+    private void btSimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSimActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btSimActionPerformed
+
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CadastroServico;
@@ -432,7 +468,10 @@ public class DlgCadServico extends javax.swing.JDialog {
     private javax.swing.JButton btLimpar;
     private javax.swing.JButton btListarTodos;
     private javax.swing.JButton btLupa;
+    private javax.swing.JRadioButton btNao;
     private javax.swing.JButton btNovo;
+    private javax.swing.JRadioButton btSim;
+    private javax.swing.ButtonGroup grpSimNao;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
@@ -441,10 +480,11 @@ public class DlgCadServico extends javax.swing.JDialog {
     private javax.swing.JPanel jpBotoes;
     private javax.swing.JPanel jpBotoes1;
     private javax.swing.JPanel jpDados;
-    private javax.swing.JPanel jpEmail;
     private javax.swing.JPanel jpID;
     private javax.swing.JPanel jpInfoDados;
     private javax.swing.JPanel jpNome;
+    private javax.swing.JPanel jpPlano;
+    private javax.swing.JPanel jpPreco;
     private javax.swing.JPanel jpServico;
     private javax.swing.JTabbedPane jtpTelas;
     private javax.swing.JLabel lbID;

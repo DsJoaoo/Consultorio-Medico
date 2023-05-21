@@ -123,5 +123,8 @@ public class Medico implements Serializable{
         this.consulta = consulta;
     }
 
-    
+    @Override
+    public String toString(){
+        return nomePessoa;
+    }
 }

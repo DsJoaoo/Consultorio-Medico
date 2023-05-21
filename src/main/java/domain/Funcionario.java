@@ -117,6 +117,9 @@ public class Funcionario implements Serializable{
     public void setConsulta(List<Consulta> consulta) {
         this.consulta = consulta;
     }
-
-
+    
+        @Override
+    public String toString(){
+        return nomePessoa;
+    }
 }

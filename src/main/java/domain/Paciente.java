@@ -20,7 +20,7 @@ public class Paciente implements Serializable{
     private int idPaciente;
     
     
-    @Column (name="nomeMedico", length = 50, nullable = false)
+    @Column (name="nomePaciente", length = 50, nullable = false)
     private String nomePessoa;
     
     

@@ -6,6 +6,7 @@ package view;
 
 import control.ControllerView;
 import control.Functions;
+import domain.*;
 import java.awt.Color;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
@@ -119,7 +120,6 @@ public class DlgCadConsulta extends javax.swing.JDialog {
 
         jpCombo.setLayout(new java.awt.GridLayout(3, 1, 0, 40));
 
-        cmbTipoConsulta.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Particular", "Plano de Saúde" }));
         jpCombo.add(cmbTipoConsulta);
 
         jpCombo.add(cmbMedico);
@@ -524,7 +524,12 @@ public class DlgCadConsulta extends javax.swing.JDialog {
     }//GEN-LAST:event_btListarTodosActionPerformed
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-
+        try {
+            gerIG.carregarTabelaConsultas(tbConsultas);
+            gerIG.carregarCombosConsulta(cmbPaciente, cmbMedico, cmbTipoConsulta, Paciente.class, Medico.class, TipoConsulta.class);
+        } catch (ClassNotFoundException | SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Erro ao carregar funcionários " + ex.getMessage() );
+    }
     }//GEN-LAST:event_formComponentShown
 
     

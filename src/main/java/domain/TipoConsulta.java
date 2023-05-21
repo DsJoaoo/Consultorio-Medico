@@ -87,7 +87,10 @@ public class TipoConsulta implements Serializable{
     }
 
    
-
+     @Override
+    public String toString(){
+        return descricao;
+    }
     
 
     

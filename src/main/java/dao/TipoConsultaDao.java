@@ -4,30 +4,13 @@
  */
 package dao;
 
-import domain.Paciente;
 import domain.TipoConsulta;
-import java.util.List;
 
 /**
  *
  * @author joaop
  */
-public class TipoConsultaDao {
-    public void cadastrar(Paciente p){
-    
-    }
-    
-    public void atualizar(Paciente p){
-    
-    }
-    public void remover(Paciente p){
-    
-    }
-
-    public List<TipoConsulta> listar() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    
+public class TipoConsultaDao extends GenericDao{
     
     public TipoConsulta buscarTipoConsultaPorId(int id) {
         

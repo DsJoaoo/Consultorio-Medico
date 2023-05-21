@@ -113,4 +113,5 @@ public class Consulta implements Serializable {
     public void setTipoConsulta(TipoConsulta tipoConsulta) {
         this.tipoConsulta = tipoConsulta;
     }
+    
 }
