@@ -112,6 +112,7 @@ public class DlgTipoConsulta extends javax.swing.JDialog {
         jpNome.add(txtNome);
 
         jpPlano.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "É plano de saúde?", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 18))); // NOI18N
+        jpPlano.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jpPlano.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         grpSimNao.add(btNao);
@@ -122,7 +123,7 @@ public class DlgTipoConsulta extends javax.swing.JDialog {
                 btNaoActionPerformed(evt);
             }
         });
-        jpPlano.add(btNao, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 20, 80, 30));
+        jpPlano.add(btNao, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 30, 80, 30));
 
         grpSimNao.add(btSim);
         btSim.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -132,7 +133,7 @@ public class DlgTipoConsulta extends javax.swing.JDialog {
                 btSimActionPerformed(evt);
             }
         });
-        jpPlano.add(btSim, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 100, 30));
+        jpPlano.add(btSim, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 100, 30));
 
         jpPreco.setLayout(new java.awt.GridLayout(1, 2, -120, 15));
 
@@ -167,7 +168,7 @@ public class DlgTipoConsulta extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(jpPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jpPlano, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
+                .addComponent(jpPlano, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -294,7 +295,7 @@ public class DlgTipoConsulta extends javax.swing.JDialog {
 
         lbPesquisar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lbPesquisar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbPesquisar.setText("Pesquisar nome");
+        lbPesquisar.setText("Pesquisar");
         ListarPreco.add(lbPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 140, 40));
 
         btListarTodos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaces/imgs/icons/icons8-multidão-24.png"))); // NOI18N
@@ -450,11 +451,12 @@ public class DlgTipoConsulta extends javax.swing.JDialog {
     }//GEN-LAST:event_btListarTodosActionPerformed
 
     private void btNaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNaoActionPerformed
-        // TODO add your handling code here:
+        txtPreco.setEnabled(false);
+        txtPreco.setText("0.00");
     }//GEN-LAST:event_btNaoActionPerformed
 
     private void btSimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSimActionPerformed
-        // TODO add your handling code here:
+        txtPreco.setEnabled(true);
     }//GEN-LAST:event_btSimActionPerformed
 
     

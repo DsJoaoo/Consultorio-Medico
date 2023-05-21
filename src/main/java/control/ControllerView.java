@@ -181,7 +181,6 @@ public class ControllerView {
             List<Medico> listaMedicos = gerDominio.listar(medico);
             List<TipoConsulta> listaConsultas = gerDominio.listar(tipoConsulta);
             
-            
             cmbPaciente.setModel( new DefaultComboBoxModel( listaPacientes.toArray() )  );
             cmbMedico.setModel( new DefaultComboBoxModel( listaMedicos.toArray() )  );
             cmbTipoConsulta.setModel( new DefaultComboBoxModel( listaConsultas.toArray() )  );
