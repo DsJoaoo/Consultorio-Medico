@@ -8,7 +8,10 @@ import control.ControllerView;
 import control.Functions;
 import domain.Funcionario;
 import java.awt.Color;
+import java.awt.HeadlessException;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.Date;
 import javax.swing.JOptionPane;
 
 /**
@@ -17,6 +20,7 @@ import javax.swing.JOptionPane;
  */
 public class DlgCadFuncionario extends javax.swing.JDialog {
     private ControllerView gerIG;
+    private Funcionario funcionarioSelecionado;
     /**
      * Creates new form DlgCliente
      */
@@ -25,6 +29,7 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
         initComponents();
         gerIG = controller;
         atualizarTabela();
+        funcionarioSelecionado = null;
     }
 
     /**
@@ -378,6 +383,22 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     
+    
+    private void habilitarBotoes() {
+        if(funcionarioSelecionado == null){
+            limparCampos();
+            btAtualizar.setVisible(false);
+            btConfirmar.setVisible(true);
+            jpID.setVisible(false);
+        }else{
+            limparCampos();
+            jtpTelas.setSelectedIndex(0);
+            btAtualizar.setVisible(true);
+            btConfirmar.setVisible(false);
+            jpID.setVisible(false);
+        }
+    }
+    
     private void atualizarTabela(){
         //Atualiza a tabela e a preenche com os dados do banco
     }
@@ -487,11 +508,21 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
     private void btConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btConfirmarActionPerformed
         String nome = txtNome.getText();
         String cpf = txtCPF.getText();
+        String dataAdmissao = txtDataAdmissao.getText();
         String email = txtEmail.getText(); 
-        String dataNascimento = Functions.formatarDataParaSQL(txtDataAdmissao.getText());
+        String senha  = txtPSW.getText();
         String telefone = txtTelefone.getText(); 
         if(validarCampos()){
-            //Insere no banco
+            try {
+                Date dt = Functions.strToDate(dataAdmissao);
+                if(funcionarioSelecionado == null){
+                    int id = gerIG.getGerDominio().inserirFucionario(nome, cpf,dt, email, senha, telefone);
+                    JOptionPane.showMessageDialog(this, "Funcionario " + id + " inserido com sucesso.", "Inserir Funcionario", JOptionPane.INFORMATION_MESSAGE  );
+                }
+            } catch (HeadlessException | ParseException e) {
+               JOptionPane.showMessageDialog(this, e, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );
+            }
+            habilitarBotoes();
             atualizarTabela();
             limparCampos();
             jtpTelas.setSelectedIndex(1);

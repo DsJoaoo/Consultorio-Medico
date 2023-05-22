@@ -8,7 +8,10 @@ import control.ControllerView;
 import control.Functions;
 import domain.Medico;
 import java.awt.Color;
+import java.awt.HeadlessException;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.Date;
 import javax.swing.JOptionPane;
 
 /**
@@ -17,6 +20,7 @@ import javax.swing.JOptionPane;
  */
 public class DlgCadMedico extends javax.swing.JDialog {
     private ControllerView gerIG;
+    private Medico medicoSelecionado;
     /**
      * Creates new form DlgCliente
      * @param parent
@@ -27,6 +31,7 @@ public class DlgCadMedico extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         gerIG = controller;
+        medicoSelecionado = null;
         atualizarTabela();
     }
 
@@ -202,6 +207,8 @@ public class DlgCadMedico extends javax.swing.JDialog {
         }
         jPanel4.add(txtTelefone);
 
+        cmbEspecializacao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Anestesiologia", "Cardiologia", "Cirurgia geral", "Dermatologia", "Endocrinologia", "Gastroenterologia", "Geriatria", "Ginecologia", "Hematologia", "Medicina da família e comunidade", "Medicina interna", "Nefrologia", "Neurologia", "Obstetrícia", "Oftalmologia", "Ortopedia", "Otorrinolaringologia", "Pediatria", "Psiquiatria", "Radiologia", "Urologia" }));
+        cmbEspecializacao.setSelectedIndex(-1);
         jPanel4.add(cmbEspecializacao);
 
         jpCapacidade.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 10, 170, 190));
@@ -369,6 +376,20 @@ public class DlgCadMedico extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void habilitarBotoes() {
+        if(medicoSelecionado == null){
+            limparCampos();
+            btAtualizar.setVisible(false);
+            btConfirmar.setVisible(true);
+            jpID.setVisible(false);
+        }else{
+            limparCampos();
+            jtpTelas.setSelectedIndex(0);
+            btAtualizar.setVisible(true);
+            btConfirmar.setVisible(false);
+            jpID.setVisible(false);
+        }
+    }
     
     private void atualizarTabela(){
         //Atualiza a tabela e a preenche com os dados do banco
@@ -459,15 +480,31 @@ public class DlgCadMedico extends javax.swing.JDialog {
         txtEmail.setText("");      
         txtCRM.setText("");
         txtTelefone.setText("");
-
+        cmbEspecializacao.setSelectedIndex(-1);
     }
     
     
     
     private void btConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btConfirmarActionPerformed
 
+        String nome = txtNome.getText();
+        String telefone = txtTelefone.getText();
+        String email = txtEmail.getText(); 
+        String cpf = txtCPF.getText();
+        String crm = txtCRM.getText();
+        String especializacao = cmbEspecializacao.getSelectedItem().toString();
+        
+        
         if(validarCampos()){
-            //Insere no banco
+            try {
+                if(medicoSelecionado == null){
+                    int id = gerIG.getGerDominio().inserirMedico(nome, telefone,email, cpf, crm, especializacao);
+                    JOptionPane.showMessageDialog(this, "Médico " + id + " inserido com sucesso.", "Inserir Médico", JOptionPane.INFORMATION_MESSAGE  );
+                }
+            } catch (HeadlessException e) {
+               JOptionPane.showMessageDialog(this, e, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );
+            }
+            habilitarBotoes();
             atualizarTabela();
             limparCampos();
             jtpTelas.setSelectedIndex(1);

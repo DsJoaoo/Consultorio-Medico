@@ -18,6 +18,10 @@ import javax.swing.JOptionPane;
  */
 public class DlgCadConsulta extends javax.swing.JDialog {
     private ControllerView gerIG;
+    private Paciente pacienteSelecionado;
+    private Medico medicoSelecionado;
+    private TipoConsulta consultaSelecionado;
+    private Funcionario funcionarioSelecionado;
     /**
      * Creates new form DlgCliente
      * @param parent
@@ -25,6 +29,10 @@ public class DlgCadConsulta extends javax.swing.JDialog {
     public DlgCadConsulta(java.awt.Frame parent, boolean modal, ControllerView controller) {
         super(parent, modal);
         initComponents();
+        pacienteSelecionado = null;
+        medicoSelecionado = null;
+        consultaSelecionado = null;
+        funcionarioSelecionado = null;
         gerIG = controller;
         //atualizarTabela();
     }

@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
  *
  * @author joaop
  */
-public class DlgTipoConsulta extends javax.swing.JDialog {
+public class DlgCadTipoConsulta extends javax.swing.JDialog {
     private ControllerView gerIG;
     /**
      * Creates new form DlgCliente
@@ -21,7 +21,7 @@ public class DlgTipoConsulta extends javax.swing.JDialog {
      * @param modal
      * @param controller
      */
-    public DlgTipoConsulta(java.awt.Frame parent, boolean modal, ControllerView controller) {
+    public DlgCadTipoConsulta(java.awt.Frame parent, boolean modal, ControllerView controller) {
         super(parent, modal);
         initComponents();
         gerIG = controller;

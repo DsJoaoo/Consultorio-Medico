@@ -330,8 +330,31 @@
                         <Component class="javax.swing.JComboBox" name="cmbEspecializacao">
                           <Properties>
                             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                              <StringArray count="0"/>
+                              <StringArray count="21">
+                                <StringItem index="0" value="Anestesiologia"/>
+                                <StringItem index="1" value="Cardiologia"/>
+                                <StringItem index="2" value="Cirurgia geral"/>
+                                <StringItem index="3" value="Dermatologia"/>
+                                <StringItem index="4" value="Endocrinologia"/>
+                                <StringItem index="5" value="Gastroenterologia"/>
+                                <StringItem index="6" value="Geriatria"/>
+                                <StringItem index="7" value="Ginecologia"/>
+                                <StringItem index="8" value="Hematologia"/>
+                                <StringItem index="9" value="Medicina da fam&#xed;lia e comunidade"/>
+                                <StringItem index="10" value="Medicina interna"/>
+                                <StringItem index="11" value="Nefrologia"/>
+                                <StringItem index="12" value="Neurologia"/>
+                                <StringItem index="13" value="Obstetr&#xed;cia"/>
+                                <StringItem index="14" value="Oftalmologia"/>
+                                <StringItem index="15" value="Ortopedia"/>
+                                <StringItem index="16" value="Otorrinolaringologia"/>
+                                <StringItem index="17" value="Pediatria"/>
+                                <StringItem index="18" value="Psiquiatria"/>
+                                <StringItem index="19" value="Radiologia"/>
+                                <StringItem index="20" value="Urologia"/>
+                              </StringArray>
                             </Property>
+                            <Property name="selectedIndex" type="int" value="-1"/>
                           </Properties>
                           <AuxValues>
                             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>

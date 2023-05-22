@@ -31,7 +31,7 @@ public class ControllerView {
     private DlgCadFuncionario janCadFuncionario = null;
     private DlgCadConsulta janCadConsulta = null;
     private DlgLogin janCadLogin = null;
-    private DlgTipoConsulta janCadServico = null;
+    private DlgCadTipoConsulta janCadServico = null;
     
     
     //GERENCIADORES de DOMINIO
@@ -95,7 +95,7 @@ public class ControllerView {
     }
     
     public void janelaCadServico() {
-        janCadServico = (DlgTipoConsulta) abrirJanela(janCadPrincipal, janCadServico, DlgTipoConsulta.class);
+        janCadServico = (DlgCadTipoConsulta) abrirJanela(janCadPrincipal, janCadServico, DlgCadTipoConsulta.class);
     }
     
     //</editor-fold>

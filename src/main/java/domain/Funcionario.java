@@ -23,7 +23,7 @@ public class Funcionario implements Serializable, Convertivel{
     @Column (name="nomeFuncionario", length = 50, nullable = false)
     private String nomePessoa;
     
-    @Column (length = 11, nullable = false)
+    @Column (length = 20, nullable = false)
     private String telefone;
     
     @Column ( unique = true, length = 50, nullable = false)
