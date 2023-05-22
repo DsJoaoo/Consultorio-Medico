@@ -27,7 +27,7 @@ public class ControllerDomain {
     public int inserirPaciente(String nome, String cpf, String email, Date data, String telefone, String sexo){
         Paciente p = new Paciente(nome, telefone, email, cpf, data, sexo);
         genDao.cadastrar(p);
-        return 0;
+        return p.getIdPessoa();
     }
 
     

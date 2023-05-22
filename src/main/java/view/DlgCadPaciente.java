@@ -490,21 +490,17 @@ public class DlgCadPaciente extends javax.swing.JDialog {
         String email = txtEmail.getText(); 
         String telefone = txtTelefone.getText();
         String sexo = Functions.checarBotao(grpSexo);
+        String data = txtDataNascimento.getText();
         if(validarCampos()){
             try {
-                Date data = Functions.strToDate(txtDataNascimento.getText());
-                
+                Date dt = Functions.strToDate(data);
                 if(pacienteSelecionado == null){
-                    int id = gerIG.getGerDominio().inserirPaciente(nome, cpf, email, data, telefone, sexo);
-                    JOptionPane.showMessageDialog(this, "Paciente " + id + "inserido com sucesso.", "Inserir Cliente", JOptionPane.INFORMATION_MESSAGE  );
-                
+                    int id = gerIG.getGerDominio().inserirPaciente(nome, cpf, email, dt, telefone, sexo);
+                    JOptionPane.showMessageDialog(this, "Paciente " + id + " inserido com sucesso.", "Inserir Paciente", JOptionPane.INFORMATION_MESSAGE  );
                 }
             } catch (HeadlessException | ParseException e) {
                JOptionPane.showMessageDialog(this, e, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );
-            } 
-            
-            
-            
+            }
             habilitarBotoes();
         }
         

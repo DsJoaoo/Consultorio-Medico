@@ -101,19 +101,16 @@ public class ControllerView {
     //</editor-fold>
     
     public void carregarTabela(JTable tabela, Class classe) throws ClassNotFoundException, SQLException {
-        List lista = gerDominio.listar(classe);
         DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
 
         try {
+            List<Convertivel> lista = gerDominio.listar(classe);
             modelo.setRowCount(0);
-            for (Object objeto : lista) {
-                if (objeto instanceof Convertivel) {
-                    Convertivel item = (Convertivel) objeto;
-                    modelo.addRow(item.toArray());
-                }
+            for (Convertivel objeto : lista) {
+                modelo.addRow(objeto.toArray());
             }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(janCadPrincipal, "Erro ao tentar converter objeto. " + e.getMessage());
+        } catch (HibernateException e) {
+            JOptionPane.showMessageDialog(janCadPrincipal, "Erro ao tentar listar tabela do banco de dados. " + e.getMessage());
     }
 }
  

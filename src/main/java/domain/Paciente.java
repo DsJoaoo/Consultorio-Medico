@@ -25,7 +25,7 @@ public class Paciente implements Serializable, Convertivel{
     private String nomePessoa;
     
     
-    @Column (length = 11, nullable = false)
+    @Column (length = 20, nullable = false)
     private String telefone;
     
     
