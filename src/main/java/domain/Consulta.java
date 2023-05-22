@@ -16,7 +16,7 @@ import javax.persistence.*;
  * @author joaop
  */
 @Entity
-public class Consulta implements Serializable {
+public class Consulta implements Serializable, Convertivel {
     @Id
     @GeneratedValue ( strategy = GenerationType.IDENTITY)
     private int idConsulta;
@@ -113,5 +113,9 @@ public class Consulta implements Serializable {
     public void setTipoConsulta(TipoConsulta tipoConsulta) {
         this.tipoConsulta = tipoConsulta;
     }
+    
+    public Object[] toArray(){
+       return new Object[] {idConsulta, dataConsulta, hora, paciente, funcionario, medico, tipoConsulta, tipoConsulta.getValor() };
+    };
     
 }

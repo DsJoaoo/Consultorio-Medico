@@ -14,7 +14,7 @@ import javax.persistence.*;
  * @author joaop
  */
 @Entity
-public class TipoConsulta implements Serializable{
+public class TipoConsulta implements Serializable, Convertivel{
     @Id
     @GeneratedValue ( strategy = GenerationType.IDENTITY)
     private int idTipoConsulta;
@@ -70,7 +70,7 @@ public class TipoConsulta implements Serializable{
         this.valor = valor;
     }
 
-    public boolean isIsPlano() {
+    public boolean getIsPlano() {
         return isPlano;
     }
 
@@ -92,7 +92,9 @@ public class TipoConsulta implements Serializable{
         return descricao;
     }
     
-
+public Object[] toArray(){
+       return new Object[] {idTipoConsulta, this, valor, isPlano};  
+    };
     
     
 }

@@ -14,7 +14,7 @@ import javax.persistence.*;
  * @author joaop
  */
 @Entity
-public class Medico implements Serializable{
+public class Medico implements Serializable, Convertivel{
     
     @Id
     @GeneratedValue ( strategy = GenerationType.IDENTITY)
@@ -127,4 +127,9 @@ public class Medico implements Serializable{
     public String toString(){
         return nomePessoa;
     }
+    
+    public Object[] toArray(){
+       return new Object[] {idMedico, this, cpf, email,telefone, crm, especializacao};
+    };
+    
 }

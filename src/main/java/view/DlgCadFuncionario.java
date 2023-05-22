@@ -6,6 +6,7 @@ package view;
 
 import control.ControllerView;
 import control.Functions;
+import domain.Funcionario;
 import java.awt.Color;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
@@ -577,7 +578,7 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
        try {
-            gerIG.carregarTabelaFuncionarios(tbFuncionarios);
+            gerIG.carregarTabela(tbFuncionarios, Funcionario.class);
         } catch (ClassNotFoundException | SQLException ex) {
             JOptionPane.showMessageDialog(this, "Erro ao carregar funcionários " + ex.getMessage() );
         }

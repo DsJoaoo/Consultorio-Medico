@@ -7,6 +7,7 @@ package control;
 import domain.*;
 import dao.*;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.HibernateException;
 
@@ -23,8 +24,13 @@ public class ControllerDomain {
         genDao = new GenericDao();
     }
 
-    
+    public int inserirPaciente(String nome, String cpf, String email, Date data, String telefone, String sexo){
+        Paciente p = new Paciente(nome, telefone, email, cpf, data, sexo);
+        genDao.cadastrar(p);
+        return 0;
+    }
 
+    
     public List listar(Class classe) throws HibernateException {        
         return genDao.listar(classe);        
     }    

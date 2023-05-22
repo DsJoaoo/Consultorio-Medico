@@ -440,7 +440,10 @@ public class DlgCadConsulta extends javax.swing.JDialog {
     
     private void btConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btConfirmarActionPerformed
         if(validarCampos()){
-            //Insere no banco
+            
+            
+            
+            
             atualizarTabela();
             limparCampos();
             jtpTelas.setSelectedIndex(1);
@@ -525,7 +528,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         try {
-            gerIG.carregarTabelaConsultas(tbConsultas);
+            gerIG.carregarTabela(tbConsultas, Consulta.class);
             gerIG.carregarCombosConsulta(cmbPaciente, cmbMedico, cmbTipoConsulta, Paciente.class, Medico.class, TipoConsulta.class);
         } catch (ClassNotFoundException | SQLException ex) {
             JOptionPane.showMessageDialog(this, "Erro ao carregar funcionários " + ex.getMessage() );

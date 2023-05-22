@@ -6,6 +6,7 @@ package domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 
@@ -14,7 +15,7 @@ import javax.persistence.*;
  * @author joaop
  */
 @Entity
-public class Paciente implements Serializable{
+public class Paciente implements Serializable, Convertivel{
     @Id
     @GeneratedValue ( strategy = GenerationType.IDENTITY)
     private int idPaciente;
@@ -36,11 +37,11 @@ public class Paciente implements Serializable{
     private String cpf;
      
      
+    @Temporal ( TemporalType.DATE )
+    private Date dataNascimento;
+    
+    
     @Column ( length = 10, nullable = false)
-    private String dataNascimento;
-    
-    
-    @Column ( length = 1, nullable = false)
     private String sexo;
 
     @OneToMany (mappedBy = "paciente", fetch = FetchType.LAZY)
@@ -50,7 +51,7 @@ public class Paciente implements Serializable{
     }
     
     
-    public Paciente(String nomePessoa, String telefone, String email, String cpf, String dataNascimento, String sexo) {
+    public Paciente(String nomePessoa, String telefone, String email, String cpf, Date dataNascimento, String sexo) {
         this.nomePessoa = nomePessoa;
         this.telefone = telefone;
         this.email = email;
@@ -109,11 +110,11 @@ public class Paciente implements Serializable{
         this.sexo = sexo;
     }
     
-    public String getDataNascimento() {
+    public Date getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(String dataNascimento) {
+    public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
         
@@ -121,5 +122,12 @@ public class Paciente implements Serializable{
     public String toString(){
         return nomePessoa;
     }
+    
+    @Override
+    public Object[] toArray(){
+       return new Object[] {
+            getIdPessoa(), this, getCpf(), getEmail(), getDataNascimento(), getSexo(), getTelefone()
+        };    
+    };
 
 }

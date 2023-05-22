@@ -100,51 +100,46 @@ public class ControllerView {
     
     //</editor-fold>
     
-    public void carregarTabelaPacientes(JTable tbPacientes) throws ClassNotFoundException, SQLException{
-        List<Paciente> lista = gerDominio.listar(Paciente.class);
-        DefaultTableModel tabela = (DefaultTableModel) tbPacientes.getModel();
-         
-        tabela.setRowCount(0);
-            for (Paciente p : lista) {
-                Object dados[] = {p.getIdPessoa(), p, p.getCpf(), p.getEmail(), p.getDataNascimento(), p.getSexo(), p.getTelefone()};
-                tabela.addRow(dados);
-            }  
+    public void carregarTabela(JTable tabela, Class classe) throws ClassNotFoundException, SQLException {
+        List lista = gerDominio.listar(classe);
+        DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
+
+        try {
+            modelo.setRowCount(0);
+            for (Object objeto : lista) {
+                if (objeto instanceof Convertivel) {
+                    Convertivel item = (Convertivel) objeto;
+                    modelo.addRow(item.toArray());
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(janCadPrincipal, "Erro ao tentar converter objeto. " + e.getMessage());
     }
-        
-    public void carregarTabelaFuncionarios(JTable tbFuncionarios) throws ClassNotFoundException, SQLException{
-        List<Funcionario> lista = gerDominio.listar(Funcionario.class);
-        DefaultTableModel tabela = (DefaultTableModel) tbFuncionarios.getModel();
-         
-        tabela.setRowCount(0);
-            for (Funcionario p : lista) {
-                Object dados[] = {p.getIdFuncionario(), p, p.getCpf(), p.getDataAdmissao(), p.getEmail(), p.getSenha(),p.getTelefone()};
-                tabela.addRow(dados);
-            }  
+}
+ 
+    public void carregarCombosConsulta(JComboBox cmbPaciente, JComboBox cmbMedico, JComboBox cmbTipoConsulta, Class paciente, Class medico, Class tipoConsulta) {
+        try {
+            List<Paciente> listaPacientes = gerDominio.listar(paciente);
+            List<Medico> listaMedicos = gerDominio.listar(medico);
+            List<TipoConsulta> listaConsultas = gerDominio.listar(tipoConsulta);
+            
+            cmbPaciente.setModel( new DefaultComboBoxModel( listaPacientes.toArray() )  );
+            cmbMedico.setModel( new DefaultComboBoxModel( listaMedicos.toArray() )  );
+            cmbTipoConsulta.setModel( new DefaultComboBoxModel( listaConsultas.toArray() )  );
+                                   
+        } catch (HibernateException  ex) {
+            JOptionPane.showMessageDialog(janCadPrincipal, "Erro ao carregar cidades. " + ex.getMessage() );          
+        } 
     }
+
+    public ControllerDomain getGerDominio() {
+        return gerDominio;
+    }
+
     
-     public void carregarTabelaMedicos(JTable tbMedicos) throws ClassNotFoundException, SQLException {
-        List<Medico> lista = gerDominio.listar(Medico.class);
-        DefaultTableModel tabela = (DefaultTableModel) tbMedicos.getModel();
-         
-        tabela.setRowCount(0);
-            for (Medico p : lista) {
-                Object dados[] = {p.getIdMedico(), p, p.getCpf(), p.getEmail(),p.getTelefone(), p.getCrm(), p.getEspecializacao()};
-                tabela.addRow(dados);
-            }  
-    }
-     
-     public void carregarTabelaConsultas(JTable tbConsultas) throws ClassNotFoundException, SQLException{
-        List<Consulta> lista = gerDominio.listar(Consulta.class);
-        DefaultTableModel tabela = (DefaultTableModel) tbConsultas.getModel();
-         
-        tabela.setRowCount(0);
-            for (Consulta p : lista) {
-                Object dados[] = {p.getIdConsulta(), p.getData(), p.getHora(),p.getObjetoPaciente().getNomePessoa(), p.getObjetoFuncionario().getNomePessoa(), p.getObjetoMedico().getNomePessoa(), p.getObjetoConsulta().getDescricao(), p.getObjetoConsulta().getValor() };
-                tabela.addRow(dados);
-            }  
-    }
-     
-     
+
+    
+ 
      
      
     
@@ -175,20 +170,6 @@ public class ControllerView {
         gerIG.janelaLogin();
     }  
 
-    public void carregarCombosConsulta(JComboBox cmbPaciente, JComboBox cmbMedico, JComboBox cmbTipoConsulta, Class paciente, Class medico, Class tipoConsulta) {
-        try {
-            List<Paciente> listaPacientes = gerDominio.listar(paciente);
-            List<Medico> listaMedicos = gerDominio.listar(medico);
-            List<TipoConsulta> listaConsultas = gerDominio.listar(tipoConsulta);
-            
-            cmbPaciente.setModel( new DefaultComboBoxModel( listaPacientes.toArray() )  );
-            cmbMedico.setModel( new DefaultComboBoxModel( listaMedicos.toArray() )  );
-            cmbTipoConsulta.setModel( new DefaultComboBoxModel( listaConsultas.toArray() )  );
-                                   
-        } catch (HibernateException  ex) {
-            JOptionPane.showMessageDialog(janCadPrincipal, "Erro ao carregar cidades. " + ex.getMessage() );          
-        } 
-    }
-
+    
    
 }

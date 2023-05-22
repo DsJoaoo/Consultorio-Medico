@@ -1,6 +1,10 @@
 package control;
 
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Enumeration;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
@@ -17,6 +21,13 @@ import javax.swing.ButtonGroup;
  * @author jean_
  */
 public class Functions {
+    
+    public static Date strToDate( String strDt) throws ParseException {
+        DateFormat dtForm = new SimpleDateFormat("dd/MM/yyyy");
+        dtForm.setLenient(false);
+        return dtForm.parse(strDt);
+    }
+    
     
     public static  String checarBotao(ButtonGroup group){
         String nomeBotao = "";

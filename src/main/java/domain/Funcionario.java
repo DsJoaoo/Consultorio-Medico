@@ -15,7 +15,7 @@ import javax.persistence.*;
  * @author joaop
  */
 @Entity
-public class Funcionario implements Serializable{
+public class Funcionario implements Serializable, Convertivel{
     @Id
     @GeneratedValue ( strategy = GenerationType.IDENTITY)
     private int idFuncionario;
@@ -37,7 +37,7 @@ public class Funcionario implements Serializable{
     private Date dataAdmissao;
     
     @Column (length = 30, nullable = false)
-    private String Senha;
+    private String senha;
     
     @OneToMany (mappedBy = "funcionario", fetch = FetchType.LAZY)
     private List<Consulta> consulta = new ArrayList();
@@ -51,7 +51,7 @@ public class Funcionario implements Serializable{
         this.email = email;
         this.cpf = cpf;
         this.dataAdmissao = dataAdmissao;
-        this.Senha = Senha;
+        this.senha = Senha;
     }
 
     public int getIdFuncionario() {
@@ -103,11 +103,11 @@ public class Funcionario implements Serializable{
     }
 
     public String getSenha() {
-        return Senha;
+        return senha;
     }
 
     public void setSenha(String Senha) {
-        this.Senha = Senha;
+        this.senha = Senha;
     }
 
     public List<Consulta> getConsulta() {
@@ -122,4 +122,9 @@ public class Funcionario implements Serializable{
     public String toString(){
         return nomePessoa;
     }
+    
+    public Object[] toArray(){
+        Object dados[] = {idFuncionario, this, cpf, dataAdmissao, email, senha, telefone};
+        return dados;
+    };
 }

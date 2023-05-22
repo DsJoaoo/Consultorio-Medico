@@ -5,7 +5,9 @@
 package view;
 
 import control.ControllerView;
+import domain.TipoConsulta;
 import java.awt.Color;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 /**
  *
@@ -82,6 +84,11 @@ public class DlgTipoConsulta extends javax.swing.JDialog {
 
         jtpTelas.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jtpTelas.setOpaque(false);
+        jtpTelas.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                jtpTelasComponentShown(evt);
+            }
+        });
 
         CadastroServico.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         CadastroServico.setOpaque(false);
@@ -240,11 +247,11 @@ public class DlgTipoConsulta extends javax.swing.JDialog {
 
             },
             new String [] {
-                "ID", "NOME", "PREÇO"
+                "ID", "NOME", "PREÇO", "PLANO"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -306,7 +313,7 @@ public class DlgTipoConsulta extends javax.swing.JDialog {
         });
         ListarPreco.add(btListarTodos, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 10, 40, 40));
 
-        jtpTelas.addTab("Lista Serviço", ListarPreco);
+        jtpTelas.addTab("Lista de Consultas", ListarPreco);
 
         getContentPane().add(jtpTelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 28, 390, 360));
 
@@ -360,6 +367,11 @@ public class DlgTipoConsulta extends javax.swing.JDialog {
         if(txtPreco.getText().isEmpty()){
             lbPreco.setForeground(Color.red);
             msgErro += "Preco invalido\n";
+        }
+        
+        if(btSim.isSelected() == false && btNao.isSelected() == false){
+            lbPreco.setForeground(Color.red);
+            msgErro += "Selecione uma opção para o plano\n";
         }
         
         if(msgErro.isEmpty()){
@@ -452,12 +464,19 @@ public class DlgTipoConsulta extends javax.swing.JDialog {
 
     private void btNaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNaoActionPerformed
         txtPreco.setEnabled(false);
-        txtPreco.setText("0.00");
     }//GEN-LAST:event_btNaoActionPerformed
 
     private void btSimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSimActionPerformed
         txtPreco.setEnabled(true);
     }//GEN-LAST:event_btSimActionPerformed
+
+    private void jtpTelasComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jtpTelasComponentShown
+        try {
+            gerIG.carregarTabela(tbServicos, TipoConsulta.class);
+            } catch (ClassNotFoundException | SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Erro ao carregar funcionários " + ex.getMessage() );
+        }
+    }//GEN-LAST:event_jtpTelasComponentShown
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
