@@ -4,18 +4,13 @@
  */
 package dao;
 
-import domain.Medico;
-import java.util.List;
-
 /**
  *
  * @author joaop
  */
-public class MedicoDao extends GenericDao{
+public class ConsultaDao extends GenericDao{
 
-    public Medico buscarMedicoPorId(int idMedico) {
-        
-        return null;
-        
-    }   
+    public ConsultaDao() {
+    }
+    
 }

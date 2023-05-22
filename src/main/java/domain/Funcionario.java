@@ -4,37 +4,62 @@
  */
 package domain;
 
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import javax.persistence.*;
 
 /**
  *
  * @author joaop
  */
-public class Funcionario{
-    private int idPessoa;
+@Entity
+public class Funcionario implements Serializable, Convertivel{
+    @Id
+    @GeneratedValue ( strategy = GenerationType.IDENTITY)
+    private int idFuncionario;
+    
+    @Column (name="nomeFuncionario", length = 50, nullable = false)
     private String nomePessoa;
+    
+    @Column (length = 11, nullable = false)
     private String telefone;
+    
+    @Column ( unique = true, length = 50, nullable = false)
     private String email;
+     
+    @Column ( unique = true, updatable = false, length = 14) 
     private String cpf;
+    
+    @Column (nullable = true)
+    @Temporal (TemporalType.DATE)
     private Date dataAdmissao;
-    private String Senha;
+    
+    @Column (length = 30, nullable = false)
+    private String senha;
+    
+    @OneToMany (mappedBy = "funcionario", fetch = FetchType.LAZY)
+    private List<Consulta> consulta = new ArrayList();
 
-    public Funcionario(int idPessoa, String nomePessoa, String telefone, String email, String cpf, Date dataAdmissao, String Senha) {
-        this.idPessoa = idPessoa;
+    public Funcionario() {
+    }
+
+    public Funcionario(String nomePessoa, String telefone, String email, String cpf, Date dataAdmissao, String Senha) {
         this.nomePessoa = nomePessoa;
         this.telefone = telefone;
         this.email = email;
         this.cpf = cpf;
         this.dataAdmissao = dataAdmissao;
-        this.Senha = Senha;
+        this.senha = Senha;
     }
 
-    public int getIdPessoa() {
-        return idPessoa;
+    public int getIdFuncionario() {
+        return idFuncionario;
     }
 
-    public void setIdPessoa(int idPessoa) {
-        this.idPessoa = idPessoa;
+    public void setIdFuncionario(int idFuncionario) {
+        this.idFuncionario = idFuncionario;
     }
 
     public String getNomePessoa() {
@@ -69,9 +94,6 @@ public class Funcionario{
         this.cpf = cpf;
     }
 
-    
-
-
     public Date getDataAdmissao() {
         return dataAdmissao;
     }
@@ -81,11 +103,28 @@ public class Funcionario{
     }
 
     public String getSenha() {
-        return Senha;
+        return senha;
     }
 
     public void setSenha(String Senha) {
-        this.Senha = Senha;
-    } 
+        this.senha = Senha;
+    }
 
+    public List<Consulta> getConsulta() {
+        return consulta;
+    }
+
+    public void setConsulta(List<Consulta> consulta) {
+        this.consulta = consulta;
+    }
+    
+        @Override
+    public String toString(){
+        return nomePessoa;
+    }
+    
+    public Object[] toArray(){
+        Object dados[] = {idFuncionario, this, cpf, dataAdmissao, email, senha, telefone};
+        return dados;
+    };
 }

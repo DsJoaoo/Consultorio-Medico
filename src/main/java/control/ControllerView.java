@@ -1,19 +1,21 @@
 package control;
 
-import domain.Consulta;
 import com.formdev.flatlaf.FlatLightLaf;
-import domain.Paciente;
+import domain.*;
 import view.*;
 import java.awt.Frame;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
+import org.hibernate.HibernateException;
 
 /**
  *
@@ -29,7 +31,7 @@ public class ControllerView {
     private DlgCadFuncionario janCadFuncionario = null;
     private DlgCadConsulta janCadConsulta = null;
     private DlgLogin janCadLogin = null;
-    private DlgCadServico janCadServico = null;
+    private DlgTipoConsulta janCadServico = null;
     
     
     //GERENCIADORES de DOMINIO
@@ -93,21 +95,50 @@ public class ControllerView {
     }
     
     public void janelaCadServico() {
-        janCadServico = (DlgCadServico) abrirJanela(janCadPrincipal, janCadServico, DlgCadServico.class);
+        janCadServico = (DlgTipoConsulta) abrirJanela(janCadPrincipal, janCadServico, DlgTipoConsulta.class);
     }
     
     //</editor-fold>
     
-    public void carregarTabelaPacientes(JTable tbPacientes) throws ClassNotFoundException, SQLException{
-        List<Paciente> lista = gerDominio.listarPacientes();
-        DefaultTableModel tabela = (DefaultTableModel) tbPacientes.getModel();
-         
-        tabela.setRowCount(0);
-            for (Paciente p : lista) {
-                Object dados[] = {p.getIdPessoa(), p, p.getCpf(), p.getEmail(), p.getDataNascimento(), p.getSexo(), p.getTelefone()};
-                tabela.addRow(dados);
-            }  
+    public void carregarTabela(JTable tabela, Class classe) throws ClassNotFoundException, SQLException {
+        DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
+
+        try {
+            List<Convertivel> lista = gerDominio.listar(classe);
+            modelo.setRowCount(0);
+            for (Convertivel objeto : lista) {
+                modelo.addRow(objeto.toArray());
+            }
+        } catch (HibernateException e) {
+            JOptionPane.showMessageDialog(janCadPrincipal, "Erro ao tentar listar tabela do banco de dados. " + e.getMessage());
     }
+}
+ 
+    public void carregarCombosConsulta(JComboBox cmbPaciente, JComboBox cmbMedico, JComboBox cmbTipoConsulta, Class paciente, Class medico, Class tipoConsulta) {
+        try {
+            List<Paciente> listaPacientes = gerDominio.listar(paciente);
+            List<Medico> listaMedicos = gerDominio.listar(medico);
+            List<TipoConsulta> listaConsultas = gerDominio.listar(tipoConsulta);
+            
+            cmbPaciente.setModel( new DefaultComboBoxModel( listaPacientes.toArray() )  );
+            cmbMedico.setModel( new DefaultComboBoxModel( listaMedicos.toArray() )  );
+            cmbTipoConsulta.setModel( new DefaultComboBoxModel( listaConsultas.toArray() )  );
+                                   
+        } catch (HibernateException  ex) {
+            JOptionPane.showMessageDialog(janCadPrincipal, "Erro ao carregar cidades. " + ex.getMessage() );          
+        } 
+    }
+
+    public ControllerDomain getGerDominio() {
+        return gerDominio;
+    }
+
+    
+
+    
+ 
+     
+     
     
     
     /**
@@ -115,6 +146,7 @@ public class ControllerView {
      */
     public static void main(String args[]) {
         /* Set the FlatLighLaf and feel */
+        
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         //Setando um tema de um repositório externo
         try {
@@ -125,6 +157,7 @@ public class ControllerView {
             System.err.println( "Falha ao definir tema" );
         } 
         //</editor-fold>
+        
         // TRADUÇÃO
         javax.swing.UIManager.put("OptionPane.yesButtonText", "Sim"); 
         javax.swing.UIManager.put("OptionPane.noButtonText", "Não");
@@ -133,4 +166,7 @@ public class ControllerView {
         ControllerView gerIG = new ControllerView();
         gerIG.janelaLogin();
     }  
+
+    
+   
 }

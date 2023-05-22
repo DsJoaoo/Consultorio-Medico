@@ -6,7 +6,9 @@ package view;
 
 import control.ControllerView;
 import control.Functions;
+import domain.Funcionario;
 import java.awt.Color;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 /**
@@ -86,6 +88,11 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
         setMinimumSize(new java.awt.Dimension(612, 509));
         setModal(true);
         setResizable(false);
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jtpTelas.setAlignmentX(0.1F);
@@ -568,6 +575,14 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
         }
         limparCampos();
     }//GEN-LAST:event_btLupa1ActionPerformed
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+       try {
+            gerIG.carregarTabela(tbFuncionarios, Funcionario.class);
+        } catch (ClassNotFoundException | SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Erro ao carregar funcionários " + ex.getMessage() );
+        }
+    }//GEN-LAST:event_formComponentShown
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

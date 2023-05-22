@@ -4,8 +4,8 @@
  */
 package dao;
 
+
 import domain.Paciente;
-import java.io.IOException;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -15,16 +15,16 @@ import org.hibernate.Session;
  *
  * @author joaop
  */
-
-public class PacienteDao{
+public class GenericDao {
     
-    public void cadastrar(Paciente paciente) throws HibernateException{
+    
+     public void cadastrar(Object obj) throws HibernateException{
         Session sessao = null;
         try {
             sessao = ConexaoHibernate.getSessionFactory().openSession();
             sessao.getTransaction().begin();
 
-            sessao.save(paciente);
+            sessao.save(obj);
             
             sessao.getTransaction().commit();
             sessao.close();
@@ -37,13 +37,13 @@ public class PacienteDao{
         }
     }
     
-    public void atualizar(Paciente paciente)throws HibernateException{
+    public void atualizar(Object obj)throws HibernateException{
         Session sessao = null;
         try {
             sessao = ConexaoHibernate.getSessionFactory().openSession();
             sessao.getTransaction().begin();
 
-            sessao.update(paciente);
+            sessao.update(obj);
             
             sessao.getTransaction().commit();
             sessao.close();
@@ -58,13 +58,13 @@ public class PacienteDao{
     }
     
     
-    public void remover(Paciente paciente)throws HibernateException{
+    public void remover(Object obj)throws HibernateException{
         Session sessao = null;
         try {
             sessao = ConexaoHibernate.getSessionFactory().openSession();
             sessao.getTransaction().begin();
 
-            sessao.delete(paciente);
+            sessao.delete(obj);
             
             sessao.getTransaction().commit();
             sessao.close();
@@ -77,14 +77,14 @@ public class PacienteDao{
         }
     }
     
-    public List<Paciente> listar() throws HibernateException{
+    public List listar(Class classe) throws HibernateException{
         Session sessao = null;
-        List<Paciente> lista = null;
+        List<Class> lista = null;
         try {
             sessao = ConexaoHibernate.getSessionFactory().openSession();
             sessao.getTransaction().begin();
 
-            Criteria consulta = sessao.createCriteria(Paciente.class);
+            Criteria consulta = sessao.createCriteria(classe);
             lista = consulta.list();
             
             sessao.getTransaction().commit();
@@ -100,9 +100,5 @@ public class PacienteDao{
         return lista; 
     }
     
-    public Paciente buscarPacientePorId(int idPaciente) {
-        
-        return null;
-        
-    }   
+    
 }

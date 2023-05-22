@@ -5,25 +5,56 @@
 package domain;
 
 
-import java.util.Date;
+import java.io.Serializable;
 import java.sql.Time;
+import java.util.Date;
+
+import javax.persistence.*;
 
 /**
  *
  * @author joaop
  */
-public class Consulta {
+@Entity
+public class Consulta implements Serializable, Convertivel {
+    @Id
+    @GeneratedValue ( strategy = GenerationType.IDENTITY)
     private int idConsulta;
-    private Date data;
+    
+    
+    @Column (nullable = true)
+    @Temporal (TemporalType.DATE)
+    private Date dataConsulta;
+    
+    
+    @Column(name = "hora", columnDefinition = "TIME")
     private Time hora;
-    private Paciente paciente;
+    
+    
+    @ManyToOne (fetch = FetchType.EAGER)
+    @JoinColumn (name = "idPaciente")
+    private Paciente paciente;    
+    
+    
+    @ManyToOne (fetch = FetchType.EAGER)
+    @JoinColumn (name = "idFuncionario")
     private Funcionario funcionario;
+    
+    
+    @ManyToOne (fetch = FetchType.EAGER)
+    @JoinColumn (name = "idMedico")
     private Medico medico;
+    
+    
+    @ManyToOne (fetch = FetchType.EAGER)
+    @JoinColumn (name = "idTipoConsulta")
     private TipoConsulta tipoConsulta;
 
-    public Consulta(int idAgendamento, Date data, Time hora, Paciente paciente, Funcionario funcionario, Medico medico, TipoConsulta tipoConsulta) {
-        this.idConsulta = idAgendamento;
-        this.data = data;
+    public Consulta() {
+    }
+
+    public Consulta( Date data, Time hora, Paciente paciente, Funcionario funcionario, Medico medico, TipoConsulta tipoConsulta) {
+        this.dataConsulta = data;
         this.hora = hora;
         this.paciente = paciente;
         this.funcionario = funcionario;
@@ -52,7 +83,7 @@ public class Consulta {
     }
     
     public Date getData() {
-        return data;
+        return dataConsulta;
     }
 
     public Time getHora() {
@@ -82,4 +113,9 @@ public class Consulta {
     public void setTipoConsulta(TipoConsulta tipoConsulta) {
         this.tipoConsulta = tipoConsulta;
     }
+    
+    public Object[] toArray(){
+       return new Object[] {idConsulta, dataConsulta, hora, paciente, funcionario, medico, tipoConsulta, tipoConsulta.getValor() };
+    };
+    
 }

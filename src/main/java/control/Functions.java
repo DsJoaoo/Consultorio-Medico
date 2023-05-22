@@ -1,6 +1,10 @@
 package control;
 
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Enumeration;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
@@ -17,6 +21,13 @@ import javax.swing.ButtonGroup;
  * @author jean_
  */
 public class Functions {
+    
+    public static Date strToDate( String strDt) throws ParseException {
+        DateFormat dtForm = new SimpleDateFormat("dd/MM/yyyy");
+        dtForm.setLenient(false);
+        return dtForm.parse(strDt);
+    }
+    
     
     public static  String checarBotao(ButtonGroup group){
         String nomeBotao = "";
@@ -65,11 +76,7 @@ public class Functions {
             }
         }
 
-        if (!temCaractereEspecial || !temCaractereMaiusculo || !temCaractereMinusculo || !temNumero) {
-            return false;
-        }
-
-        return true;
+        return !(!temCaractereEspecial || !temCaractereMaiusculo || !temCaractereMinusculo || !temNumero);
     }
 
     
@@ -151,14 +158,10 @@ public class Functions {
         } catch (NumberFormatException e) {
             return false;
         }
-
         // Verifica se as horas e minutos são válidos
-        if (horas < 0 || horas > 23 || minutos < 0 || minutos > 59) {
-            return false;
-        }
-
         // Se chegou aqui, é porque a hora é válida
-        return true;
+
+        return !(horas < 0 || horas > 23 || minutos < 0 || minutos > 59);
     }
     
     
@@ -173,20 +176,16 @@ public class Functions {
 
         // Verifica se o DDD é válido
         String ddd = telefone.substring(0, 2);
-        if (!ddd.equals("11") && !ddd.equals("12") && !ddd.equals("13") && !ddd.equals("14") &&
-            !ddd.equals("15") && !ddd.equals("16") && !ddd.equals("17") && !ddd.equals("18") &&
-            !ddd.equals("19") && !ddd.equals("21") && !ddd.equals("22") && !ddd.equals("24") &&
-            !ddd.equals("27") && !ddd.equals("28") && !ddd.equals("31") && !ddd.equals("32") &&
-            !ddd.equals("33") && !ddd.equals("34") && !ddd.equals("35") && !ddd.equals("37") &&
-            !ddd.equals("38") && !ddd.equals("41") && !ddd.equals("42") && !ddd.equals("43") &&
-            !ddd.equals("44") && !ddd.equals("45") && !ddd.equals("46") && !ddd.equals("47") &&
-            !ddd.equals("48") && !ddd.equals("49") && !ddd.equals("51") && !ddd.equals("53") &&
-            !ddd.equals("54") && !ddd.equals("55")) {
-            return false;
-        }
-
         // Se chegou aqui, é porque o telefone é válido
-        return true;
+        return !(!ddd.equals("11") && !ddd.equals("12") && !ddd.equals("13") && !ddd.equals("14") &&
+                !ddd.equals("15") && !ddd.equals("16") && !ddd.equals("17") && !ddd.equals("18") &&
+                !ddd.equals("19") && !ddd.equals("21") && !ddd.equals("22") && !ddd.equals("24") &&
+                !ddd.equals("27") && !ddd.equals("28") && !ddd.equals("31") && !ddd.equals("32") &&
+                !ddd.equals("33") && !ddd.equals("34") && !ddd.equals("35") && !ddd.equals("37") &&
+                !ddd.equals("38") && !ddd.equals("41") && !ddd.equals("42") && !ddd.equals("43") &&
+                !ddd.equals("44") && !ddd.equals("45") && !ddd.equals("46") && !ddd.equals("47") &&
+                !ddd.equals("48") && !ddd.equals("49") && !ddd.equals("51") && !ddd.equals("53") &&
+                !ddd.equals("54") && !ddd.equals("55"));
     }
 
     

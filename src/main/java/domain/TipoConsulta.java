@@ -4,27 +4,54 @@
  */
 package domain;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.*;
+
 /**
  *
  * @author joaop
  */
-public class TipoConsulta{
-    private int idTipoServico;
+@Entity
+public class TipoConsulta implements Serializable, Convertivel{
+    @Id
+    @GeneratedValue ( strategy = GenerationType.IDENTITY)
+    private int idTipoConsulta;
+    
+    
+    @Column (length = 30, nullable = false)
     private String descricao;
+    
+    
+    @Column (nullable = false)
     private double valor;
+    
+    
+    @Column (nullable = false)
+    private boolean isPlano;
+    
+    
+    @OneToMany (mappedBy = "tipoConsulta", fetch = FetchType.LAZY)
+    private List<Consulta> consulta = new ArrayList();
 
-    public TipoConsulta(int idTipoServico, String descricao, double valor) {
-        this.idTipoServico = idTipoServico;
+    public TipoConsulta() {
+    }
+
+    public TipoConsulta(String descricao, double valor, boolean isPlano) {
         this.descricao = descricao;
         this.valor = valor;
+        this.isPlano = isPlano;
     }
 
-    public int getIdTipoServico() {
-        return idTipoServico;
+    
+    
+    public int getIdTipoConsulta() {
+        return idTipoConsulta;
     }
 
-    public void setIdTipoServico(int idTipoServico) {
-        this.idTipoServico = idTipoServico;
+    public void setIdTipoConsulta(int idTipoConsulta) {
+        this.idTipoConsulta = idTipoConsulta;
     }
 
     public String getDescricao() {
@@ -43,6 +70,31 @@ public class TipoConsulta{
         this.valor = valor;
     }
 
+    public boolean getIsPlano() {
+        return isPlano;
+    }
+
+    public void setIsPlano(boolean isPlano) {
+        this.isPlano = isPlano;
+    }
+
+    public List<Consulta> getConsulta() {
+        return consulta;
+    }
+
+    public void setConsulta(List<Consulta> consulta) {
+        this.consulta = consulta;
+    }
+
+   
+     @Override
+    public String toString(){
+        return descricao;
+    }
+    
+public Object[] toArray(){
+       return new Object[] {idTipoConsulta, this, valor, isPlano};  
+    };
     
     
 }

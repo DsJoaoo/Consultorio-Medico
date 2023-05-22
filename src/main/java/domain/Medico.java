@@ -4,21 +4,53 @@
  */
 package domain;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.*;
+
 /**
  *
  * @author joaop
  */
-public class Medico{
-    private int idPessoa;
+@Entity
+public class Medico implements Serializable, Convertivel{
+    
+    @Id
+    @GeneratedValue ( strategy = GenerationType.IDENTITY)
+    private int idMedico;
+    
+    @Column (name="nomeMedico", length = 50, nullable = false)
     private String nomePessoa;
+    
+    
+    @Column (length = 11, nullable = false)
     private String telefone;
+    
+    
+    @Column ( unique = true, length = 50, nullable = false)
     private String email;
+    
+    
+    @Column ( unique = true, updatable = false, length = 14) 
     private String cpf;
+    
+    
+    @Column ( unique = true, updatable = false, length = 14) 
     private String crm;
+    
+    
+    @Column (length = 50, nullable = false)
     private String especializacao;
+    
+    
+    @OneToMany (mappedBy = "medico", fetch = FetchType.LAZY)
+    private List<Consulta> consulta = new ArrayList();
 
-    public Medico(int idPessoa, String nomePessoa, String telefone, String email, String cpf, String crm, String especializacao) {
-        this.idPessoa = idPessoa;
+    public Medico() {
+    }
+
+    public Medico(String nomePessoa, String telefone, String email, String cpf, String crm, String especializacao) {
         this.nomePessoa = nomePessoa;
         this.telefone = telefone;
         this.email = email;
@@ -27,12 +59,12 @@ public class Medico{
         this.especializacao = especializacao;
     }
 
-    public int getIdPessoa() {
-        return idPessoa;
+    public int getIdMedico() {
+        return idMedico;
     }
 
-    public void setIdPessoa(int idPessoa) {
-        this.idPessoa = idPessoa;
+    public void setIdMedico(int idMedico) {
+        this.idMedico = idMedico;
     }
 
     public String getNomePessoa() {
@@ -66,9 +98,6 @@ public class Medico{
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
-    
-
-
 
     public String getCrm() {
         return crm;
@@ -85,4 +114,22 @@ public class Medico{
     public void setEspecializacao(String especializacao) {
         this.especializacao = especializacao;
     }
+
+    public List<Consulta> getConsulta() {
+        return consulta;
+    }
+
+    public void setConsulta(List<Consulta> consulta) {
+        this.consulta = consulta;
+    }
+
+    @Override
+    public String toString(){
+        return nomePessoa;
+    }
+    
+    public Object[] toArray(){
+       return new Object[] {idMedico, this, cpf, email,telefone, crm, especializacao};
+    };
+    
 }

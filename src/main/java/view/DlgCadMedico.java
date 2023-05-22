@@ -6,7 +6,9 @@ package view;
 
 import control.ControllerView;
 import control.Functions;
+import domain.Medico;
 import java.awt.Color;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 /**
@@ -73,7 +75,7 @@ public class DlgCadMedico extends javax.swing.JDialog {
         jSeparator1 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbPacientes = new javax.swing.JTable();
+        tbMedicos = new javax.swing.JTable();
         jSeparator2 = new javax.swing.JSeparator();
         jpBotoes1 = new javax.swing.JPanel();
         btNovo = new javax.swing.JButton();
@@ -87,6 +89,11 @@ public class DlgCadMedico extends javax.swing.JDialog {
         setMinimumSize(new java.awt.Dimension(612, 509));
         setModal(true);
         setResizable(false);
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jtpTelas.setAlignmentX(0.1F);
@@ -285,7 +292,7 @@ public class DlgCadMedico extends javax.swing.JDialog {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Médicos", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 18))); // NOI18N
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        tbPacientes.setModel(new javax.swing.table.DefaultTableModel(
+        tbMedicos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -301,7 +308,7 @@ public class DlgCadMedico extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(tbPacientes);
+        jScrollPane1.setViewportView(tbMedicos);
 
         jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -474,15 +481,15 @@ public class DlgCadMedico extends javax.swing.JDialog {
     }//GEN-LAST:event_btNovoActionPerformed
 
     private void btEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEditarActionPerformed
-        int opcao = tbPacientes.getSelectedRow();
+        int opcao = tbMedicos.getSelectedRow();
         if(opcao >= 0){          
-            txtIdMedico.setText(tbPacientes.getValueAt(opcao, 0).toString());
-            txtNome.setText(tbPacientes.getValueAt(opcao, 1).toString());
-            txtCPF.setText(tbPacientes.getValueAt(opcao, 2).toString());
-            txtEmail.setText(tbPacientes.getValueAt(opcao, 3).toString());
+            txtIdMedico.setText(tbMedicos.getValueAt(opcao, 0).toString());
+            txtNome.setText(tbMedicos.getValueAt(opcao, 1).toString());
+            txtCPF.setText(tbMedicos.getValueAt(opcao, 2).toString());
+            txtEmail.setText(tbMedicos.getValueAt(opcao, 3).toString());
 
-            txtCRM.setText(Functions.formatarDataParaInterface(tbPacientes.getValueAt(opcao, 4).toString()));
-            txtTelefone.setText(Functions.removerCaracteresTelefone(tbPacientes.getValueAt(opcao, 6).toString()));
+            txtCRM.setText(Functions.formatarDataParaInterface(tbMedicos.getValueAt(opcao, 4).toString()));
+            txtTelefone.setText(Functions.removerCaracteresTelefone(tbMedicos.getValueAt(opcao, 6).toString()));
            
             btAtualizar.setVisible(true);
             jpID.setVisible(true);
@@ -495,10 +502,10 @@ public class DlgCadMedico extends javax.swing.JDialog {
     }//GEN-LAST:event_btEditarActionPerformed
 
     private void btExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirActionPerformed
-        int opcao = tbPacientes.getSelectedRow();
+        int opcao = tbMedicos.getSelectedRow();
         if(opcao >= 0){
             String sexo = "";
-             if(tbPacientes.getValueAt(opcao, 5).toString().equals("Masculino")){
+             if(tbMedicos.getValueAt(opcao, 5).toString().equals("Masculino")){
                 sexo = "Masculino";
             }else{
                 sexo = "Feminino";
@@ -544,6 +551,14 @@ public class DlgCadMedico extends javax.swing.JDialog {
         //lista todos que estão no banco
     }//GEN-LAST:event_btListarTodosActionPerformed
 
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        try {
+            gerIG.carregarTabela(tbMedicos, Medico.class);
+        } catch (ClassNotFoundException | SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Erro ao carregar funcionários " + ex.getMessage() );
+        }
+    }//GEN-LAST:event_formComponentShown
+
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CadastroMedico;
@@ -582,7 +597,7 @@ public class DlgCadMedico extends javax.swing.JDialog {
     private javax.swing.JLabel lbNome;
     private javax.swing.JLabel lbPesquisar;
     private javax.swing.JLabel lbTelefone;
-    private javax.swing.JTable tbPacientes;
+    private javax.swing.JTable tbMedicos;
     private javax.swing.JFormattedTextField txtCPF;
     private javax.swing.JFormattedTextField txtCRM;
     private javax.swing.JTextField txtEmail;

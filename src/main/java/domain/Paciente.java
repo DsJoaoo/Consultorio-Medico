@@ -4,21 +4,54 @@
  */
 package domain;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.persistence.*;
+
 /**
  *
  * @author joaop
  */
-public class Paciente{
-    private int idPessoa;
+@Entity
+public class Paciente implements Serializable, Convertivel{
+    @Id
+    @GeneratedValue ( strategy = GenerationType.IDENTITY)
+    private int idPaciente;
+    
+    
+    @Column (name="nomePaciente", length = 50, nullable = false)
     private String nomePessoa;
+    
+    
+    @Column (length = 20, nullable = false)
     private String telefone;
+    
+    
+    @Column ( unique = true, length = 50, nullable = false)
     private String email;
+    
+    
+    @Column ( unique = true, updatable = false, length = 14)
     private String cpf;
-    private String dataNascimento;
+     
+     
+    @Temporal ( TemporalType.DATE )
+    private Date dataNascimento;
+    
+    
+    @Column ( length = 10, nullable = false)
     private String sexo;
 
-    public Paciente(int idPessoa, String nomePessoa, String telefone, String email, String cpf, String dataNascimento, String sexo) {
-        this.idPessoa = idPessoa;
+    @OneToMany (mappedBy = "paciente", fetch = FetchType.LAZY)
+    private List<Consulta> consulta = new ArrayList();
+
+    public Paciente() {
+    }
+    
+    
+    public Paciente(String nomePessoa, String telefone, String email, String cpf, Date dataNascimento, String sexo) {
         this.nomePessoa = nomePessoa;
         this.telefone = telefone;
         this.email = email;
@@ -28,11 +61,11 @@ public class Paciente{
     }
 
     public int getIdPessoa() {
-        return idPessoa;
+        return idPaciente;
     }
 
     public void setIdPessoa(int idPessoa) {
-        this.idPessoa = idPessoa;
+        this.idPaciente = idPessoa;
     }
 
     public String getNomePessoa() {
@@ -77,11 +110,11 @@ public class Paciente{
         this.sexo = sexo;
     }
     
-    public String getDataNascimento() {
+    public Date getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(String dataNascimento) {
+    public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
         
@@ -89,5 +122,12 @@ public class Paciente{
     public String toString(){
         return nomePessoa;
     }
+    
+    @Override
+    public Object[] toArray(){
+       return new Object[] {
+            getIdPessoa(), this, getCpf(), getEmail(), getDataNascimento(), getSexo(), getTelefone()
+        };    
+    };
 
 }

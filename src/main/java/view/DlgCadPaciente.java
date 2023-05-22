@@ -8,7 +8,10 @@ import control.ControllerView;
 import control.Functions;
 import domain.Paciente;
 import java.awt.Color;
+import java.awt.HeadlessException;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.Date;
 import javax.swing.JOptionPane;
 
 /**
@@ -485,11 +488,19 @@ public class DlgCadPaciente extends javax.swing.JDialog {
         String nome = txtNome.getText();
         String cpf = txtCPF.getText();
         String email = txtEmail.getText(); 
-        String dataNascimento = Functions.formatarDataParaSQL(txtDataNascimento.getText());
         String telefone = txtTelefone.getText();
         String sexo = Functions.checarBotao(grpSexo);
+        String data = txtDataNascimento.getText();
         if(validarCampos()){
-            //Insere no banco
+            try {
+                Date dt = Functions.strToDate(data);
+                if(pacienteSelecionado == null){
+                    int id = gerIG.getGerDominio().inserirPaciente(nome, cpf, email, dt, telefone, sexo);
+                    JOptionPane.showMessageDialog(this, "Paciente " + id + " inserido com sucesso.", "Inserir Paciente", JOptionPane.INFORMATION_MESSAGE  );
+                }
+            } catch (HeadlessException | ParseException e) {
+               JOptionPane.showMessageDialog(this, e, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );
+            }
             habilitarBotoes();
         }
         
@@ -518,7 +529,7 @@ public class DlgCadPaciente extends javax.swing.JDialog {
             }else{
                 chkFemino.setSelected(true);
             }
-            txtDataNascimento.setText(Functions.formatarDataParaInterface(pacienteSelecionado.getDataNascimento()));
+            txtDataNascimento.setText(Functions.formatarDataParaInterface(pacienteSelecionado.getDataNascimento().toString()));
             txtTelefone.setText(Functions.removerCaracteresTelefone(pacienteSelecionado.getTelefone()));
             
         }else{
@@ -568,7 +579,7 @@ public class DlgCadPaciente extends javax.swing.JDialog {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         try {
-            gerIG.carregarTabelaPacientes(tbPacientes);
+            gerIG.carregarTabela(tbPacientes, Paciente.class);
         } catch (ClassNotFoundException | SQLException ex) {
             JOptionPane.showMessageDialog(this, "Erro ao carregar pacientes " + ex.getMessage() );
         }
