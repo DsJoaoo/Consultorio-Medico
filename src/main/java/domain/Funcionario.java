@@ -15,22 +15,7 @@ import javax.persistence.*;
  * @author joaop
  */
 @Entity
-public class Funcionario implements Serializable, Convertivel{
-    @Id
-    @GeneratedValue ( strategy = GenerationType.IDENTITY)
-    private int idFuncionario;
-    
-    @Column (name="nomeFuncionario", length = 50, nullable = false)
-    private String nomePessoa;
-    
-    @Column (length = 20, nullable = false)
-    private String telefone;
-    
-    @Column ( unique = true, length = 50, nullable = false)
-    private String email;
-     
-    @Column ( unique = true, updatable = false, length = 14) 
-    private String cpf;
+public class Funcionario extends Pessoa implements Serializable{
     
     @Column (nullable = true)
     @Temporal (TemporalType.DATE)
@@ -45,55 +30,14 @@ public class Funcionario implements Serializable, Convertivel{
     public Funcionario() {
     }
 
-    public Funcionario(String nomePessoa, String telefone, String email, String cpf, Date dataAdmissao, String Senha) {
-        this.nomePessoa = nomePessoa;
-        this.telefone = telefone;
-        this.email = email;
-        this.cpf = cpf;
+    
+     public Funcionario( String nomePessoa, String telefone, String email, String cpf, Date dataAdmissao, String senha) {
+        super(nomePessoa, telefone, email, cpf);
         this.dataAdmissao = dataAdmissao;
-        this.senha = Senha;
+        this.senha = senha;
     }
 
-    public int getIdFuncionario() {
-        return idFuncionario;
-    }
-
-    public void setIdFuncionario(int idFuncionario) {
-        this.idFuncionario = idFuncionario;
-    }
-
-    public String getNomePessoa() {
-        return nomePessoa;
-    }
-
-    public void setNomePessoa(String nomePessoa) {
-        this.nomePessoa = nomePessoa;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
+     
     public Date getDataAdmissao() {
         return dataAdmissao;
     }
@@ -106,8 +50,8 @@ public class Funcionario implements Serializable, Convertivel{
         return senha;
     }
 
-    public void setSenha(String Senha) {
-        this.senha = Senha;
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     public List<Consulta> getConsulta() {
@@ -118,13 +62,9 @@ public class Funcionario implements Serializable, Convertivel{
         this.consulta = consulta;
     }
     
-        @Override
-    public String toString(){
-        return nomePessoa;
-    }
-    
+    @Override
     public Object[] toArray(){
-        Object dados[] = {idFuncionario, this, cpf, dataAdmissao, email, senha, telefone};
+        Object dados[] = {getIdPessoa(), this, getCpf(), dataAdmissao,getEmail(), senha, getTelefone()};
         return dados;
     };
 }

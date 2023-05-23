@@ -114,31 +114,26 @@ public class ControllerView {
     }
 }
  
-    public void carregarCombosConsulta(JComboBox cmbPaciente, JComboBox cmbMedico, JComboBox cmbTipoConsulta, Class paciente, Class medico, Class tipoConsulta) {
+    public void carregarCombosConsulta(JComboBox cmbPaciente, JComboBox cmbMedico, JComboBox cmbTipoConsulta, JComboBox cmbFuncionario, Class paciente, Class medico, Class tipoConsulta, Class funcionario) {
         try {
             List<Paciente> listaPacientes = gerDominio.listar(paciente);
             List<Medico> listaMedicos = gerDominio.listar(medico);
             List<TipoConsulta> listaConsultas = gerDominio.listar(tipoConsulta);
+            List<Funcionario> listaFuncionarios = gerDominio.listar(funcionario);
             
             cmbPaciente.setModel( new DefaultComboBoxModel( listaPacientes.toArray() )  );
             cmbMedico.setModel( new DefaultComboBoxModel( listaMedicos.toArray() )  );
             cmbTipoConsulta.setModel( new DefaultComboBoxModel( listaConsultas.toArray() )  );
+            cmbFuncionario.setModel( new DefaultComboBoxModel( listaFuncionarios.toArray() )  );
                                    
         } catch (HibernateException  ex) {
-            JOptionPane.showMessageDialog(janCadPrincipal, "Erro ao carregar cidades. " + ex.getMessage() );          
+            JOptionPane.showMessageDialog(janCadPrincipal, "Erro ao carregar informações. " + ex.getMessage() );          
         } 
     }
 
     public ControllerDomain getGerDominio() {
         return gerDominio;
     }
-
-    
-
-    
- 
-     
-     
     
     
     /**

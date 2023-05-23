@@ -125,14 +125,14 @@
                     <Container class="javax.swing.JPanel" name="jpDao">
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                          <AbsoluteConstraints x="10" y="-10" width="100" height="220"/>
+                          <AbsoluteConstraints x="10" y="-10" width="90" height="240"/>
                         </Constraint>
                       </Constraints>
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
                         <Property name="columns" type="int" value="1"/>
-                        <Property name="rows" type="int" value="3"/>
-                        <Property name="verticalGap" type="int" value="8"/>
+                        <Property name="rows" type="int" value="4"/>
+                        <Property name="verticalGap" type="int" value="3"/>
                       </Layout>
                       <SubComponents>
                         <Component class="javax.swing.JLabel" name="lbTipoConsulta">
@@ -159,19 +159,27 @@
                             <Property name="text" type="java.lang.String" value="Paciente"/>
                           </Properties>
                         </Component>
+                        <Component class="javax.swing.JLabel" name="lbFuncionario">
+                          <Properties>
+                            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                              <Font name="Segoe UI" size="16" style="0"/>
+                            </Property>
+                            <Property name="text" type="java.lang.String" value="Funcion&#xe1;rio"/>
+                          </Properties>
+                        </Component>
                       </SubComponents>
                     </Container>
                     <Container class="javax.swing.JPanel" name="jpCombo">
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                          <AbsoluteConstraints x="110" y="10" width="170" height="190"/>
+                          <AbsoluteConstraints x="110" y="0" width="170" height="220"/>
                         </Constraint>
                       </Constraints>
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
                         <Property name="columns" type="int" value="1"/>
-                        <Property name="rows" type="int" value="3"/>
-                        <Property name="verticalGap" type="int" value="40"/>
+                        <Property name="rows" type="int" value="4"/>
+                        <Property name="verticalGap" type="int" value="30"/>
                       </Layout>
                       <SubComponents>
                         <Component class="javax.swing.JComboBox" name="cmbTipoConsulta">
@@ -195,6 +203,16 @@
                           </AuxValues>
                         </Component>
                         <Component class="javax.swing.JComboBox" name="cmbPaciente">
+                          <Properties>
+                            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                              <StringArray count="0"/>
+                            </Property>
+                          </Properties>
+                          <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                          </AuxValues>
+                        </Component>
+                        <Component class="javax.swing.JComboBox" name="cmbFuncionario">
                           <Properties>
                             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                               <StringArray count="0"/>

@@ -32,7 +32,6 @@ public class DlgCadMedico extends javax.swing.JDialog {
         initComponents();
         gerIG = controller;
         medicoSelecionado = null;
-        atualizarTabela();
     }
 
     /**
@@ -391,10 +390,6 @@ public class DlgCadMedico extends javax.swing.JDialog {
         }
     }
     
-    private void atualizarTabela(){
-        //Atualiza a tabela e a preenche com os dados do banco
-    }
-    
     private void setCor(){
         lbNome.setForeground(Color.black);
         lbCPF.setForeground(Color.black);
@@ -505,9 +500,8 @@ public class DlgCadMedico extends javax.swing.JDialog {
                JOptionPane.showMessageDialog(this, e, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );
             }
             habilitarBotoes();
-            atualizarTabela();
-            limparCampos();
-            jtpTelas.setSelectedIndex(1);
+            formComponentShown(null);
+            limparCampos();            
         }
     }//GEN-LAST:event_btConfirmarActionPerformed
 
@@ -590,6 +584,7 @@ public class DlgCadMedico extends javax.swing.JDialog {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         try {
+            jtpTelas.setSelectedIndex(1);
             gerIG.carregarTabela(tbMedicos, Medico.class);
         } catch (ClassNotFoundException | SQLException ex) {
             JOptionPane.showMessageDialog(this, "Erro ao carregar funcionários " + ex.getMessage() );

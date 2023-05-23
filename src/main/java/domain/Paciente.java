@@ -15,28 +15,9 @@ import javax.persistence.*;
  * @author joaop
  */
 @Entity
-public class Paciente implements Serializable, Convertivel{
-    @Id
-    @GeneratedValue ( strategy = GenerationType.IDENTITY)
-    private int idPaciente;
+public class Paciente extends Pessoa implements Serializable{    
     
     
-    @Column (name="nomePaciente", length = 50, nullable = false)
-    private String nomePessoa;
-    
-    
-    @Column (length = 20, nullable = false)
-    private String telefone;
-    
-    
-    @Column ( unique = true, length = 50, nullable = false)
-    private String email;
-    
-    
-    @Column ( unique = true, updatable = false, length = 14)
-    private String cpf;
-     
-     
     @Temporal ( TemporalType.DATE )
     private Date dataNascimento;
     
@@ -49,58 +30,20 @@ public class Paciente implements Serializable, Convertivel{
 
     public Paciente() {
     }
-    
-    
+
     public Paciente(String nomePessoa, String telefone, String email, String cpf, Date dataNascimento, String sexo) {
-        this.nomePessoa = nomePessoa;
-        this.telefone = telefone;
-        this.email = email;
-        this.cpf = cpf;
+        super(nomePessoa, telefone, email, cpf);
         this.dataNascimento = dataNascimento;
         this.sexo = sexo;
     }
 
-    public int getIdPessoa() {
-        return idPaciente;
+    public Date getDataNascimento() {
+        return dataNascimento;
     }
 
-    public void setIdPessoa(int idPessoa) {
-        this.idPaciente = idPessoa;
+    public void setDataNascimento(Date dataNascimento) {
+        this.dataNascimento = dataNascimento;
     }
-
-    public String getNomePessoa() {
-        return nomePessoa;
-    }
-
-    public void setNomePessoa(String nomePessoa) {
-        this.nomePessoa = nomePessoa;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-
 
     public String getSexo() {
         return sexo;
@@ -109,20 +52,15 @@ public class Paciente implements Serializable, Convertivel{
     public void setSexo(String sexo) {
         this.sexo = sexo;
     }
-    
-    public Date getDataNascimento() {
-        return dataNascimento;
+
+    public List<Consulta> getConsulta() {
+        return consulta;
     }
 
-    public void setDataNascimento(Date dataNascimento) {
-        this.dataNascimento = dataNascimento;
+    public void setConsulta(List<Consulta> consulta) {
+        this.consulta = consulta;
     }
-        
-    @Override
-    public String toString(){
-        return nomePessoa;
-    }
-    
+
     @Override
     public Object[] toArray(){
        return new Object[] {

@@ -502,6 +502,8 @@ public class DlgCadPaciente extends javax.swing.JDialog {
                JOptionPane.showMessageDialog(this, e, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );
             }
             habilitarBotoes();
+            formComponentShown(null);
+            limparCampos();
         }
         
     }//GEN-LAST:event_btConfirmarActionPerformed
@@ -579,6 +581,7 @@ public class DlgCadPaciente extends javax.swing.JDialog {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         try {
+            jtpTelas.setSelectedIndex(1);
             gerIG.carregarTabela(tbPacientes, Paciente.class);
         } catch (ClassNotFoundException | SQLException ex) {
             JOptionPane.showMessageDialog(this, "Erro ao carregar pacientes " + ex.getMessage() );

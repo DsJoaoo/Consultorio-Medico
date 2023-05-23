@@ -5,16 +5,24 @@
 package view;
 
 import control.ControllerView;
+import control.Functions;
 import domain.TipoConsulta;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.HeadlessException;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.Date;
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
+import javax.swing.border.TitledBorder;
 /**
  *
  * @author joaop
  */
 public class DlgCadTipoConsulta extends javax.swing.JDialog {
     private ControllerView gerIG;
+    private TipoConsulta tipoSelecionado;
     /**
      * Creates new form DlgCliente
      * @param parent
@@ -25,7 +33,7 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         gerIG = controller;
-        atualizarTabela();
+        tipoSelecionado = null;
     }
 
     /**
@@ -80,15 +88,15 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
         setMinimumSize(new java.awt.Dimension(390, 470));
         setModal(true);
         setResizable(false);
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jtpTelas.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jtpTelas.setOpaque(false);
-        jtpTelas.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                jtpTelasComponentShown(evt);
-            }
-        });
 
         CadastroServico.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         CadastroServico.setOpaque(false);
@@ -148,7 +156,7 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
         lbPreco.setText("Preço");
         jpPreco.add(lbPreco);
 
-        txtPreco.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        txtPreco.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0"))));
         jpPreco.add(txtPreco);
 
         javax.swing.GroupLayout jpInfoDadosLayout = new javax.swing.GroupLayout(jpInfoDados);
@@ -325,15 +333,28 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
         
-    private void atualizarTabela(){
-        //Atualiza a tabela e a preenche com os dados do banco
-     }
+    private void habilitarBotoes() {
+        if(tipoSelecionado == null){
+            limparCampos();
+            btAtualizar.setVisible(false);
+            btConfirmar.setVisible(true);
+            jpID.setVisible(false);
+        }else{
+            limparCampos();
+            jtpTelas.setSelectedIndex(0);
+            btAtualizar.setVisible(true);
+            btConfirmar.setVisible(false);
+            jpID.setVisible(false);
+        }
+    }
     
     
     private void setCor(){
         lbNome.setForeground(Color.black);
         lbPreco.setForeground(Color.black);
         lbPesquisar.setForeground(Color.black);
+        jpPlano.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "É plano de saúde?", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 18))); // NOI18N
+        
     }
     
     
@@ -344,7 +365,8 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
         if(txtPesquisar.getText().isEmpty()){
             lbPesquisar.setForeground(Color.red);
             msgErro += "Nome invalido\n";
-        }
+        }      
+        
         
         if(msgErro.isEmpty()){
             return true;
@@ -369,9 +391,15 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
             msgErro += "Preco invalido\n";
         }
         
-        if(btSim.isSelected() == false && btNao.isSelected() == false){
-            lbPreco.setForeground(Color.red);
-            msgErro += "Selecione uma opção para o plano\n";
+        if((btSim.isSelected() || btNao.isSelected()) == false){
+            msgErro += "Selecione um sexo\n";
+            jpPlano.setBorder(BorderFactory.createTitledBorder(
+            BorderFactory.createLineBorder(Color.RED), // Define a cor da borda como vermelho
+            "É plano de saúde?",
+            TitledBorder.CENTER,
+            TitledBorder.DEFAULT_POSITION,
+            new Font("Segoe UI", Font.BOLD, 18)
+            ));
         }
         
         if(msgErro.isEmpty()){
@@ -387,14 +415,29 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
         setCor();
         txtIdServico.setText("");
         txtNome.setText("");
+        grpSimNao.clearSelection();
     }
 
     
     private void btConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btConfirmarActionPerformed
-        String nome = txtNome.getText();
+               
         if(validarCampos()){
-            //Insere no banco
-            atualizarTabela();
+            String nome = txtNome.getText();
+            Double preco = Double.valueOf(txtPreco.getText());
+            boolean selecionado = false;
+            if(btSim.isSelected()){
+                selecionado = true;
+            }
+            try {
+                if(tipoSelecionado == null){
+                    int id = gerIG.getGerDominio().inserirTipo(nome, preco, selecionado);
+                    JOptionPane.showMessageDialog(this, "Tipo de consulta " + id + " inserido com sucesso.", "Inserir Tipo de consulta", JOptionPane.INFORMATION_MESSAGE  );
+                }
+            } catch (HeadlessException e) {
+               JOptionPane.showMessageDialog(this, e, "ERRO Tipo de Consulta", JOptionPane.ERROR_MESSAGE  );
+            }
+            habilitarBotoes();
+            formComponentShown(null);
             limparCampos();
             jtpTelas.setSelectedIndex(1);
         }
@@ -457,26 +500,27 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
     }//GEN-LAST:event_btLupaActionPerformed
 
     private void btListarTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btListarTodosActionPerformed
-
         limparCampos();
         //lista todos que estão no banco
     }//GEN-LAST:event_btListarTodosActionPerformed
 
     private void btNaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNaoActionPerformed
-        txtPreco.setEnabled(false);
+        txtPreco.setEnabled(true);
     }//GEN-LAST:event_btNaoActionPerformed
 
     private void btSimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSimActionPerformed
-        txtPreco.setEnabled(true);
+        txtPreco.setEnabled(false);
+        txtPreco.setText("0.00");
     }//GEN-LAST:event_btSimActionPerformed
 
-    private void jtpTelasComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jtpTelasComponentShown
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         try {
+            jtpTelas.setSelectedIndex(1);
             gerIG.carregarTabela(tbServicos, TipoConsulta.class);
-            } catch (ClassNotFoundException | SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Erro ao carregar funcionários " + ex.getMessage() );
+        } catch (ClassNotFoundException | SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Erro ao carregar Lista de tipos de consultas disponíveis " + ex.getMessage() );
         }
-    }//GEN-LAST:event_jtpTelasComponentShown
+    }//GEN-LAST:event_formComponentShown
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

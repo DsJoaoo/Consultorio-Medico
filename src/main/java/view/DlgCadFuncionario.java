@@ -28,7 +28,6 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         gerIG = controller;
-        atualizarTabela();
         funcionarioSelecionado = null;
     }
 
@@ -399,11 +398,6 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
         }
     }
     
-    private void atualizarTabela(){
-        //Atualiza a tabela e a preenche com os dados do banco
-    }
-    
-    
     private void setCor(){
         lbNome.setForeground(Color.black);
         lbCPF.setForeground(Color.black);
@@ -523,9 +517,8 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
                JOptionPane.showMessageDialog(this, e, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );
             }
             habilitarBotoes();
-            atualizarTabela();
+            formComponentShown(null);
             limparCampos();
-            jtpTelas.setSelectedIndex(1);
         }
     }//GEN-LAST:event_btConfirmarActionPerformed
 
@@ -576,7 +569,7 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
         
         if(validarCampos()){
             //Insere no banco
-            atualizarTabela();
+            formComponentShown(null);
             jtpTelas.setSelectedIndex(1);
             jpID.setVisible(false);
             btConfirmar.setVisible(true);
@@ -609,6 +602,7 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
        try {
+           jtpTelas.setSelectedIndex(1);
             gerIG.carregarTabela(tbFuncionarios, Funcionario.class);
         } catch (ClassNotFoundException | SQLException ex) {
             JOptionPane.showMessageDialog(this, "Erro ao carregar funcionários " + ex.getMessage() );

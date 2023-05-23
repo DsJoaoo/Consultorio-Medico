@@ -1,6 +1,7 @@
 package control;
 
 
+import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,6 +22,14 @@ import javax.swing.ButtonGroup;
  * @author jean_
  */
 public class Functions {
+    
+    public static Time convertStringToTime(String timeString) throws ParseException {
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        Date date = dateFormat.parse(timeString);
+        long timeInMillis = date.getTime();
+        return new Time(timeInMillis);
+    }
+    
     
     public static Date strToDate( String strDt) throws ParseException {
         DateFormat dtForm = new SimpleDateFormat("dd/MM/yyyy");

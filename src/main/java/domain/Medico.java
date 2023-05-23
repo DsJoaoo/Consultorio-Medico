@@ -14,28 +14,7 @@ import javax.persistence.*;
  * @author joaop
  */
 @Entity
-public class Medico implements Serializable, Convertivel{
-    
-    @Id
-    @GeneratedValue ( strategy = GenerationType.IDENTITY)
-    private int idMedico;
-    
-    @Column (name="nomeMedico", length = 50, nullable = false)
-    private String nomePessoa;
-    
-    
-    @Column (length = 20, nullable = false)
-    private String telefone;
-    
-    
-    @Column ( unique = true, length = 50, nullable = false)
-    private String email;
-    
-    
-    @Column ( unique = true, updatable = false, length = 14) 
-    private String cpf;
-    
-    
+public class Medico extends Pessoa implements Serializable{
     @Column ( unique = true, updatable = false, length = 14) 
     private String crm;
     
@@ -51,53 +30,12 @@ public class Medico implements Serializable, Convertivel{
     }
 
     public Medico(String nomePessoa, String telefone, String email, String cpf, String crm, String especializacao) {
-        this.nomePessoa = nomePessoa;
-        this.telefone = telefone;
-        this.email = email;
-        this.cpf = cpf;
+        super(nomePessoa, telefone, email, cpf);
         this.crm = crm;
         this.especializacao = especializacao;
     }
 
-    public int getIdMedico() {
-        return idMedico;
-    }
 
-    public void setIdMedico(int idMedico) {
-        this.idMedico = idMedico;
-    }
-
-    public String getNomePessoa() {
-        return nomePessoa;
-    }
-
-    public void setNomePessoa(String nomePessoa) {
-        this.nomePessoa = nomePessoa;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
 
     public String getCrm() {
         return crm;
@@ -122,14 +60,10 @@ public class Medico implements Serializable, Convertivel{
     public void setConsulta(List<Consulta> consulta) {
         this.consulta = consulta;
     }
-
-    @Override
-    public String toString(){
-        return nomePessoa;
-    }
     
+    @Override
     public Object[] toArray(){
-       return new Object[] {idMedico, this, cpf, email,telefone, crm, especializacao};
+       return new Object[] {getIdPessoa(), this, getCpf(), getEmail(),getEmail(), crm, especializacao};
     };
     
 }

@@ -114,6 +114,7 @@ public class Consulta implements Serializable, Convertivel {
         this.tipoConsulta = tipoConsulta;
     }
     
+    @Override
     public Object[] toArray(){
        return new Object[] {idConsulta, dataConsulta, hora, paciente, funcionario, medico, tipoConsulta, tipoConsulta.getValor() };
     };

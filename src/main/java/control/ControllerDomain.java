@@ -7,6 +7,7 @@ package control;
 import domain.*;
 import dao.*;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.HibernateException;
@@ -33,14 +34,27 @@ public class ControllerDomain {
     public int inserirFucionario(String nome, String cpf, Date dt, String email, String senha, String telefone) {
         Funcionario p = new Funcionario(nome, telefone,email, cpf, dt, senha);
         genDao.cadastrar(p);
-        return p.getIdFuncionario();
+        return p.getIdPessoa();
     }
 
     public int inserirMedico(String nome, String telefone, String email, String cpf, String crm, String especializacao) {
        Medico p = new Medico(nome, telefone,email, cpf, crm, especializacao);
         genDao.cadastrar(p);
-        return p.getIdMedico();
+        return p.getIdPessoa();
     }
+
+    public int inserirConsulta(Date dt, Time hr, Funcionario fun, Paciente pac, Medico med, TipoConsulta tipo) {
+        Consulta p = new Consulta(dt, hr, pac,fun, med, tipo);
+        genDao.cadastrar(p);
+        return p.getIdConsulta();
+    }
+
+    public int inserirTipo(String nome, Double preco, boolean selecionado) {
+        TipoConsulta p = new TipoConsulta(nome, preco, selecionado);
+        genDao.cadastrar(p);
+        return p.getIdTipoConsulta();
+    }
+    
     
     public List listar(Class classe) throws HibernateException {        
         return genDao.listar(classe);        
@@ -49,8 +63,6 @@ public class ControllerDomain {
     public void excluir (Object obj) throws HibernateException {
         genDao.remover(obj);
     }
-
-    
      
    
 }
