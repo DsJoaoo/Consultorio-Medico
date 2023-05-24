@@ -95,6 +95,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
         btEditar = new javax.swing.JButton();
         btExcluir = new javax.swing.JButton();
         btListarTodos = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -282,9 +283,9 @@ public class DlgCadConsulta extends javax.swing.JDialog {
         ListarPaciente.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lbPesquisar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lbPesquisar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbPesquisar.setText("Pesquisar nome paciente");
-        ListarPaciente.add(lbPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 210, 40));
+        lbPesquisar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbPesquisar.setText("Pesquisar");
+        ListarPaciente.add(lbPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 100, 40));
         ListarPaciente.add(txtPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 10, 280, 40));
 
         btLupa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaces/imgs/icons/lupa24-icon.png"))); // NOI18N
@@ -366,6 +367,9 @@ public class DlgCadConsulta extends javax.swing.JDialog {
             }
         });
         ListarPaciente.add(btListarTodos, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 10, 40, 40));
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Tipo", "Data", "Medico", "Paciente", "Funcionario", " ", " ", " ", " ", " " }));
+        ListarPaciente.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, 90, 40));
 
         jtpTelas.addTab("Listar Consultas", ListarPaciente);
 
@@ -582,7 +586,10 @@ public class DlgCadConsulta extends javax.swing.JDialog {
         try {
             jtpTelas.setSelectedIndex(1);
             gerIG.carregarTabela(tbConsultas, Consulta.class);
-            gerIG.carregarCombosConsulta(cmbPaciente, cmbMedico, cmbTipoConsulta, cmbFuncionario, Paciente.class, Medico.class, TipoConsulta.class, Funcionario.class);
+            gerIG.carregarCombos(cmbPaciente, Paciente.class);
+            gerIG.carregarCombos(cmbMedico, Medico.class);
+            gerIG.carregarCombos(cmbTipoConsulta, TipoConsulta.class);
+            gerIG.carregarCombos(cmbFuncionario, Funcionario.class);
         } catch (ClassNotFoundException | SQLException ex) {
             JOptionPane.showMessageDialog(this, "Erro ao carregar funcionários " + ex.getMessage() );
     }
@@ -604,6 +611,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> cmbMedico;
     private javax.swing.JComboBox<String> cmbPaciente;
     private javax.swing.JComboBox<String> cmbTipoConsulta;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

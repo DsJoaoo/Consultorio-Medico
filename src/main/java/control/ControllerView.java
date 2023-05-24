@@ -104,32 +104,25 @@ public class ControllerView {
         DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
 
         try {
-            List<Convertivel> lista = gerDominio.listar(classe);
+            List<Adpater> lista = gerDominio.listar(classe);
             modelo.setRowCount(0);
-            for (Convertivel objeto : lista) {
+            for (Adpater objeto : lista) {
                 modelo.addRow(objeto.toArray());
             }
         } catch (HibernateException e) {
             JOptionPane.showMessageDialog(janCadPrincipal, "Erro ao tentar listar tabela do banco de dados. " + e.getMessage());
     }
 }
- 
-    public void carregarCombosConsulta(JComboBox cmbPaciente, JComboBox cmbMedico, JComboBox cmbTipoConsulta, JComboBox cmbFuncionario, Class paciente, Class medico, Class tipoConsulta, Class funcionario) {
+    
+    public void carregarCombos(JComboBox cmb, Class classe){
         try {
-            List<Paciente> listaPacientes = gerDominio.listar(paciente);
-            List<Medico> listaMedicos = gerDominio.listar(medico);
-            List<TipoConsulta> listaConsultas = gerDominio.listar(tipoConsulta);
-            List<Funcionario> listaFuncionarios = gerDominio.listar(funcionario);
-            
-            cmbPaciente.setModel( new DefaultComboBoxModel( listaPacientes.toArray() )  );
-            cmbMedico.setModel( new DefaultComboBoxModel( listaMedicos.toArray() )  );
-            cmbTipoConsulta.setModel( new DefaultComboBoxModel( listaConsultas.toArray() )  );
-            cmbFuncionario.setModel( new DefaultComboBoxModel( listaFuncionarios.toArray() )  );
-                                   
-        } catch (HibernateException  ex) {
+            List<Adpater> listaObjetos = gerDominio.listar(classe);
+            cmb.setModel(new DefaultComboBoxModel( listaObjetos.toArray() )  );
+        }catch (HibernateException  ex) {
             JOptionPane.showMessageDialog(janCadPrincipal, "Erro ao carregar informações. " + ex.getMessage() );          
         } 
     }
+ 
 
     public ControllerDomain getGerDominio() {
         return gerDominio;

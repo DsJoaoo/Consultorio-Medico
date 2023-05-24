@@ -85,6 +85,7 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
         btEditar = new javax.swing.JButton();
         btExcluir = new javax.swing.JButton();
         btLupa1 = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -285,10 +286,10 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
         ListarFuncionario.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lbPesquisar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lbPesquisar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbPesquisar.setText("Pesquisar nome");
-        ListarFuncionario.add(lbPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 140, 40));
-        ListarFuncionario.add(txtPesquisa, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 10, 340, 40));
+        lbPesquisar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbPesquisar.setText("Pesquisar ");
+        ListarFuncionario.add(lbPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 80, 40));
+        ListarFuncionario.add(txtPesquisa, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 10, 290, 40));
 
         btListarTodos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaces/imgs/icons/icons8-multidão-24.png"))); // NOI18N
         btListarTodos.addActionListener(new java.awt.event.ActionListener() {
@@ -369,6 +370,9 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
             }
         });
         ListarFuncionario.add(btLupa1, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 10, 40, 40));
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nome", "CPF", "Data", "E-mail", "Senha", "Telefone" }));
+        ListarFuncionario.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 10, -1, 40));
 
         jtpTelas.addTab("Listar Funcionários", ListarFuncionario);
 
@@ -621,6 +625,7 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
     private javax.swing.JButton btListarTodos;
     private javax.swing.JButton btLupa1;
     private javax.swing.JButton btNovo;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;

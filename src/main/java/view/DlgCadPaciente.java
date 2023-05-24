@@ -86,6 +86,7 @@ public class DlgCadPaciente extends javax.swing.JDialog {
         btExcluir = new javax.swing.JButton();
         btListarTodos = new javax.swing.JButton();
         cmbOpcao = new javax.swing.JComboBox<>();
+        lbPesquisar = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -217,7 +218,7 @@ public class DlgCadPaciente extends javax.swing.JDialog {
         chkFemino.setText("Feminino");
         jpSexo.add(chkFemino, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, 90, -1));
 
-        jpDados.add(jpSexo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, 560, 60));
+        jpDados.add(jpSexo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 560, 60));
 
         jpBotoes.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -281,7 +282,7 @@ public class DlgCadPaciente extends javax.swing.JDialog {
         jtpTelas.addTab("Cadastrar Paciente", CadastroPaciente);
 
         ListarPaciente.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        ListarPaciente.add(txtPesquisa, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 10, 340, 40));
+        ListarPaciente.add(txtPesquisa, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 10, 290, 40));
 
         btLupa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaces/imgs/icons/lupa24-icon.png"))); // NOI18N
         btLupa.addActionListener(new java.awt.event.ActionListener() {
@@ -362,7 +363,12 @@ public class DlgCadPaciente extends javax.swing.JDialog {
         ListarPaciente.add(btListarTodos, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 10, 40, 40));
 
         cmbOpcao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nome", "Data", "ID", "CPF" }));
-        ListarPaciente.add(cmbOpcao, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 80, 40));
+        ListarPaciente.add(cmbOpcao, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 10, 90, 40));
+
+        lbPesquisar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lbPesquisar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbPesquisar.setText("Pesquisar");
+        ListarPaciente.add(lbPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 90, 40));
 
         jtpTelas.addTab("Listar Pacientes", ListarPaciente);
 
@@ -633,6 +639,7 @@ public class DlgCadPaciente extends javax.swing.JDialog {
     private javax.swing.JLabel lbEmail;
     private javax.swing.JLabel lbID;
     private javax.swing.JLabel lbNome;
+    private javax.swing.JLabel lbPesquisar;
     private javax.swing.JLabel lbTelefone;
     private javax.swing.JTable tbPacientes;
     private javax.swing.JFormattedTextField txtCPF;

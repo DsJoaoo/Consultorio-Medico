@@ -14,6 +14,8 @@ import javax.persistence.*;
  * @author joaop
  */
 @Entity
+
+@PrimaryKeyJoinColumn (name = "idMedico")
 public class Medico extends Pessoa implements Serializable{
     @Column ( unique = true, updatable = false, length = 14) 
     private String crm;

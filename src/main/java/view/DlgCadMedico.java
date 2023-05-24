@@ -86,6 +86,7 @@ public class DlgCadMedico extends javax.swing.JDialog {
         btEditar = new javax.swing.JButton();
         btExcluir = new javax.swing.JButton();
         btListarTodos = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -279,10 +280,10 @@ public class DlgCadMedico extends javax.swing.JDialog {
         ListarPaciente.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lbPesquisar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lbPesquisar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbPesquisar.setText("Pesquisar nome");
-        ListarPaciente.add(lbPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 140, 40));
-        ListarPaciente.add(txtPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 10, 300, 40));
+        lbPesquisar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbPesquisar.setText("Pesquisar");
+        ListarPaciente.add(lbPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 80, 40));
+        ListarPaciente.add(txtPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 10, 290, 40));
 
         btLupa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaces/imgs/icons/lupa24-icon.png"))); // NOI18N
         btLupa.addActionListener(new java.awt.event.ActionListener() {
@@ -363,6 +364,9 @@ public class DlgCadMedico extends javax.swing.JDialog {
             }
         });
         ListarPaciente.add(btListarTodos, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 10, 40, 40));
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nome", "CPF", "E-mail", "Telefone", "CRM", "Especialização" }));
+        ListarPaciente.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 10, 80, 40));
 
         jtpTelas.addTab("Listar Médico", ListarPaciente);
 
@@ -604,6 +608,7 @@ public class DlgCadMedico extends javax.swing.JDialog {
     private javax.swing.JButton btLupa;
     private javax.swing.JButton btNovo;
     private javax.swing.JComboBox<String> cmbEspecializacao;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

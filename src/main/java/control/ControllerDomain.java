@@ -26,19 +26,19 @@ public class ControllerDomain {
     }
 
     public int inserirPaciente(String nome, String cpf, String email, Date data, String telefone, String sexo){
-        Paciente p = new Paciente(nome, telefone, email, cpf, data, sexo);
+        Pessoa p = new Paciente(nome, telefone, email, cpf, data, sexo);
         genDao.cadastrar(p);
         return p.getIdPessoa();
     }
     
     public int inserirFucionario(String nome, String cpf, Date dt, String email, String senha, String telefone) {
-        Funcionario p = new Funcionario(nome, telefone,email, cpf, dt, senha);
+        Pessoa p = new Funcionario(nome, telefone,email, cpf, dt, senha);
         genDao.cadastrar(p);
         return p.getIdPessoa();
     }
 
     public int inserirMedico(String nome, String telefone, String email, String cpf, String crm, String especializacao) {
-       Medico p = new Medico(nome, telefone,email, cpf, crm, especializacao);
+        Pessoa p = new Medico(nome, telefone,email, cpf, crm, especializacao);
         genDao.cadastrar(p);
         return p.getIdPessoa();
     }

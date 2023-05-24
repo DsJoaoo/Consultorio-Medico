@@ -14,7 +14,7 @@ import javax.persistence.*;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Pessoa implements Serializable, Convertivel {
+public abstract class Pessoa implements Serializable, Adpater {
     @Id
     @GeneratedValue ( strategy = GenerationType.IDENTITY)
     protected int idPessoa;
@@ -27,11 +27,11 @@ public abstract class Pessoa implements Serializable, Convertivel {
     private String telefone;
     
     
-     @Column ( unique = true, length = 50, nullable = false)
+    @Column ( unique = true, length = 50, nullable = false)
     private String email;
      
      
-    @Column ( unique = true, updatable = false, length = 14) 
+    @Column (updatable = false, length = 14) 
     private String cpf;
 
     public Pessoa() {

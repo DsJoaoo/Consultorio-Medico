@@ -81,6 +81,7 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
         btExcluir = new javax.swing.JButton();
         lbPesquisar = new javax.swing.JLabel();
         btListarTodos = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -95,7 +96,7 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jtpTelas.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jtpTelas.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jtpTelas.setOpaque(false);
 
         CadastroServico.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -233,7 +234,7 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
         jtpTelas.addTab("Cadastrar Serviço", CadastroServico);
 
         ListarPreco.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        ListarPreco.add(txtPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 10, 140, 40));
+        ListarPreco.add(txtPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 10, 140, 40));
 
         btLupa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaces/imgs/icons/lupa24-icon.png"))); // NOI18N
         btLupa.addActionListener(new java.awt.event.ActionListener() {
@@ -241,7 +242,7 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
                 btLupaActionPerformed(evt);
             }
         });
-        ListarPreco.add(btLupa, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 10, 40, 40));
+        ListarPreco.add(btLupa, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 10, 30, 40));
 
         jSeparator1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         ListarPreco.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 260, 400, 10));
@@ -271,7 +272,7 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
 
         jpServico.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        ListarPreco.add(jpServico, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 370, 190));
+        ListarPreco.add(jpServico, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 370, 180));
 
         jSeparator2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         ListarPreco.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 390, 10));
@@ -311,7 +312,7 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
         lbPesquisar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lbPesquisar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbPesquisar.setText("Pesquisar");
-        ListarPreco.add(lbPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 140, 40));
+        ListarPreco.add(lbPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 100, 40));
 
         btListarTodos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaces/imgs/icons/icons8-multidão-24.png"))); // NOI18N
         btListarTodos.addActionListener(new java.awt.event.ActionListener() {
@@ -319,7 +320,10 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
                 btListarTodosActionPerformed(evt);
             }
         });
-        ListarPreco.add(btListarTodos, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 10, 40, 40));
+        ListarPreco.add(btListarTodos, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 10, 30, 40));
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Nome", "Plano" }));
+        ListarPreco.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 10, 50, 40));
 
         jtpTelas.addTab("Lista de Consultas", ListarPreco);
 
@@ -537,6 +541,7 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
     private javax.swing.JButton btNovo;
     private javax.swing.JRadioButton btSim;
     private javax.swing.ButtonGroup grpSimNao;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;

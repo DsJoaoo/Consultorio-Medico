@@ -15,6 +15,7 @@ import javax.persistence.*;
  * @author joaop
  */
 @Entity
+@PrimaryKeyJoinColumn (name = "idPaciente")
 public class Paciente extends Pessoa implements Serializable{    
     
     

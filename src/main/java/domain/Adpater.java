@@ -8,6 +8,6 @@ package domain;
  *
  * @author joaop
  */
-public interface Convertivel {
+public interface Adpater {
     Object[] toArray();
 }
