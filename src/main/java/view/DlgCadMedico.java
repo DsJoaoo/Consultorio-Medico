@@ -484,15 +484,16 @@ public class DlgCadMedico extends javax.swing.JDialog {
     
     private void btConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btConfirmarActionPerformed
 
-        String nome = txtNome.getText();
-        String telefone = txtTelefone.getText();
-        String email = txtEmail.getText(); 
-        String cpf = txtCPF.getText();
-        String crm = txtCRM.getText();
-        String especializacao = cmbEspecializacao.getSelectedItem().toString();
         
         
         if(validarCampos()){
+            String nome = txtNome.getText();
+            String telefone = txtTelefone.getText();
+            String email = txtEmail.getText(); 
+            String cpf = txtCPF.getText();
+            String crm = txtCRM.getText();
+            String especializacao = cmbEspecializacao.getSelectedItem().toString();
+        
             try {
                 if(medicoSelecionado == null){
                     int id = gerIG.getGerDominio().inserirMedico(nome, telefone,email, cpf, crm, especializacao);
