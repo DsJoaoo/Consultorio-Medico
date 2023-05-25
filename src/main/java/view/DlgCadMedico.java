@@ -498,7 +498,7 @@ public class DlgCadMedico extends javax.swing.JDialog {
             try {
                 if(medicoSelecionado == null){
                     int id = gerIG.getGerDominio().inserirMedico(nome, telefone,email, cpf, crm, especializacao);
-                    JOptionPane.showMessageDialog(this, "Médico " + id + " inserido com sucesso.", "Inserir Médico", JOptionPane.INFORMATION_MESSAGE  );
+                    JOptionPane.showMessageDialog(this, "Médico inserido com sucesso.", "Inserir Médico", JOptionPane.INFORMATION_MESSAGE  );
                 }
             } catch (HeadlessException e) {
                JOptionPane.showMessageDialog(this, e, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );

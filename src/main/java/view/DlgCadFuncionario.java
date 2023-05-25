@@ -514,8 +514,8 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
             try {
                 Date dt = Functions.strToDate(dataAdmissao);
                 if(funcionarioSelecionado == null){
-                    int id = gerIG.getGerDominio().inserirFucionario(nome, cpf,dt, email, senha, telefone);
-                    JOptionPane.showMessageDialog(this, "Funcionario " + id + " inserido com sucesso.", "Inserir Funcionario", JOptionPane.INFORMATION_MESSAGE  );
+                    gerIG.getGerDominio().inserirFucionario(nome, cpf,dt, email, senha, telefone);
+                    JOptionPane.showMessageDialog(this, "Funcionario inserido com sucesso.", "Inserir Funcionario", JOptionPane.INFORMATION_MESSAGE  );
                 }
             } catch (HeadlessException | ParseException e) {
                JOptionPane.showMessageDialog(this, e, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );

@@ -501,8 +501,8 @@ public class DlgCadPaciente extends javax.swing.JDialog {
             try {
                 Date dt = Functions.strToDate(data);
                 if(pacienteSelecionado == null){
-                    int id = gerIG.getGerDominio().inserirPaciente(nome, cpf, email, dt, telefone, sexo);
-                    JOptionPane.showMessageDialog(this, "Paciente " + id + " inserido com sucesso.", "Inserir Paciente", JOptionPane.INFORMATION_MESSAGE  );
+                    gerIG.getGerDominio().inserirPaciente(nome, cpf, email, dt, telefone, sexo);
+                    JOptionPane.showMessageDialog(this, "Paciente inserido com sucesso.", "Inserir Paciente", JOptionPane.INFORMATION_MESSAGE  );
                 }
             } catch (HeadlessException | ParseException e) {
                JOptionPane.showMessageDialog(this, e, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );

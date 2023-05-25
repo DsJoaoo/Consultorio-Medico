@@ -435,7 +435,7 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
             try {
                 if(tipoSelecionado == null){
                     int id = gerIG.getGerDominio().inserirTipo(nome, preco, selecionado);
-                    JOptionPane.showMessageDialog(this, "Tipo de consulta " + id + " inserido com sucesso.", "Inserir Tipo de consulta", JOptionPane.INFORMATION_MESSAGE  );
+                    JOptionPane.showMessageDialog(this, "Tipo de consulta inserido com sucesso.", "Inserir Tipo de consulta", JOptionPane.INFORMATION_MESSAGE  );
                 }
             } catch (HeadlessException e) {
                JOptionPane.showMessageDialog(this, e, "ERRO Tipo de Consulta", JOptionPane.ERROR_MESSAGE  );
