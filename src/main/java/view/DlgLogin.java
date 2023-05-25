@@ -7,6 +7,7 @@ package view;
 import control.ControllerView;
 import control.Functions;
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
 /**
@@ -56,6 +57,11 @@ public class DlgLogin extends javax.swing.JDialog {
         jPanel1.add(lbSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 70, 50));
 
         pswUsuario.setFont(new java.awt.Font("Segoe UI", 0, 22)); // NOI18N
+        pswUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                pswUsuarioKeyPressed(evt);
+            }
+        });
         jPanel1.add(pswUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 190, 280, 50));
 
         lbUsuario.setFont(new java.awt.Font("Lucida Sans", 0, 18)); // NOI18N
@@ -143,6 +149,12 @@ public class DlgLogin extends javax.swing.JDialog {
     private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
         System.exit(0);
     }//GEN-LAST:event_btCancelarActionPerformed
+
+    private void pswUsuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pswUsuarioKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            btEntrarActionPerformed(null);
+        }
+    }//GEN-LAST:event_pswUsuarioKeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btCancelar;

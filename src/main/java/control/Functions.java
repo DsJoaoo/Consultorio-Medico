@@ -9,6 +9,9 @@ import java.util.Date;
 import java.util.Enumeration;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -22,6 +25,19 @@ import javax.swing.ButtonGroup;
  * @author jean_
  */
 public class Functions {
+    
+    public static void centralizarColunas(JTable tabela){
+        int qtdeColunas = tabela.getColumnCount();
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        for(int i=0; i < qtdeColunas; i++){
+        tabela.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+    }
+    
+    
     
     public static Time convertStringToTime(String timeString) throws ParseException {
         DateFormat dateFormat = new SimpleDateFormat("HH:mm");

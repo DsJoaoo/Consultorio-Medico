@@ -5,14 +5,11 @@
 package view;
 
 import control.ControllerView;
-import control.Functions;
 import domain.TipoConsulta;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.HeadlessException;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.border.TitledBorder;
@@ -435,7 +432,7 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
             try {
                 if(tipoSelecionado == null){
                     int id = gerIG.getGerDominio().inserirTipo(nome, preco, selecionado);
-                    JOptionPane.showMessageDialog(this, "Tipo de consulta " + id + " inserido com sucesso.", "Inserir Tipo de consulta", JOptionPane.INFORMATION_MESSAGE  );
+                    JOptionPane.showMessageDialog(this, "Tipo de consulta inserido com sucesso.", "Inserir Tipo de consulta", JOptionPane.INFORMATION_MESSAGE  );
                 }
             } catch (HeadlessException e) {
                JOptionPane.showMessageDialog(this, e, "ERRO Tipo de Consulta", JOptionPane.ERROR_MESSAGE  );
@@ -519,7 +516,6 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         try {
-            jtpTelas.setSelectedIndex(1);
             gerIG.carregarTabela(tbServicos, TipoConsulta.class);
         } catch (ClassNotFoundException | SQLException ex) {
             JOptionPane.showMessageDialog(this, "Erro ao carregar Lista de tipos de consultas disponíveis " + ex.getMessage() );

@@ -24,7 +24,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
     private final ControllerView gerIG;
     private Paciente pacienteSelecionado;
     private Medico medicoSelecionado;
-    private TipoConsulta consultaSelecionado;
+    private TipoConsulta tipoConsultaSelecionado;
     private Funcionario funcionarioSelecionado;
     private Consulta consultaSelecionada;
     /**
@@ -36,10 +36,11 @@ public class DlgCadConsulta extends javax.swing.JDialog {
         initComponents();
         pacienteSelecionado = null;
         medicoSelecionado = null;
-        consultaSelecionado = null;
+        tipoConsultaSelecionado = null;
         funcionarioSelecionado = null;
         consultaSelecionada = null;
         gerIG = controller;
+        
         //atualizarTabela();
     }
 
@@ -57,15 +58,17 @@ public class DlgCadConsulta extends javax.swing.JDialog {
         jpDados = new javax.swing.JPanel();
         jpTipos = new javax.swing.JPanel();
         jpDao = new javax.swing.JPanel();
-        lbTipoConsulta = new javax.swing.JLabel();
         lbMedico = new javax.swing.JLabel();
         lbPaciente = new javax.swing.JLabel();
         lbFuncionario = new javax.swing.JLabel();
         jpCombo = new javax.swing.JPanel();
-        cmbTipoConsulta = new javax.swing.JComboBox<>();
-        cmbMedico = new javax.swing.JComboBox<>();
-        cmbPaciente = new javax.swing.JComboBox<>();
-        cmbFuncionario = new javax.swing.JComboBox<>();
+        btPesqMedico = new javax.swing.JButton();
+        btPesqPaciente = new javax.swing.JButton();
+        btPesqFuncionario = new javax.swing.JButton();
+        jpCombo1 = new javax.swing.JPanel();
+        txtMedico = new javax.swing.JTextField();
+        txtPaciente = new javax.swing.JTextField();
+        txtFuncionario = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jpID = new javax.swing.JPanel();
         lbID = new javax.swing.JLabel();
@@ -76,12 +79,15 @@ public class DlgCadConsulta extends javax.swing.JDialog {
         jpHora = new javax.swing.JPanel();
         lbHora = new javax.swing.JLabel();
         txtHora = new javax.swing.JFormattedTextField();
+        jpTipo = new javax.swing.JPanel();
+        lbTipoConsulta = new javax.swing.JLabel();
+        cmbTipoConsulta = new javax.swing.JComboBox<>();
         jpBotoes = new javax.swing.JPanel();
         btConfirmar = new javax.swing.JButton();
         btAtualizar = new javax.swing.JButton();
         btLimpar = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JSeparator();
-        ListarPaciente = new javax.swing.JPanel();
+        ListaConsulta = new javax.swing.JPanel();
         lbPesquisar = new javax.swing.JLabel();
         txtPesquisar = new javax.swing.JTextField();
         btLupa = new javax.swing.JButton();
@@ -119,11 +125,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
 
         jpTipos.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jpDao.setLayout(new java.awt.GridLayout(4, 1, 0, 3));
-
-        lbTipoConsulta.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        lbTipoConsulta.setText("Tipo Consulta");
-        jpDao.add(lbTipoConsulta);
+        jpDao.setLayout(new java.awt.GridLayout(3, 1, 0, 3));
 
         lbMedico.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         lbMedico.setText("Médico");
@@ -137,23 +139,46 @@ public class DlgCadConsulta extends javax.swing.JDialog {
         lbFuncionario.setText("Funcionário");
         jpDao.add(lbFuncionario);
 
-        jpTipos.add(jpDao, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, -10, 90, 240));
+        jpTipos.add(jpDao, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 90, 190));
 
-        jpCombo.setLayout(new java.awt.GridLayout(4, 1, 0, 30));
+        jpCombo.setLayout(new java.awt.GridLayout(3, 2, 0, 30));
 
-        jpCombo.add(cmbTipoConsulta);
+        btPesqMedico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaces/imgs/icons/lupa24-icon.png"))); // NOI18N
+        btPesqMedico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btPesqMedicoActionPerformed(evt);
+            }
+        });
+        jpCombo.add(btPesqMedico);
 
-        jpCombo.add(cmbMedico);
+        btPesqPaciente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaces/imgs/icons/lupa24-icon.png"))); // NOI18N
+        btPesqPaciente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btPesqPacienteActionPerformed(evt);
+            }
+        });
+        jpCombo.add(btPesqPaciente);
 
-        jpCombo.add(cmbPaciente);
+        btPesqFuncionario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaces/imgs/icons/lupa24-icon.png"))); // NOI18N
+        btPesqFuncionario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btPesqFuncionarioActionPerformed(evt);
+            }
+        });
+        jpCombo.add(btPesqFuncionario);
 
-        jpCombo.add(cmbFuncionario);
+        jpTipos.add(jpCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 30, 50, 160));
 
-        jpTipos.add(jpCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 0, 170, 220));
+        jpCombo1.setLayout(new java.awt.GridLayout(3, 2, 0, 30));
+        jpCombo1.add(txtMedico);
+        jpCombo1.add(txtPaciente);
+        jpCombo1.add(txtFuncionario);
 
-        jpDados.add(jpTipos, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 20, 290, 220));
+        jpTipos.add(jpCombo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 30, 150, 160));
 
-        jpID.setLayout(new java.awt.GridLayout(1, 2, -120, 15));
+        jpDados.add(jpTipos, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 20, 330, 220));
+
+        jpID.setLayout(new java.awt.GridLayout(1, 2, -50, 15));
         jpID.setVisible(false);
 
         lbID.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -164,7 +189,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
         txtIdPaciente.setEnabled(false);
         jpID.add(txtIdPaciente);
 
-        jpData.setLayout(new java.awt.GridLayout(1, 2, -120, 15));
+        jpData.setLayout(new java.awt.GridLayout(1, 2, -50, 15));
 
         lbData.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         lbData.setText("data");
@@ -177,7 +202,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
         }
         jpData.add(txtData);
 
-        jpHora.setLayout(new java.awt.GridLayout(1, 2, -120, 15));
+        jpHora.setLayout(new java.awt.GridLayout(1, 2, -50, 15));
 
         lbHora.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         lbHora.setText("hora");
@@ -190,17 +215,28 @@ public class DlgCadConsulta extends javax.swing.JDialog {
         }
         jpHora.add(txtHora);
 
+        jpTipo.setLayout(new java.awt.GridLayout(1, 2, -50, 15));
+
+        lbTipoConsulta.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        lbTipoConsulta.setText("Tipo");
+        jpTipo.add(lbTipoConsulta);
+
+        jpTipo.add(cmbTipoConsulta);
+        cmbTipoConsulta.setSelectedIndex(-1);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jpData, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
-                    .addComponent(jpID, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jpHora, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jpID, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jpData, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
+                        .addComponent(jpTipo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jpHora, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -211,10 +247,12 @@ public class DlgCadConsulta extends javax.swing.JDialog {
                 .addComponent(jpData, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jpHora, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jpTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
-        jpDados.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 240, 160));
+        jpDados.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 240, 230));
 
         jpBotoes.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -270,7 +308,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
             CadastroConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(CadastroConsultaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jpDados, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
+                .addComponent(jpDados, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -280,13 +318,13 @@ public class DlgCadConsulta extends javax.swing.JDialog {
 
         jtpTelas.addTab("Cadastrar Consulta", CadastroConsulta);
 
-        ListarPaciente.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        ListaConsulta.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lbPesquisar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lbPesquisar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lbPesquisar.setText("Pesquisar");
-        ListarPaciente.add(lbPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 100, 40));
-        ListarPaciente.add(txtPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 10, 280, 40));
+        ListaConsulta.add(lbPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 100, 40));
+        ListaConsulta.add(txtPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 10, 280, 40));
 
         btLupa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaces/imgs/icons/lupa24-icon.png"))); // NOI18N
         btLupa.addActionListener(new java.awt.event.ActionListener() {
@@ -294,10 +332,10 @@ public class DlgCadConsulta extends javax.swing.JDialog {
                 btLupaActionPerformed(evt);
             }
         });
-        ListarPaciente.add(btLupa, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 10, 40, 40));
+        ListaConsulta.add(btLupa, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 10, 40, 40));
 
         jSeparator1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        ListarPaciente.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 610, 10));
+        ListaConsulta.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 610, 10));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Consulta", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 18))); // NOI18N
         jPanel1.setLayout(new java.awt.BorderLayout());
@@ -322,10 +360,10 @@ public class DlgCadConsulta extends javax.swing.JDialog {
 
         jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        ListarPaciente.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 610, 190));
+        ListaConsulta.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 610, 190));
 
         jSeparator2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        ListarPaciente.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 610, 10));
+        ListaConsulta.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 610, 10));
 
         jpBotoes1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -358,7 +396,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
         });
         jpBotoes1.add(btExcluir, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 10, 150, 40));
 
-        ListarPaciente.add(jpBotoes1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 594, 60));
+        ListaConsulta.add(jpBotoes1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 594, 60));
 
         btListarTodos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaces/imgs/icons/icons8-multidão-24.png"))); // NOI18N
         btListarTodos.addActionListener(new java.awt.event.ActionListener() {
@@ -366,12 +404,12 @@ public class DlgCadConsulta extends javax.swing.JDialog {
                 btListarTodosActionPerformed(evt);
             }
         });
-        ListarPaciente.add(btListarTodos, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 10, 40, 40));
+        ListaConsulta.add(btListarTodos, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 10, 40, 40));
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Tipo", "Data", "Medico", "Paciente", "Funcionario", " ", " ", " ", " ", " " }));
-        ListarPaciente.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, 90, 40));
+        ListaConsulta.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, 90, 40));
 
-        jtpTelas.addTab("Listar Consultas", ListarPaciente);
+        jtpTelas.addTab("Listar Consultas", ListaConsulta);
 
         getContentPane().add(jtpTelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 610, 390));
 
@@ -384,7 +422,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
 
     
      private void habilitarBotoes() {
-        if(consultaSelecionado == null){
+        if(tipoConsultaSelecionado == null){
             limparCampos();
             btAtualizar.setVisible(false);
             btConfirmar.setVisible(true);
@@ -443,22 +481,22 @@ public class DlgCadConsulta extends javax.swing.JDialog {
            lbData.setForeground(Color.red);
            msgErro += "data incorreta\n";
        }
-       if(cmbMedico.getSelectedItem() == null){
+       if(medicoSelecionado == null){
            lbMedico.setForeground(Color.red);
            msgErro += "selecione um medico\n";
        }
-       if(cmbPaciente.getSelectedItem() == null){
+       if(pacienteSelecionado == null){
             lbPaciente.setForeground(Color.red);
             msgErro += "selecione um paciente\n";
        }
-       if(cmbTipoConsulta.getSelectedItem() == null){
+       if(tipoConsultaSelecionado == null){
            lbTipoConsulta.setForeground(Color.red);
            msgErro += "selecione o tipo de consulta\n";
        }
        
-       if(cmbFuncionario.getSelectedItem() == null){
+       if(funcionarioSelecionado == null){
            lbFuncionario.setForeground(Color.red);
-           msgErro += "selecione o tipo de consulta\n";
+           msgErro += "Um funcionário\n";
        }
        
        if(msgErro.isEmpty()){
@@ -474,29 +512,24 @@ public class DlgCadConsulta extends javax.swing.JDialog {
         txtIdPaciente.setText("");
         txtData.setText("");      
         txtHora.setText("");
-        cmbMedico.setSelectedItem(null);
-        cmbPaciente.setSelectedItem(null);
-        cmbTipoConsulta.setSelectedItem(null);
+        txtMedico.setText("");
+        txtPaciente.setText("");
+        txtFuncionario.setText("");
+        cmbTipoConsulta.setSelectedIndex(-1);
     }
   
     
     private void btConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btConfirmarActionPerformed
         String data = txtData.getText();
         String hora = txtHora.getText();
-        
-        Funcionario fun = (Funcionario) cmbFuncionario.getSelectedItem();
-        Paciente pac = (Paciente) cmbPaciente.getSelectedItem();
-        Medico med = (Medico) cmbMedico.getSelectedItem();
-        TipoConsulta tipo = (TipoConsulta) cmbTipoConsulta.getSelectedItem();
-
+        tipoConsultaSelecionado = (TipoConsulta) cmbTipoConsulta.getSelectedItem();
         if(validarCampos()){
             try {
                 Date dt = Functions.strToDate(data);
                 Time hr = Functions.convertStringToTime(hora);
-                if(funcionarioSelecionado == null){
-                    int id = gerIG.getGerDominio().inserirConsulta(dt, hr,fun, pac, med, tipo);
-                    JOptionPane.showMessageDialog(this, "Funcionario " + id + " inserido com sucesso.", "Inserir Funcionario", JOptionPane.INFORMATION_MESSAGE  );
-                }
+                gerIG.getGerDominio().inserirConsulta(dt, hr,funcionarioSelecionado, pacienteSelecionado, medicoSelecionado, tipoConsultaSelecionado);
+                JOptionPane.showMessageDialog(this, "Consulta inserida com sucesso.", "Inserir Consulta", JOptionPane.INFORMATION_MESSAGE  );
+
             } catch (HeadlessException | ParseException e) {
                JOptionPane.showMessageDialog(this, e, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );
             }
@@ -521,11 +554,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
             txtIdPaciente.setText(tbConsultas.getValueAt(opcao, 0).toString());
             txtData.setText(tbConsultas.getValueAt(opcao, 1).toString());
             txtHora.setText(tbConsultas.getValueAt(opcao, 2).toString());
-            cmbPaciente.setSelectedItem(tbConsultas.getValueAt(opcao, 3).toString());
-            cmbMedico.setSelectedItem(tbConsultas.getValueAt(opcao, 5).toString());
-            cmbTipoConsulta.setSelectedItem(tbConsultas.getValueAt(opcao, 6).toString());
-            
-           
+
             btAtualizar.setVisible(true);
             jpID.setVisible(true);
             btConfirmar.setVisible(false);
@@ -584,21 +613,40 @@ public class DlgCadConsulta extends javax.swing.JDialog {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         try {
-            jtpTelas.setSelectedIndex(1);
+            
             gerIG.carregarTabela(tbConsultas, Consulta.class);
-            gerIG.carregarCombos(cmbPaciente, Paciente.class);
-            gerIG.carregarCombos(cmbMedico, Medico.class);
-            gerIG.carregarCombos(cmbTipoConsulta, TipoConsulta.class);
-            gerIG.carregarCombos(cmbFuncionario, Funcionario.class);
+            gerIG.carregarCombo(cmbTipoConsulta, TipoConsulta.class);
+            cmbTipoConsulta.setSelectedIndex(-1);
         } catch (ClassNotFoundException | SQLException ex) {
             JOptionPane.showMessageDialog(this, "Erro ao carregar funcionários " + ex.getMessage() );
     }
     }//GEN-LAST:event_formComponentShown
 
+    private void btPesqMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPesqMedicoActionPerformed
+        medicoSelecionado = gerIG.janelaPesqMedico();
+        if ( medicoSelecionado != null ) {
+            txtMedico.setText(medicoSelecionado.getNomePessoa());
+        }
+    }//GEN-LAST:event_btPesqMedicoActionPerformed
+
+    private void btPesqPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPesqPacienteActionPerformed
+        pacienteSelecionado = gerIG.janelaPesqPaciente();
+        if ( pacienteSelecionado != null ) {
+            txtPaciente.setText(pacienteSelecionado.getNomePessoa());
+        }
+    }//GEN-LAST:event_btPesqPacienteActionPerformed
+
+    private void btPesqFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPesqFuncionarioActionPerformed
+        funcionarioSelecionado = gerIG.janelaPesqFuncionario();
+        if ( funcionarioSelecionado != null ) {
+            txtFuncionario.setText(funcionarioSelecionado.getNomePessoa());
+        }
+    }//GEN-LAST:event_btPesqFuncionarioActionPerformed
+
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CadastroConsulta;
-    private javax.swing.JPanel ListarPaciente;
+    private javax.swing.JPanel ListaConsulta;
     private javax.swing.JButton btAtualizar;
     private javax.swing.JButton btConfirmar;
     private javax.swing.JButton btEditar;
@@ -607,9 +655,9 @@ public class DlgCadConsulta extends javax.swing.JDialog {
     private javax.swing.JButton btListarTodos;
     private javax.swing.JButton btLupa;
     private javax.swing.JButton btNovo;
-    private javax.swing.JComboBox<String> cmbFuncionario;
-    private javax.swing.JComboBox<String> cmbMedico;
-    private javax.swing.JComboBox<String> cmbPaciente;
+    private javax.swing.JButton btPesqFuncionario;
+    private javax.swing.JButton btPesqMedico;
+    private javax.swing.JButton btPesqPaciente;
     private javax.swing.JComboBox<String> cmbTipoConsulta;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
@@ -622,11 +670,13 @@ public class DlgCadConsulta extends javax.swing.JDialog {
     private javax.swing.JPanel jpBotoes;
     private javax.swing.JPanel jpBotoes1;
     private javax.swing.JPanel jpCombo;
+    private javax.swing.JPanel jpCombo1;
     private javax.swing.JPanel jpDados;
     private javax.swing.JPanel jpDao;
     private javax.swing.JPanel jpData;
     private javax.swing.JPanel jpHora;
     private javax.swing.JPanel jpID;
+    private javax.swing.JPanel jpTipo;
     private javax.swing.JPanel jpTipos;
     private javax.swing.JTabbedPane jtpTelas;
     private javax.swing.JLabel lbData;
@@ -639,8 +689,11 @@ public class DlgCadConsulta extends javax.swing.JDialog {
     private javax.swing.JLabel lbTipoConsulta;
     private javax.swing.JTable tbConsultas;
     private javax.swing.JFormattedTextField txtData;
+    private javax.swing.JTextField txtFuncionario;
     private javax.swing.JFormattedTextField txtHora;
     private javax.swing.JFormattedTextField txtIdPaciente;
+    private javax.swing.JTextField txtMedico;
+    private javax.swing.JTextField txtPaciente;
     private javax.swing.JTextField txtPesquisar;
     // End of variables declaration//GEN-END:variables
 }

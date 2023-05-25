@@ -92,7 +92,8 @@ public class TipoConsulta implements Serializable, Adpater{
         return descricao;
     }
     
-public Object[] toArray(){
+    @Override
+    public Object[] toArray(){
        return new Object[] {idTipoConsulta, this, valor, isPlano};  
     };
     

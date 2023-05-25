@@ -32,6 +32,11 @@ public class ControllerView {
     private DlgCadConsulta janCadConsulta = null;
     private DlgLogin janCadLogin = null;
     private DlgCadTipoConsulta janCadServico = null;
+    private DlgPesqPaciente janPesqPaciente = null;
+    private DlgPesqMedico janPesqMedico = null;
+    private DlgPesqFuncionario janPesqFuncionario = null;
+    private DlgPesqTipoConsulta janPesqTipo = null;
+    
     
     
     //GERENCIADORES de DOMINIO
@@ -61,6 +66,8 @@ public class ControllerView {
         dlg.setVisible(true); 
         return dlg;
     }
+    
+    
     
     
     
@@ -98,7 +105,35 @@ public class ControllerView {
         janCadServico = (DlgCadTipoConsulta) abrirJanela(janCadPrincipal, janCadServico, DlgCadTipoConsulta.class);
     }
     
+    
+    
+    
+    public Paciente janelaPesqPaciente() {
+        janPesqPaciente = (DlgPesqPaciente) abrirJanela(janCadPrincipal, janPesqPaciente, DlgPesqPaciente.class);
+        return janPesqPaciente.getPaciente();
+    }
+    
+    public Medico janelaPesqMedico() {
+        janPesqMedico = (DlgPesqMedico) abrirJanela(janCadPrincipal, janPesqMedico, DlgPesqMedico.class);
+        return janPesqMedico.getMedico();
+    }
+    
+    public Funcionario janelaPesqFuncionario() {
+        janPesqFuncionario = (DlgPesqFuncionario) abrirJanela(janCadPrincipal, janPesqFuncionario, DlgPesqFuncionario.class);
+        return janPesqFuncionario.getFuncionario();
+    }
+    
+    public TipoConsulta janelaPesqTipoConsulta() {
+        janPesqTipo = (DlgPesqTipoConsulta) abrirJanela(janCadPrincipal, janPesqTipo, DlgPesqTipoConsulta.class);
+        return janPesqTipo.getTipo();
+    }
+    
+    
+    
+    
+    
     //</editor-fold>
+    
     
     public void carregarTabela(JTable tabela, Class classe) throws ClassNotFoundException, SQLException {
         DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
@@ -106,17 +141,18 @@ public class ControllerView {
         try {
             List<Adpater> lista = gerDominio.listar(classe);
             modelo.setRowCount(0);
-            for (Adpater objeto : lista) {
+            lista.forEach(objeto -> {
                 modelo.addRow(objeto.toArray());
-            }
+            });
+            Functions.centralizarColunas(tabela);
         } catch (HibernateException e) {
             JOptionPane.showMessageDialog(janCadPrincipal, "Erro ao tentar listar tabela do banco de dados. " + e.getMessage());
     }
 }
     
-    public void carregarCombos(JComboBox cmb, Class classe){
+    public void carregarCombo(JComboBox cmb, Class classe){
         try {
-            List<Adpater> listaObjetos = gerDominio.listar(classe);
+            List<Class> listaObjetos = gerDominio.listar(classe);
             cmb.setModel(new DefaultComboBoxModel( listaObjetos.toArray() )  );
         }catch (HibernateException  ex) {
             JOptionPane.showMessageDialog(janCadPrincipal, "Erro ao carregar informações. " + ex.getMessage() );          
