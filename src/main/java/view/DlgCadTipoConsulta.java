@@ -5,14 +5,11 @@
 package view;
 
 import control.ControllerView;
-import control.Functions;
 import domain.TipoConsulta;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.HeadlessException;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.border.TitledBorder;
@@ -519,7 +516,6 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         try {
-            jtpTelas.setSelectedIndex(1);
             gerIG.carregarTabela(tbServicos, TipoConsulta.class);
         } catch (ClassNotFoundException | SQLException ex) {
             JOptionPane.showMessageDialog(this, "Erro ao carregar Lista de tipos de consultas disponíveis " + ex.getMessage() );

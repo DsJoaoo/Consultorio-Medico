@@ -10,8 +10,6 @@ import domain.Medico;
 import java.awt.Color;
 import java.awt.HeadlessException;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.Date;
 import javax.swing.JOptionPane;
 
 /**
@@ -588,7 +586,6 @@ public class DlgCadMedico extends javax.swing.JDialog {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         try {
-            jtpTelas.setSelectedIndex(1);
             gerIG.carregarTabela(tbMedicos, Medico.class);
         } catch (ClassNotFoundException | SQLException ex) {
             JOptionPane.showMessageDialog(this, "Erro ao carregar funcionários " + ex.getMessage() );

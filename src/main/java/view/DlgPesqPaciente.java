@@ -1,19 +1,20 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package view;
-
 
 import control.ControllerView;
 import domain.Paciente;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
-
-
 /**
  *
- * @author jean
+ * @author Usuario
  */
 public class DlgPesqPaciente extends javax.swing.JDialog {
-
     private ControllerView gerIG;
     private Paciente paciente;
 
@@ -25,8 +26,7 @@ public class DlgPesqPaciente extends javax.swing.JDialog {
         
               
     }
-
-    public Paciente getPaciente() {
+ public Paciente getPaciente() {
         return paciente;
     }
 
@@ -39,10 +39,6 @@ public class DlgPesqPaciente extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPopupMenu1 = new javax.swing.JPopupMenu();
-        mnuPedidos = new javax.swing.JMenuItem();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblClientes = new javax.swing.JTable();
         txtPesq = new javax.swing.JTextField();
         btnPesquisar = new javax.swing.JButton();
         btnSelecionar = new javax.swing.JButton();
@@ -53,34 +49,10 @@ public class DlgPesqPaciente extends javax.swing.JDialog {
         jpTabela = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbPacientes = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
-        mnuPedidos.setText("Ver pedidos");
-        jPopupMenu1.add(mnuPedidos);
-
-        tblClientes.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Nome", "Bairro", "Cidade", "Dt. Nasc.", "Tel. Cel.", "Foto"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tblClientes.setComponentPopupMenu(jPopupMenu1);
-        jScrollPane1.setViewportView(tblClientes);
-
-        setTitle("Pesquisar Clientes");
-        setMaximumSize(new java.awt.Dimension(612, 470));
-        setMinimumSize(new java.awt.Dimension(612, 470));
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Pesquisar Pacientes");
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
@@ -89,7 +61,6 @@ public class DlgPesqPaciente extends javax.swing.JDialog {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         getContentPane().add(txtPesq, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 60, 320, 40));
 
-        btnPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/intergraf/imagens/search.png"))); // NOI18N
         btnPesquisar.setText("Pesquisar");
         btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -98,7 +69,6 @@ public class DlgPesqPaciente extends javax.swing.JDialog {
         });
         getContentPane().add(btnPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 60, 140, 40));
 
-        btnSelecionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/intergraf/imagens/accept.png"))); // NOI18N
         btnSelecionar.setText("Selecionar");
         btnSelecionar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -118,7 +88,6 @@ public class DlgPesqPaciente extends javax.swing.JDialog {
         cmbTipo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Nome", "Bairro", "Mês", "CPF" }));
         getContentPane().add(cmbTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 80, 40));
 
-        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/intergraf/imagens/remove.png"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -154,7 +123,6 @@ public class DlgPesqPaciente extends javax.swing.JDialog {
         jpTabela.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(jpTabela, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 580, 230));
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 35, -1, -1));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaces/imgs/TelaPaciente.png"))); // NOI18N
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -166,53 +134,24 @@ public class DlgPesqPaciente extends javax.swing.JDialog {
         /*
         try {
             List<Paciente> lista = gerIG.getGerDominio().pesquisarCliente(txtPesq.getText(), cmbTipo.getSelectedIndex() );
-            
+
             // APAGA as linhas da tabela
             ( (DefaultTableModel) tblClientes.getModel() ).setNumRows(0);
-            
+
             for (Cliente cli : lista ) {
-                // ADICIONAR LINHA NA TABELA        
-                ( (DefaultTableModel) tblClientes.getModel() ).addRow( cli.toArray() );                
+                // ADICIONAR LINHA NA TABELA
+                ( (DefaultTableModel) tblClientes.getModel() ).addRow( cli.toArray() );
             }
-            
-            
+
         } catch (HibernateException | ParseException  ex) {
             JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Cliente", JOptionPane.ERROR_MESSAGE  );
-        } 
-        
+        }
+
         */
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
-    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        /*
-        int linha = tblClientes.getSelectedRow();
-        if ( linha >= 0 ) {
-            
-            try {
-                Cliente cli = (Cliente) tblClientes.getValueAt(linha, 0);
-                if ( JOptionPane.showConfirmDialog(this, "Deseja realmente excluir esse cliente?", "Título", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION ) {
-                    gerIG.getGerDominio().excluir(cli);
-                    ( (DefaultTableModel) tblClientes.getModel() ).removeRow(linha);
-                    JOptionPane.showMessageDialog(this, "Cliente " + cli.getNome() + " excluído com sucesso.", "ERRO ao PESQUISAR Cliente", JOptionPane.ERROR_MESSAGE  );
-                }
-                
-            } catch (HibernateException ex) {
-                JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Cliente", JOptionPane.ERROR_MESSAGE  );
-            }             
-        }        
-        else {
-            JOptionPane.showMessageDialog(this,"Selecione uma linha.", "Pesquisar cliente", JOptionPane.ERROR_MESSAGE  );
-        }
-    */
-    }//GEN-LAST:event_btnExcluirActionPerformed
-
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        paciente = null;
-        this.setVisible(false);
-    }//GEN-LAST:event_btnCancelarActionPerformed
-
     private void btnSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecionarActionPerformed
-        
+
         int linha = tbPacientes.getSelectedRow();
         if ( linha >= 0 ) {
             paciente = (Paciente) tbPacientes.getValueAt(linha, 1);
@@ -220,9 +159,37 @@ public class DlgPesqPaciente extends javax.swing.JDialog {
         else {
             JOptionPane.showMessageDialog(this,"Selecione uma linha.", "Pesquisar paciente", JOptionPane.ERROR_MESSAGE  );
         }
-        
+
         this.setVisible(false);
     }//GEN-LAST:event_btnSelecionarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        paciente = null;
+        this.setVisible(false);
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        /*
+        int linha = tblClientes.getSelectedRow();
+        if ( linha >= 0 ) {
+
+            try {
+                Cliente cli = (Cliente) tblClientes.getValueAt(linha, 0);
+                if ( JOptionPane.showConfirmDialog(this, "Deseja realmente excluir esse cliente?", "Título", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION ) {
+                    gerIG.getGerDominio().excluir(cli);
+                    ( (DefaultTableModel) tblClientes.getModel() ).removeRow(linha);
+                    JOptionPane.showMessageDialog(this, "Cliente " + cli.getNome() + " excluído com sucesso.", "ERRO ao PESQUISAR Cliente", JOptionPane.ERROR_MESSAGE  );
+                }
+
+            } catch (HibernateException ex) {
+                JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Cliente", JOptionPane.ERROR_MESSAGE  );
+            }
+        }
+        else {
+            JOptionPane.showMessageDialog(this,"Selecione uma linha.", "Pesquisar cliente", JOptionPane.ERROR_MESSAGE  );
+        }
+        */
+    }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         try {
@@ -233,7 +200,14 @@ public class DlgPesqPaciente extends javax.swing.JDialog {
     }//GEN-LAST:event_formComponentShown
 
     
-
+    
+    
+    
+    
+    /**
+     * @param args the command line arguments
+     */
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnExcluir;
@@ -241,17 +215,10 @@ public class DlgPesqPaciente extends javax.swing.JDialog {
     private javax.swing.JButton btnRelatorios;
     private javax.swing.JButton btnSelecionar;
     private javax.swing.JComboBox cmbTipo;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JPopupMenu jPopupMenu1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPanel jpTabela;
-    private javax.swing.JMenuItem mnuPedidos;
     private javax.swing.JTable tbPacientes;
-    private javax.swing.JTable tblClientes;
     private javax.swing.JTextField txtPesq;
     // End of variables declaration//GEN-END:variables
-
-
 }
