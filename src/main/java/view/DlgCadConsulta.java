@@ -489,7 +489,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
             lbPaciente.setForeground(Color.red);
             msgErro += "selecione um paciente\n";
        }
-       if(cmbTipoConsulta.getSelectedItem() == null){
+       if(tipoConsultaSelecionado == null){
            lbTipoConsulta.setForeground(Color.red);
            msgErro += "selecione o tipo de consulta\n";
        }
@@ -522,7 +522,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
     private void btConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btConfirmarActionPerformed
         String data = txtData.getText();
         String hora = txtHora.getText();
-
+        tipoConsultaSelecionado = (TipoConsulta) cmbTipoConsulta.getSelectedItem();
         if(validarCampos()){
             try {
                 Date dt = Functions.strToDate(data);
