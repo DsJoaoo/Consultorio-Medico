@@ -10,9 +10,13 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.HeadlessException;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
+import org.hibernate.HibernateException;
 /**
  *
  * @author joaop
@@ -78,7 +82,7 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
         btExcluir = new javax.swing.JButton();
         lbPesquisar = new javax.swing.JLabel();
         btListarTodos = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        comboTipo = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -200,7 +204,7 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
                 btConfirmarActionPerformed(evt);
             }
         });
-        jpBotoes.add(btConfirmar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 160, 40));
+        jpBotoes.add(btConfirmar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, -1, 40));
 
         btAtualizar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btAtualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaces/imgs/icons/atualizar 24x24.png"))); // NOI18N
@@ -210,7 +214,7 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
                 btAtualizarActionPerformed(evt);
             }
         });
-        jpBotoes.add(btAtualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 150, 40));
+        jpBotoes.add(btAtualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 140, 40));
         btAtualizar.setVisible(false);
 
         btLimpar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -319,8 +323,8 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
         });
         ListarPreco.add(btListarTodos, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 10, 30, 40));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Nome", "Plano" }));
-        ListarPreco.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 10, 50, 40));
+        comboTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Nome", "Plano" }));
+        ListarPreco.add(comboTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 10, 50, 40));
 
         jtpTelas.addTab("Lista de Consultas", ListarPreco);
 
@@ -495,7 +499,21 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
     private void btLupaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLupaActionPerformed
 
         if(validarBusca()){
-            //pesquisa o nome no banco de dados
+            try {
+            List<TipoConsulta> lista = gerIG.getGerDominio().pesquisarTipoConsulta(txtPesquisar.getText(), comboTipo.getSelectedIndex() );
+            
+            // APAGA as linhas da tabela
+            ( (DefaultTableModel) tbServicos.getModel() ).setNumRows(0);
+            
+            for (TipoConsulta cli : lista ) {
+                // ADICIONAR LINHA NA TABELA        
+                ( (DefaultTableModel) tbServicos.getModel() ).addRow( cli.toArray() );                
+            }
+            
+            
+        } catch (HibernateException  ex) {
+            JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Cliente", JOptionPane.ERROR_MESSAGE  );
+        } 
         }
         limparCampos();
     }//GEN-LAST:event_btLupaActionPerformed
@@ -536,8 +554,8 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
     private javax.swing.JRadioButton btNao;
     private javax.swing.JButton btNovo;
     private javax.swing.JRadioButton btSim;
+    private javax.swing.JComboBox<String> comboTipo;
     private javax.swing.ButtonGroup grpSimNao;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;

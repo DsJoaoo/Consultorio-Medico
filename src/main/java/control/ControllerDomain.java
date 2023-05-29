@@ -18,12 +18,26 @@ import org.hibernate.HibernateException;
  */
 public class ControllerDomain {
     private final GenericDao genDao;
+    private final PacienteDao pacDao;
+    private final MedicoDao medDao;
+    private final FuncionarioDao funDao;
+    private final ConsultaDao conDao;
+    private final TipoConsultaDao tipoDao;
+    
     
     public ControllerDomain() throws ClassNotFoundException, SQLException {
         // TESTE
         ConexaoHibernate.getSessionFactory();
         genDao = new GenericDao();
+        this.pacDao = null;
+        this.medDao = null;
+        this.funDao = null;
+        this.conDao = null;
+        this.tipoDao = null;
     }
+    
+    //<editor-fold defaultstate="collapsed" desc="CODE: Inserções e exclusão ">
+    
 
     public int inserirPaciente(String nome, String cpf, String email, Date data, String telefone, String sexo){
         Pessoa p = new Paciente(nome, telefone, email, cpf, data, sexo);
@@ -63,6 +77,18 @@ public class ControllerDomain {
     public void excluir (Object obj) throws HibernateException {
         genDao.remover(obj);
     }
-     
-   
+    
+        //</editor-fold>
+
+    public List<TipoConsulta> pesquisarTipoConsulta(String pesq, int tipo) {
+        List<TipoConsulta> lista = null;
+        switch (tipo) {
+            case 0: lista = tipoDao.pesquisarID(pesq); break;
+
+            case 1: lista = tipoDao.pesquisarNome(pesq); break;
+
+            case 2: lista = tipoDao.pesquisarPlano(pesq); break;
+        }
+        return lista;
+    }
 }
