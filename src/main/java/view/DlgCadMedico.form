@@ -647,7 +647,7 @@
                 </Constraint>
               </Constraints>
             </Component>
-            <Component class="javax.swing.JComboBox" name="jComboBox1">
+            <Component class="javax.swing.JComboBox" name="cmbOpcao">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                   <StringArray count="6">
@@ -656,7 +656,7 @@
                     <StringItem index="2" value="E-mail"/>
                     <StringItem index="3" value="Telefone"/>
                     <StringItem index="4" value="CRM"/>
-                    <StringItem index="5" value="Especializa&#xe7;&#xe3;o"/>
+                    <StringItem index="5" value="ID"/>
                   </StringArray>
                 </Property>
               </Properties>

@@ -10,7 +10,10 @@ import domain.Medico;
 import java.awt.Color;
 import java.awt.HeadlessException;
 import java.sql.SQLException;
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import org.hibernate.HibernateException;
 
 /**
  *
@@ -84,7 +87,7 @@ public class DlgCadMedico extends javax.swing.JDialog {
         btEditar = new javax.swing.JButton();
         btExcluir = new javax.swing.JButton();
         btListarTodos = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cmbOpcao = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -363,8 +366,8 @@ public class DlgCadMedico extends javax.swing.JDialog {
         });
         ListarPaciente.add(btListarTodos, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 10, 40, 40));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nome", "CPF", "E-mail", "Telefone", "CRM", "Especialização" }));
-        ListarPaciente.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 10, 80, 40));
+        cmbOpcao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nome", "CPF", "E-mail", "Telefone", "CRM", "ID" }));
+        ListarPaciente.add(cmbOpcao, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 10, 80, 40));
 
         jtpTelas.addTab("Listar Médico", ListarPaciente);
 
@@ -573,8 +576,20 @@ public class DlgCadMedico extends javax.swing.JDialog {
     }//GEN-LAST:event_btLimparActionPerformed
 
     private void btLupaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLupaActionPerformed
-        if(validarPesquisa()){
-            //faz a busca no banco do nome pesquisado
+         if(validarPesquisa()){
+            try {
+                List<Medico> lista = gerIG.getGerDominio().pesquisarMedico(txtPesquisar.getText(), cmbOpcao.getSelectedIndex());
+
+                // APAGA as linhas da tabela
+                ( (DefaultTableModel) tbMedicos.getModel() ).setNumRows(0);
+
+                for (Medico cli : lista ) {
+                    // ADICIONAR LINHA NA TABELA        
+                    ( (DefaultTableModel) tbMedicos.getModel() ).addRow( cli.toArray() );                
+                }
+            } catch (HibernateException  ex) {
+                JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Tipo Consulta", JOptionPane.ERROR_MESSAGE  );
+            } 
         }
         limparCampos();
     }//GEN-LAST:event_btLupaActionPerformed
@@ -606,7 +621,7 @@ public class DlgCadMedico extends javax.swing.JDialog {
     private javax.swing.JButton btLupa;
     private javax.swing.JButton btNovo;
     private javax.swing.JComboBox<String> cmbEspecializacao;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> cmbOpcao;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

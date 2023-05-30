@@ -65,7 +65,7 @@ public class Medico extends Pessoa implements Serializable{
     
     @Override
     public Object[] toArray(){
-       return new Object[] {getIdPessoa(), this, getCpf(), getEmail(),getEmail(), crm, especializacao};
+       return new Object[] {getIdPessoa(), this, getCpf(), getEmail(),getTelefone(), crm, especializacao};
     };
     
 }

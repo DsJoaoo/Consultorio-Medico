@@ -13,7 +13,9 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.List;
 import javax.swing.BorderFactory;
+import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import org.hibernate.HibernateException;
@@ -313,7 +315,7 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
         lbPesquisar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lbPesquisar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbPesquisar.setText("Pesquisar");
-        ListarPreco.add(lbPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 100, 40));
+        ListarPreco.add(lbPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 80, 40));
 
         btListarTodos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaces/imgs/icons/icons8-multidão-24.png"))); // NOI18N
         btListarTodos.addActionListener(new java.awt.event.ActionListener() {
@@ -324,7 +326,7 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
         ListarPreco.add(btListarTodos, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 10, 30, 40));
 
         comboTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Nome", "Plano" }));
-        ListarPreco.add(comboTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 10, 50, 40));
+        ListarPreco.add(comboTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 10, 60, 40));
 
         jtpTelas.addTab("Lista de Consultas", ListarPreco);
 
@@ -500,27 +502,27 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
 
         if(validarBusca()){
             try {
-            List<TipoConsulta> lista = gerIG.getGerDominio().pesquisarTipoConsulta(txtPesquisar.getText(), comboTipo.getSelectedIndex() );
+                List<TipoConsulta> lista = gerIG.getGerDominio().pesquisarTipoConsulta(txtPesquisar.getText(), comboTipo.getSelectedIndex() );
+
+                // APAGA as linhas da tabela
+                ( (DefaultTableModel) tbServicos.getModel() ).setNumRows(0);
+
+                for (TipoConsulta cli : lista ) {
+                    // ADICIONAR LINHA NA TABELA        
+                    ( (DefaultTableModel) tbServicos.getModel() ).addRow( cli.toArray() );                
+                }
+
             
-            // APAGA as linhas da tabela
-            ( (DefaultTableModel) tbServicos.getModel() ).setNumRows(0);
-            
-            for (TipoConsulta cli : lista ) {
-                // ADICIONAR LINHA NA TABELA        
-                ( (DefaultTableModel) tbServicos.getModel() ).addRow( cli.toArray() );                
-            }
-            
-            
-        } catch (HibernateException  ex) {
-            JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Cliente", JOptionPane.ERROR_MESSAGE  );
-        } 
+            } catch (HibernateException  ex) {
+                JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Tipo Consulta", JOptionPane.ERROR_MESSAGE  );
+            } 
         }
         limparCampos();
     }//GEN-LAST:event_btLupaActionPerformed
 
     private void btListarTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btListarTodosActionPerformed
         limparCampos();
-        //lista todos que estão no banco
+        formComponentShown(null);
     }//GEN-LAST:event_btListarTodosActionPerformed
 
     private void btNaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNaoActionPerformed

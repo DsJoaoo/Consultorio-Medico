@@ -29,11 +29,11 @@ public class ControllerDomain {
         // TESTE
         ConexaoHibernate.getSessionFactory();
         genDao = new GenericDao();
-        this.pacDao = null;
-        this.medDao = null;
-        this.funDao = null;
-        this.conDao = null;
-        this.tipoDao = null;
+        pacDao = new PacienteDao();
+        medDao = new MedicoDao();
+        funDao = new FuncionarioDao();
+        conDao = new ConsultaDao();
+        tipoDao = new TipoConsultaDao();
     }
     
     //<editor-fold defaultstate="collapsed" desc="CODE: Inserções e exclusão ">
@@ -88,6 +88,54 @@ public class ControllerDomain {
             case 1: lista = tipoDao.pesquisarNome(pesq); break;
 
             case 2: lista = tipoDao.pesquisarPlano(pesq); break;
+        }
+        return lista;
+    }
+
+    public List<Paciente> pesquisarPaciente(String pesq, int tipo) {
+        List<Paciente> lista = null;
+        switch (tipo) {
+            case 0: lista = pacDao.pesquisarNome(pesq); break;
+
+            case 1: lista = pacDao.pesquisarData(pesq); break;
+
+            case 2: lista = pacDao.pesquisarID(pesq); break;
+            
+            case 3: lista = pacDao.pesquisarCPF(pesq); break;
+        }
+        return lista;
+    }
+
+    public List<Medico> pesquisarMedico(String pesq, int tipo) {
+        List<Medico> lista = null;
+        switch (tipo) {
+            case 0: lista = medDao.pesquisarNome(pesq); break;
+
+            case 1: lista = medDao.pesquisarCPF(pesq); break;
+
+            case 2: lista = medDao.pesquisarEMAIL(pesq); break;
+            
+            case 3: lista = medDao.pesquisarTEL(pesq); break;
+            
+            case 5: lista = medDao.pesquisarCRM(pesq); break;
+            
+            case 6: lista = medDao.pesquisarID(pesq); break;
+        }
+        return lista;
+    }
+
+    public List<Funcionario> pesquisarFuncionario(String pesq, int tipo) {
+        List<Funcionario> lista = null;
+        switch (tipo) {
+            case 0: lista = funDao.pesquisarNome(pesq); break;
+
+            case 1: lista = funDao.pesquisarCPF(pesq); break;
+
+            case 2: lista = funDao.pesquisarData(pesq); break;
+            
+            case 3: lista = funDao.pesquisarEmail(pesq); break;
+            
+            case 4: lista = funDao.pesquisarID(pesq); break;
         }
         return lista;
     }

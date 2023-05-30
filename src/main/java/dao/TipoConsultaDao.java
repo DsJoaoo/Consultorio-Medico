@@ -38,17 +38,13 @@ public class TipoConsultaDao extends GenericDao{
             Predicate restricoes = null;
             
             switch (tipo) {
-                case 0: restricoes = builder.like(tabela.get("nome"), pesq + "%" ); 
+                case 0: restricoes = builder.equal(tabela.get("idTipoConsulta"), pesq ); 
                         break;
-                case 1: restricoes = builder.like(tabela.get("endereco").get("bairro"), pesq + "%" ); 
+                case 1: restricoes = builder.like(tabela.get("descricao"), pesq + "%" ); 
                         break;
                 case 2: 
-                        Expression exp = builder.function("month", Integer.class, tabela.get("dtNasc") );
-                        restricoes = builder.equal(exp, pesq);
-                        break;
-                    
-                case 3: restricoes = builder.like(tabela.get("cpf"), pesq ); 
-                        break;                        
+                        restricoes = builder.equal(tabela.get("isPlano"), pesq);
+                        break;                       
             }
                         
             consulta.where(restricoes);

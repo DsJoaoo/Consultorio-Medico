@@ -7,12 +7,16 @@ package view;
 import control.ControllerView;
 import control.Functions;
 import domain.Paciente;
+import domain.TipoConsulta;
 import java.awt.Color;
 import java.awt.HeadlessException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import org.hibernate.HibernateException;
 
 /**
  *
@@ -73,7 +77,7 @@ public class DlgCadPaciente extends javax.swing.JDialog {
         btLimpar = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JSeparator();
         ListarPaciente = new javax.swing.JPanel();
-        txtPesquisa = new javax.swing.JTextField();
+        txtPesquisar = new javax.swing.JTextField();
         btLupa = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jpTabela = new javax.swing.JPanel();
@@ -282,7 +286,7 @@ public class DlgCadPaciente extends javax.swing.JDialog {
         jtpTelas.addTab("Cadastrar Paciente", CadastroPaciente);
 
         ListarPaciente.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        ListarPaciente.add(txtPesquisa, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 10, 290, 40));
+        ListarPaciente.add(txtPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 10, 290, 40));
 
         btLupa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaces/imgs/icons/lupa24-icon.png"))); // NOI18N
         btLupa.addActionListener(new java.awt.event.ActionListener() {
@@ -362,7 +366,7 @@ public class DlgCadPaciente extends javax.swing.JDialog {
         });
         ListarPaciente.add(btListarTodos, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 10, 40, 40));
 
-        cmbOpcao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nome", "Data", "ID", "CPF" }));
+        cmbOpcao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nome", "Data Nasc", "ID", "CPF" }));
         ListarPaciente.add(cmbOpcao, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 10, 90, 40));
 
         lbPesquisar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -415,7 +419,7 @@ public class DlgCadPaciente extends javax.swing.JDialog {
     private boolean validarBusca(){
         setCor();
         String msgErro = "";
-        if(txtPesquisa.getText().isEmpty()){
+        if(txtPesquisar.getText().isEmpty()){
             cmbOpcao.setForeground(Color.red);
             msgErro += "Insira um nome!\n";
         }
@@ -574,13 +578,27 @@ public class DlgCadPaciente extends javax.swing.JDialog {
     
     private void btLupaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLupaActionPerformed
         if(validarBusca()){
-            //pesquisa no banco o nome
+            try {
+                List<Paciente> lista = gerIG.getGerDominio().pesquisarPaciente(txtPesquisar.getText(), cmbOpcao.getSelectedIndex() );
+
+                // APAGA as linhas da tabela
+                ( (DefaultTableModel) tbPacientes.getModel() ).setNumRows(0);
+
+                for (Paciente cli : lista ) {
+                    // ADICIONAR LINHA NA TABELA        
+                    ( (DefaultTableModel) tbPacientes.getModel() ).addRow( cli.toArray() );                
+                }
+
+            
+            } catch (HibernateException  ex) {
+                JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Tipo Consulta", JOptionPane.ERROR_MESSAGE  );
+            } 
         }
         limparCampos();
     }//GEN-LAST:event_btLupaActionPerformed
 
     private void btListarTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btListarTodosActionPerformed
-
+        formComponentShown(null);
         limparCampos();
         //lista todos que estão no banco
     }//GEN-LAST:event_btListarTodosActionPerformed
@@ -646,7 +664,7 @@ public class DlgCadPaciente extends javax.swing.JDialog {
     private javax.swing.JTextField txtEmail;
     private javax.swing.JFormattedTextField txtIdPaciente;
     private javax.swing.JTextField txtNome;
-    private javax.swing.JTextField txtPesquisa;
+    private javax.swing.JTextField txtPesquisar;
     private javax.swing.JFormattedTextField txtTelefone;
     // End of variables declaration//GEN-END:variables
 

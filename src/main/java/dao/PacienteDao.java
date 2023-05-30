@@ -5,9 +5,11 @@
 package dao;
 
 import domain.Paciente;
-import java.io.IOException;
 import java.util.List;
-import org.hibernate.Criteria;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
@@ -18,91 +20,64 @@ import org.hibernate.Session;
 
 public class PacienteDao{
     
-    public void cadastrar(Paciente paciente) throws HibernateException{
+       private List<Paciente> pesquisar(String pesq, int tipo) throws HibernateException {
+        List lista = null;
         Session sessao = null;
         try {
             sessao = ConexaoHibernate.getSessionFactory().openSession();
-            sessao.getTransaction().begin();
+            sessao.beginTransaction();
 
-            sessao.save(paciente);
+            // Construtor da CONSULTA
+            CriteriaBuilder builder = sessao.getCriteriaBuilder();
+            CriteriaQuery consulta = builder.createQuery( Paciente.class );
             
+            // FROM
+            Root tabela = consulta.from(Paciente.class);
+            
+            // RESTRIÇÕES
+            Predicate restricoes = null;
+            
+            switch (tipo) {
+                case 0: restricoes = builder.like(tabela.get("nomePessoa"), pesq + "%"); 
+                        break;
+                case 1: 
+                        restricoes = builder.equal(tabela.get("dataNascimento"), pesq);
+                        break; 
+                case 2: restricoes = builder.equal(tabela.get("idPessoa"), pesq ); 
+                        break;
+                case 3: 
+                        restricoes = builder.equal(tabela.get("cpf"), pesq);
+                        break;          
+            }
+                        
+            consulta.where(restricoes);
+            lista = sessao.createQuery(consulta).getResultList();            
+
             sessao.getTransaction().commit();
             sessao.close();
-        } catch (HibernateException e) {
-            if(sessao != null){
-                sessao.getTransaction().rollback();
+        } catch (HibernateException ex) {
+            if (sessao != null ) {
+                sessao.getTransaction().rollback();          
                 sessao.close();
             }
-            throw new HibernateException(e);
+            throw new HibernateException(ex);
         }
-    }
-    
-    public void atualizar(Paciente paciente)throws HibernateException{
-        Session sessao = null;
-        try {
-            sessao = ConexaoHibernate.getSessionFactory().openSession();
-            sessao.getTransaction().begin();
-
-            sessao.update(paciente);
-            
-            sessao.getTransaction().commit();
-            sessao.close();
-        } catch (HibernateException e) {
-            if(sessao != null){
-                sessao.getTransaction().rollback();
-                sessao.close();
-            }
-            throw new HibernateException(e);
-        }
-        
-    }
-    
-    
-    public void remover(Paciente paciente)throws HibernateException{
-        Session sessao = null;
-        try {
-            sessao = ConexaoHibernate.getSessionFactory().openSession();
-            sessao.getTransaction().begin();
-
-            sessao.delete(paciente);
-            
-            sessao.getTransaction().commit();
-            sessao.close();
-        } catch (HibernateException e) {
-            if(sessao != null){
-                sessao.getTransaction().rollback();
-                sessao.close();
-            }
-            throw new HibernateException(e);
-        }
-    }
-    
-    public List<Paciente> listar() throws HibernateException{
-        Session sessao = null;
-        List<Paciente> lista = null;
-        try {
-            sessao = ConexaoHibernate.getSessionFactory().openSession();
-            sessao.getTransaction().begin();
-
-            Criteria consulta = sessao.createCriteria(Paciente.class);
-            lista = consulta.list();
-            
-            sessao.getTransaction().commit();
-            sessao.close();
-        } catch (HibernateException e) {
-            if(sessao != null){
-                sessao.getTransaction().rollback();
-                sessao.close();
-            }
-            throw new HibernateException(e);
-        }
-       
-        return lista; 
-    }
-    
-    public Paciente buscarPacientePorId(int idPaciente) {
-        
-        return null;
-        
+        return lista;
     }   
+
+    public List<Paciente> pesquisarNome(String pesq) {
+        return pesquisar(pesq,0);
+    }
+
+    public List<Paciente> pesquisarID(String pesq) {
+        return pesquisar(pesq,2);
+    }
+
+    public List<Paciente> pesquisarCPF(String pesq) {
+        return pesquisar(pesq,3);
+    }
+
+    public List<Paciente> pesquisarData(String pesq) {
+        return pesquisar(pesq,1);
+    }
 }
