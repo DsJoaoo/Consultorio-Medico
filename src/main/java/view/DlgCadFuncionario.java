@@ -293,7 +293,7 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
         lbPesquisar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lbPesquisar.setText("Pesquisar ");
         ListarFuncionario.add(lbPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 80, 40));
-        ListarFuncionario.add(txtPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 10, 290, 40));
+        ListarFuncionario.add(txtPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 10, 280, 40));
 
         btListarTodos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaces/imgs/icons/icons8-multidão-24.png"))); // NOI18N
         btListarTodos.addActionListener(new java.awt.event.ActionListener() {
@@ -376,7 +376,7 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
         ListarFuncionario.add(btLupa1, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 10, 40, 40));
 
         cmbOpcao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nome", "CPF", "Data", "E-mail", "ID" }));
-        ListarFuncionario.add(cmbOpcao, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 10, -1, 40));
+        ListarFuncionario.add(cmbOpcao, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 10, 90, 40));
 
         jtpTelas.addTab("Listar Funcionários", ListarFuncionario);
 

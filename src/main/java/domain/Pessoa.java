@@ -31,7 +31,7 @@ public abstract class Pessoa implements Serializable, Adpater {
     private String email;
      
      
-    @Column (updatable = false, length = 14) 
+    @Column (updatable = false, unique = true, length = 14) 
     private String cpf;
 
     public Pessoa() {

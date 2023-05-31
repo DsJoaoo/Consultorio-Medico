@@ -5,7 +5,6 @@
 package dao;
 
 import domain.Funcionario;
-import domain.Medico;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -20,7 +19,7 @@ import org.hibernate.Session;
  */
 public class FuncionarioDao {
     
-        private List<Funcionario> pesquisar(String pesq, int tipo) throws HibernateException {
+    private List<Funcionario> pesquisar(String pesq, int tipo) throws HibernateException {
         List lista = null;
         Session sessao = null;
         try {
@@ -46,7 +45,7 @@ public class FuncionarioDao {
                         break;
                 case 3: restricoes = builder.like(tabela.get("email"), pesq + "%"); 
                         break;
-                case 4: restricoes = builder.equal(tabela.get("idPessoa"), pesq ); 
+                case 4: restricoes = builder.equal(tabela.get("idPessoa"), Integer.valueOf(pesq) ); 
                         break;  
             }
                         

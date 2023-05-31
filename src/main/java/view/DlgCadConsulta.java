@@ -13,7 +13,10 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import org.hibernate.HibernateException;
 
 
 /**
@@ -101,7 +104,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
         btEditar = new javax.swing.JButton();
         btExcluir = new javax.swing.JButton();
         btListarTodos = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cmbOpcao = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -406,8 +409,8 @@ public class DlgCadConsulta extends javax.swing.JDialog {
         });
         ListaConsulta.add(btListarTodos, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 10, 40, 40));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Tipo", "Data", "Medico", "Paciente", "Funcionario", " ", " ", " ", " ", " " }));
-        ListaConsulta.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, 90, 40));
+        cmbOpcao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Tipo", "Medico", "Paciente", "Funcionario", "Data" }));
+        ListaConsulta.add(cmbOpcao, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, 90, 40));
 
         jtpTelas.addTab("Listar Consultas", ListaConsulta);
 
@@ -600,7 +603,19 @@ public class DlgCadConsulta extends javax.swing.JDialog {
 
     private void btLupaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLupaActionPerformed
         if(validarCampoPesquisa()){
-            //pesquisa o nome no banco
+            try {
+                List<Consulta> lista = gerIG.getGerDominio().pesquisarConsulta(txtPesquisar.getText(), cmbOpcao.getSelectedIndex());
+
+                // APAGA as linhas da tabela
+                ( (DefaultTableModel) tbConsultas.getModel() ).setNumRows(0);
+
+                for (Consulta cli : lista ) {
+                    // ADICIONAR LINHA NA TABELA        
+                    ( (DefaultTableModel) tbConsultas.getModel() ).addRow( cli.toArray() );                
+                }
+            } catch (HibernateException  ex) {
+                JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Consulta", JOptionPane.ERROR_MESSAGE  );
+            } 
         }
         limparCampos();
     }//GEN-LAST:event_btLupaActionPerformed
@@ -658,8 +673,8 @@ public class DlgCadConsulta extends javax.swing.JDialog {
     private javax.swing.JButton btPesqFuncionario;
     private javax.swing.JButton btPesqMedico;
     private javax.swing.JButton btPesqPaciente;
+    private javax.swing.JComboBox<String> cmbOpcao;
     private javax.swing.JComboBox<String> cmbTipoConsulta;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

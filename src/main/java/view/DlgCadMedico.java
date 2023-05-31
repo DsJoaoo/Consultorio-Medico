@@ -588,16 +588,15 @@ public class DlgCadMedico extends javax.swing.JDialog {
                     ( (DefaultTableModel) tbMedicos.getModel() ).addRow( cli.toArray() );                
                 }
             } catch (HibernateException  ex) {
-                JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Tipo Consulta", JOptionPane.ERROR_MESSAGE  );
+                JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Médico", JOptionPane.ERROR_MESSAGE  );
             } 
         }
         limparCampos();
     }//GEN-LAST:event_btLupaActionPerformed
 
     private void btListarTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btListarTodosActionPerformed
-
         limparCampos();
-        //lista todos que estão no banco
+        formComponentShown(null);
     }//GEN-LAST:event_btListarTodosActionPerformed
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown

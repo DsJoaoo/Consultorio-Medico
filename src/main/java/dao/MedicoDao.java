@@ -47,7 +47,7 @@ public class MedicoDao extends GenericDao{
                         break;
                 case 4: restricoes = builder.equal(tabela.get("crm"), pesq);
                         break;  
-                case 5: restricoes = builder.equal(tabela.get("idPessoa"), pesq ); 
+                case 5: restricoes = builder.equal(tabela.get("idPessoa"), Integer.valueOf(pesq) ); 
                         break;  
             }
                         

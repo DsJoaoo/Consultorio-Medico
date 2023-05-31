@@ -4,6 +4,7 @@
  */
 package domain;
 
+import control.Functions;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -65,7 +66,7 @@ public class Funcionario extends Pessoa implements Serializable{
     
     @Override
     public Object[] toArray(){
-        Object dados[] = {getIdPessoa(), this, getCpf(), dataAdmissao,getEmail(), senha, getTelefone()};
+        Object dados[] = {getIdPessoa(), this, getCpf(), Functions.formatarDataParaInterface(dataAdmissao.toString()),getEmail(), senha, getTelefone()};
         return dados;
     };
 }

@@ -38,7 +38,7 @@ public class TipoConsultaDao extends GenericDao{
             Predicate restricoes = null;
             
             switch (tipo) {
-                case 0: restricoes = builder.equal(tabela.get("idTipoConsulta"), pesq ); 
+                case 0: restricoes = builder.equal(tabela.get("idTipoConsulta"), Integer.valueOf(pesq) ); 
                         break;
                 case 1: restricoes = builder.like(tabela.get("descricao"), pesq + "%" ); 
                         break;

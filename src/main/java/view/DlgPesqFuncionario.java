@@ -7,15 +7,18 @@ package view;
 
 import control.ControllerView;
 import domain.Funcionario;
+import java.awt.Color;
 import java.sql.SQLException;
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import org.hibernate.HibernateException;
 
 /**
  *
  * @author Usuario
  */
 public class DlgPesqFuncionario extends javax.swing.JDialog {
-
     private ControllerView gerIG;
     private Funcionario funSelecionado;
 
@@ -42,17 +45,18 @@ public class DlgPesqFuncionario extends javax.swing.JDialog {
     private void initComponents() {
 
         txtPesq = new javax.swing.JTextField();
-        btnPesquisar = new javax.swing.JButton();
+        btPesquisar = new javax.swing.JButton();
         btnSelecionar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-        cmbTipo = new javax.swing.JComboBox();
+        cmbOpcao = new javax.swing.JComboBox();
         btnExcluir = new javax.swing.JButton();
         btnRelatorios = new javax.swing.JButton();
+        btListarTodos = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jpTabelaFuncionarios = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tbFuncionarios = new javax.swing.JTable();
-        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Pesquisar Funcionário");
@@ -62,15 +66,15 @@ public class DlgPesqFuncionario extends javax.swing.JDialog {
             }
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        getContentPane().add(txtPesq, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 60, 310, 40));
+        getContentPane().add(txtPesq, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 60, 290, 40));
 
-        btnPesquisar.setText("Pesquisar");
-        btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
+        btPesquisar.setText("Pesquisar");
+        btPesquisar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPesquisarActionPerformed(evt);
+                btPesquisarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 60, 130, 40));
+        getContentPane().add(btPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 60, 90, 40));
 
         btnSelecionar.setText("Selecionar");
         btnSelecionar.addActionListener(new java.awt.event.ActionListener() {
@@ -88,8 +92,13 @@ public class DlgPesqFuncionario extends javax.swing.JDialog {
         });
         getContentPane().add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 360, 100, 50));
 
-        cmbTipo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Nome", "Bairro", "Mês", "CPF" }));
-        getContentPane().add(cmbTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 70, 40));
+        cmbOpcao.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Nome", "CPF", "Data", "E-mail", "ID" }));
+        cmbOpcao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbOpcaoActionPerformed(evt);
+            }
+        });
+        getContentPane().add(cmbOpcao, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 80, 40));
 
         btnExcluir.setText("Excluir");
         btnExcluir.addActionListener(new java.awt.event.ActionListener() {
@@ -101,7 +110,18 @@ public class DlgPesqFuncionario extends javax.swing.JDialog {
 
         btnRelatorios.setText("Relatório");
         getContentPane().add(btnRelatorios, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 360, 110, 50));
+
+        btListarTodos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaces/imgs/icons/icons8-multidão-24.png"))); // NOI18N
+        btListarTodos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btListarTodosActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btListarTodos, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 60, 40, 40));
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 35, -1, -1));
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaces/imgs/TelaPaciente.png"))); // NOI18N
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 610, -1));
 
         jpTabelaFuncionarios.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Funcionários", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 18))); // NOI18N
         jpTabelaFuncionarios.setLayout(new java.awt.BorderLayout());
@@ -128,12 +148,27 @@ public class DlgPesqFuncionario extends javax.swing.JDialog {
 
         getContentPane().add(jpTabelaFuncionarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 580, 230));
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaces/imgs/TelaPaciente.png"))); // NOI18N
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 610, -1));
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private boolean validarPesquisa(){
+        String msgErro = "";
+        if(btPesquisar.getText().isEmpty()){
+            btPesquisar.setForeground(Color.red);
+            msgErro += "Insira um nome!\n";
+        }else{
+            btPesquisar.setForeground(Color.black);
+        }
+        
+        if(msgErro.isEmpty()){
+            return true;
+        }else{
+            JOptionPane.showMessageDialog(this, msgErro, "Verifique os campos e tente novamente", JOptionPane.ERROR_MESSAGE);
+            return false; 
+        }
+    }
+    
+    
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
          try {
             gerIG.carregarTabela(tbFuncionarios, Funcionario.class);
@@ -142,25 +177,23 @@ public class DlgPesqFuncionario extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_formComponentShown
 
-    private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
-        /*
-        try {
-            List<Paciente> lista = gerIG.getGerDominio().pesquisarCliente(txtPesq.getText(), cmbTipo.getSelectedIndex() );
+    private void btPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPesquisarActionPerformed
+       if(validarPesquisa()){
+            try {
+                List<Funcionario> lista = gerIG.getGerDominio().pesquisarFuncionario(txtPesq.getText(), cmbOpcao.getSelectedIndex());
 
-            // APAGA as linhas da tabela
-            ( (DefaultTableModel) tblClientes.getModel() ).setNumRows(0);
+                // APAGA as linhas da tabela
+                ( (DefaultTableModel) tbFuncionarios.getModel() ).setNumRows(0);
 
-            for (Cliente cli : lista ) {
-                // ADICIONAR LINHA NA TABELA
-                ( (DefaultTableModel) tblClientes.getModel() ).addRow( cli.toArray() );
-            }
-
-        } catch (HibernateException | ParseException  ex) {
-            JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Cliente", JOptionPane.ERROR_MESSAGE  );
+                for (Funcionario cli : lista ) {
+                    // ADICIONAR LINHA NA TABELA        
+                    ( (DefaultTableModel) tbFuncionarios.getModel() ).addRow( cli.toArray() );                
+                }
+            } catch (HibernateException  ex) {
+                JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Funcionario", JOptionPane.ERROR_MESSAGE  );
+            } 
         }
-
-        */
-    }//GEN-LAST:event_btnPesquisarActionPerformed
+    }//GEN-LAST:event_btPesquisarActionPerformed
 
     private void btnSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecionarActionPerformed
 
@@ -203,17 +236,26 @@ public class DlgPesqFuncionario extends javax.swing.JDialog {
         */
     }//GEN-LAST:event_btnExcluirActionPerformed
 
+    private void btListarTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btListarTodosActionPerformed
+        formComponentShown(null);
+    }//GEN-LAST:event_btListarTodosActionPerformed
+
+    private void cmbOpcaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbOpcaoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbOpcaoActionPerformed
+
     /**
      * @param args the command line arguments
      */
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btListarTodos;
+    private javax.swing.JButton btPesquisar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnExcluir;
-    private javax.swing.JButton btnPesquisar;
     private javax.swing.JButton btnRelatorios;
     private javax.swing.JButton btnSelecionar;
-    private javax.swing.JComboBox cmbTipo;
+    private javax.swing.JComboBox cmbOpcao;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane3;

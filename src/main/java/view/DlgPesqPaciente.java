@@ -7,8 +7,12 @@ package view;
 
 import control.ControllerView;
 import domain.Paciente;
+import java.awt.Color;
 import java.sql.SQLException;
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import org.hibernate.HibernateException;
 
 /**
  *
@@ -40,15 +44,16 @@ public class DlgPesqPaciente extends javax.swing.JDialog {
     private void initComponents() {
 
         txtPesq = new javax.swing.JTextField();
-        btnPesquisar = new javax.swing.JButton();
+        btPesquisar = new javax.swing.JButton();
         btnSelecionar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-        cmbTipo = new javax.swing.JComboBox();
+        cmbOpcao = new javax.swing.JComboBox();
         btnExcluir = new javax.swing.JButton();
         btnRelatorios = new javax.swing.JButton();
+        btListarTodos = new javax.swing.JButton();
         jpTabela = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tbPacientes = new javax.swing.JTable();
+        txtPesquisar = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -61,13 +66,13 @@ public class DlgPesqPaciente extends javax.swing.JDialog {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         getContentPane().add(txtPesq, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 60, 320, 40));
 
-        btnPesquisar.setText("Pesquisar");
-        btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
+        btPesquisar.setText("Pesquisar");
+        btPesquisar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPesquisarActionPerformed(evt);
+                btPesquisarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 60, 140, 40));
+        getContentPane().add(btPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 60, 80, 40));
 
         btnSelecionar.setText("Selecionar");
         btnSelecionar.addActionListener(new java.awt.event.ActionListener() {
@@ -85,8 +90,8 @@ public class DlgPesqPaciente extends javax.swing.JDialog {
         });
         getContentPane().add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 360, 110, 50));
 
-        cmbTipo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Nome", "Bairro", "Mês", "CPF" }));
-        getContentPane().add(cmbTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 80, 40));
+        cmbOpcao.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Nome", "Data Nasc", "ID", "CPF" }));
+        getContentPane().add(cmbOpcao, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 80, 40));
 
         btnExcluir.setText("Excluir");
         btnExcluir.addActionListener(new java.awt.event.ActionListener() {
@@ -99,10 +104,18 @@ public class DlgPesqPaciente extends javax.swing.JDialog {
         btnRelatorios.setText("Relatório");
         getContentPane().add(btnRelatorios, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 360, 120, 50));
 
+        btListarTodos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaces/imgs/icons/icons8-multidão-24.png"))); // NOI18N
+        btListarTodos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btListarTodosActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btListarTodos, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 60, 40, 40));
+
         jpTabela.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Pacientes", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 18))); // NOI18N
         jpTabela.setLayout(new java.awt.BorderLayout());
 
-        tbPacientes.setModel(new javax.swing.table.DefaultTableModel(
+        txtPesquisar.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -118,7 +131,7 @@ public class DlgPesqPaciente extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(tbPacientes);
+        jScrollPane2.setViewportView(txtPesquisar);
 
         jpTabela.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
@@ -130,31 +143,48 @@ public class DlgPesqPaciente extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
-        /*
-        try {
-            List<Paciente> lista = gerIG.getGerDominio().pesquisarCliente(txtPesq.getText(), cmbTipo.getSelectedIndex() );
-
-            // APAGA as linhas da tabela
-            ( (DefaultTableModel) tblClientes.getModel() ).setNumRows(0);
-
-            for (Cliente cli : lista ) {
-                // ADICIONAR LINHA NA TABELA
-                ( (DefaultTableModel) tblClientes.getModel() ).addRow( cli.toArray() );
-            }
-
-        } catch (HibernateException | ParseException  ex) {
-            JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Cliente", JOptionPane.ERROR_MESSAGE  );
+    private boolean validarBusca(){
+        String msgErro = "";
+        if(btPesquisar.getText().isEmpty()){
+            btPesquisar.setForeground(Color.red);
+            msgErro += "Insira um nome!\n";
+        }else{
+            btPesquisar.setForeground(Color.black);
         }
+        
+        if(msgErro.isEmpty()){
+            return true;
+        }else{
+            JOptionPane.showMessageDialog(this, msgErro, "Verifique os campos e tente novamente", JOptionPane.ERROR_MESSAGE);
+            return false; 
+        }
+    }
+    
+    private void btPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPesquisarActionPerformed
+        if(validarBusca()){
+            try {
+                List<Paciente> lista = gerIG.getGerDominio().pesquisarPaciente(txtPesq.getText(), cmbOpcao.getSelectedIndex() );
 
-        */
-    }//GEN-LAST:event_btnPesquisarActionPerformed
+                // APAGA as linhas da tabela
+                ( (DefaultTableModel) txtPesquisar.getModel() ).setNumRows(0);
+
+                for (Paciente cli : lista ) {
+                    // ADICIONAR LINHA NA TABELA        
+                    ( (DefaultTableModel) txtPesquisar.getModel() ).addRow( cli.toArray() );                
+                }
+
+            
+            } catch (HibernateException  ex) {
+                JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Tipo Consulta", JOptionPane.ERROR_MESSAGE  );
+            } 
+        }
+    }//GEN-LAST:event_btPesquisarActionPerformed
 
     private void btnSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecionarActionPerformed
 
-        int linha = tbPacientes.getSelectedRow();
+        int linha = txtPesquisar.getSelectedRow();
         if ( linha >= 0 ) {
-            paciente = (Paciente) tbPacientes.getValueAt(linha, 1);
+            paciente = (Paciente) txtPesquisar.getValueAt(linha, 1);
         }
         else {
             JOptionPane.showMessageDialog(this,"Selecione uma linha.", "Pesquisar paciente", JOptionPane.ERROR_MESSAGE  );
@@ -193,11 +223,16 @@ public class DlgPesqPaciente extends javax.swing.JDialog {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         try {
-            gerIG.carregarTabela(tbPacientes, Paciente.class);
+            gerIG.carregarTabela(txtPesquisar, Paciente.class);
         } catch (ClassNotFoundException | SQLException ex) {
             JOptionPane.showMessageDialog(this, "Erro ao carregar pacientes " + ex.getMessage() );
         }
     }//GEN-LAST:event_formComponentShown
+
+    private void btListarTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btListarTodosActionPerformed
+        formComponentShown(null);
+        //lista todos que estão no banco
+    }//GEN-LAST:event_btListarTodosActionPerformed
 
     
     
@@ -209,16 +244,17 @@ public class DlgPesqPaciente extends javax.swing.JDialog {
      */
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btListarTodos;
+    private javax.swing.JButton btPesquisar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnExcluir;
-    private javax.swing.JButton btnPesquisar;
     private javax.swing.JButton btnRelatorios;
     private javax.swing.JButton btnSelecionar;
-    private javax.swing.JComboBox cmbTipo;
+    private javax.swing.JComboBox cmbOpcao;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPanel jpTabela;
-    private javax.swing.JTable tbPacientes;
     private javax.swing.JTextField txtPesq;
+    private javax.swing.JTable txtPesquisar;
     // End of variables declaration//GEN-END:variables
 }

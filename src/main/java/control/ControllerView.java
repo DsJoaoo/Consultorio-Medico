@@ -35,7 +35,6 @@ public class ControllerView {
     private DlgPesqPaciente janPesqPaciente = null;
     private DlgPesqMedico janPesqMedico = null;
     private DlgPesqFuncionario janPesqFuncionario = null;
-    private DlgPesqTipoConsulta janPesqTipo = null;
     
     
     
@@ -121,11 +120,6 @@ public class ControllerView {
     public Funcionario janelaPesqFuncionario() {
         janPesqFuncionario = (DlgPesqFuncionario) abrirJanela(janCadPrincipal, janPesqFuncionario, DlgPesqFuncionario.class);
         return janPesqFuncionario.getFuncionario();
-    }
-    
-    public TipoConsulta janelaPesqTipoConsulta() {
-        janPesqTipo = (DlgPesqTipoConsulta) abrirJanela(janCadPrincipal, janPesqTipo, DlgPesqTipoConsulta.class);
-        return janPesqTipo.getTipo();
     }
     
     

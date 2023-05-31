@@ -139,4 +139,22 @@ public class ControllerDomain {
         }
         return lista;
     }
+
+    public List<Consulta> pesquisarConsulta(String pesq, int tipo) {
+        List<Consulta> lista = null;
+        switch (tipo) {
+            case 0: lista = conDao.pesquisarID(pesq); break;
+
+            case 1: lista = conDao.pesquisarTIPO(pesq); break;
+
+            case 2: lista = conDao.pesquisarMedico(pesq); break;
+            
+            case 3: lista = conDao.pesquisarPaciente(pesq); break;
+            
+            case 4: lista = conDao.pesquisarFuncionario(pesq); break;
+            
+            case 5: lista = conDao.pesquisarData(pesq); break;
+        }
+        return lista;
+    }
 }

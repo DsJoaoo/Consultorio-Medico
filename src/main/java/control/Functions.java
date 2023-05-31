@@ -280,7 +280,7 @@ public class Functions {
         String dia = dataLimpa.substring(6); // obtém o dia
         String mes = dataLimpa.substring(4, 6); // obtém o mês
         String ano = dataLimpa.substring(0, 4); // obtém o ano
-        String resultado = dia + mes  + ano;
+        String resultado = dia + "/" + mes + "/" + ano;
         return resultado;
     }
     

@@ -43,7 +43,7 @@ public class PacienteDao{
                 case 1: 
                         restricoes = builder.equal(tabela.get("dataNascimento"), pesq);
                         break; 
-                case 2: restricoes = builder.equal(tabela.get("idPessoa"), pesq ); 
+                case 2: restricoes = builder.equal(tabela.get("idPessoa"), Integer.valueOf(pesq) ); 
                         break;
                 case 3: 
                         restricoes = builder.equal(tabela.get("cpf"), pesq);

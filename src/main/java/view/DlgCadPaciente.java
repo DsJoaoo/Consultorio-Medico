@@ -286,7 +286,7 @@ public class DlgCadPaciente extends javax.swing.JDialog {
         jtpTelas.addTab("Cadastrar Paciente", CadastroPaciente);
 
         ListarPaciente.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        ListarPaciente.add(txtPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 10, 290, 40));
+        ListarPaciente.add(txtPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 10, 300, 40));
 
         btLupa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaces/imgs/icons/lupa24-icon.png"))); // NOI18N
         btLupa.addActionListener(new java.awt.event.ActionListener() {
@@ -415,7 +415,6 @@ public class DlgCadPaciente extends javax.swing.JDialog {
         cmbOpcao.setForeground(Color.black);
     }
     
-    
     private boolean validarBusca(){
         setCor();
         String msgErro = "";
@@ -431,6 +430,7 @@ public class DlgCadPaciente extends javax.swing.JDialog {
             return false; 
         }
     }
+    
     
     private boolean validarCampos(){
         String msgErro = "";

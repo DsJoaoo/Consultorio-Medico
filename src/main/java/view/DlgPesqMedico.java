@@ -7,8 +7,12 @@ package view;
 
 import control.ControllerView;
 import domain.Medico;
+import java.awt.Color;
 import java.sql.SQLException;
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import org.hibernate.HibernateException;
 
 /**
  *
@@ -42,14 +46,15 @@ private ControllerView gerIG;
 
         txtPesq = new javax.swing.JTextField();
         btnSelecionar = new javax.swing.JButton();
-        btnPesquisar = new javax.swing.JButton();
+        btPesquisar = new javax.swing.JButton();
         btnRelatorios = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
-        cmbTipo = new javax.swing.JComboBox();
+        cmbOpcao = new javax.swing.JComboBox();
         btnCancelar = new javax.swing.JButton();
+        btListarTodos = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tbMedicos = new javax.swing.JTable();
+        txtPesquisar = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
@@ -70,13 +75,13 @@ private ControllerView gerIG;
         });
         getContentPane().add(btnSelecionar, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 360, 140, 50));
 
-        btnPesquisar.setText("Pesquisar");
-        btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
+        btPesquisar.setText("Pesquisar");
+        btPesquisar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPesquisarActionPerformed(evt);
+                btPesquisarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 60, 140, 40));
+        getContentPane().add(btPesquisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 60, 80, 40));
 
         btnRelatorios.setText("Relatório");
         btnRelatorios.addActionListener(new java.awt.event.ActionListener() {
@@ -94,8 +99,8 @@ private ControllerView gerIG;
         });
         getContentPane().add(btnExcluir, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 360, 110, 50));
 
-        cmbTipo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Nome", "Bairro", "Mês", "CPF" }));
-        getContentPane().add(cmbTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 90, 40));
+        cmbOpcao.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Nome", "CPF", "E-mail", "Telefone", "CRM", "ID" }));
+        getContentPane().add(cmbOpcao, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 90, 40));
 
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -105,10 +110,18 @@ private ControllerView gerIG;
         });
         getContentPane().add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 360, 110, 50));
 
+        btListarTodos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaces/imgs/icons/icons8-multidão-24.png"))); // NOI18N
+        btListarTodos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btListarTodosActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btListarTodos, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 60, 40, 40));
+
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Médicos", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 18))); // NOI18N
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        tbMedicos.setModel(new javax.swing.table.DefaultTableModel(
+        txtPesquisar.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -124,7 +137,7 @@ private ControllerView gerIG;
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(tbMedicos);
+        jScrollPane3.setViewportView(txtPesquisar);
 
         jPanel1.add(jScrollPane3, java.awt.BorderLayout.CENTER);
 
@@ -139,7 +152,7 @@ private ControllerView gerIG;
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         try {
-            gerIG.carregarTabela(tbMedicos, Medico.class);
+            gerIG.carregarTabela(txtPesquisar, Medico.class);
         } catch (ClassNotFoundException | SQLException ex) {
             JOptionPane.showMessageDialog(this, "Erro ao carregar médicos " + ex.getMessage() );
         }
@@ -147,9 +160,9 @@ private ControllerView gerIG;
 
     private void btnSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecionarActionPerformed
 
-        int linha = tbMedicos.getSelectedRow();
+        int linha = txtPesquisar.getSelectedRow();
         if ( linha >= 0 ) {
-            medico = (Medico) tbMedicos.getValueAt(linha, 1);
+            medico = (Medico) txtPesquisar.getValueAt(linha, 1);
         }
         else {
             JOptionPane.showMessageDialog(this,"Selecione uma linha.", "Pesquisar Médico", JOptionPane.ERROR_MESSAGE  );
@@ -158,51 +171,47 @@ private ControllerView gerIG;
         this.setVisible(false);
     }//GEN-LAST:event_btnSelecionarActionPerformed
 
-    private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
-        /*
-        try {
-            List<Paciente> lista = gerIG.getGerDominio().pesquisarCliente(txtPesq.getText(), cmbTipo.getSelectedIndex() );
+    private void btPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPesquisarActionPerformed
+        if(validarPesquisa()){
+            try {
+                List<Medico> lista = gerIG.getGerDominio().pesquisarMedico(txtPesq.getText(), cmbOpcao.getSelectedIndex());
 
-            // APAGA as linhas da tabela
-            ( (DefaultTableModel) tblClientes.getModel() ).setNumRows(0);
+                // APAGA as linhas da tabela
+                ( (DefaultTableModel) txtPesquisar.getModel() ).setNumRows(0);
 
-            for (Cliente cli : lista ) {
-                // ADICIONAR LINHA NA TABELA
-                ( (DefaultTableModel) tblClientes.getModel() ).addRow( cli.toArray() );
-            }
-
-        } catch (HibernateException | ParseException  ex) {
-            JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Cliente", JOptionPane.ERROR_MESSAGE  );
+                for (Medico cli : lista ) {
+                    // ADICIONAR LINHA NA TABELA        
+                    ( (DefaultTableModel) txtPesquisar.getModel() ).addRow( cli.toArray() );                
+                }
+            } catch (HibernateException  ex) {
+                JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Médico", JOptionPane.ERROR_MESSAGE  );
+            } 
         }
+    }//GEN-LAST:event_btPesquisarActionPerformed
 
-        */
-    }//GEN-LAST:event_btnPesquisarActionPerformed
-
+    private boolean validarPesquisa(){
+        String msgErro = "";
+        if(btPesquisar.getText().isEmpty()){
+            btPesquisar.setForeground(Color.red);
+            msgErro += "Insira um nome!\n";
+        }else{
+            btPesquisar.setForeground(Color.black);
+        }
+        
+        if(msgErro.isEmpty()){
+            return true;
+        }else{
+            JOptionPane.showMessageDialog(this, msgErro, "Verifique os campos e tente novamente", JOptionPane.ERROR_MESSAGE);
+            return false; 
+        }
+    }
+    
     private void btnRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRelatoriosActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRelatoriosActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        /*
-        int linha = tblClientes.getSelectedRow();
-        if ( linha >= 0 ) {
-
-            try {
-                Cliente cli = (Cliente) tblClientes.getValueAt(linha, 0);
-                if ( JOptionPane.showConfirmDialog(this, "Deseja realmente excluir esse cliente?", "Título", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION ) {
-                    gerIG.getGerDominio().excluir(cli);
-                    ( (DefaultTableModel) tblClientes.getModel() ).removeRow(linha);
-                    JOptionPane.showMessageDialog(this, "Cliente " + cli.getNome() + " excluído com sucesso.", "ERRO ao PESQUISAR Cliente", JOptionPane.ERROR_MESSAGE  );
-                }
-
-            } catch (HibernateException ex) {
-                JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Cliente", JOptionPane.ERROR_MESSAGE  );
-            }
-        }
-        else {
-            JOptionPane.showMessageDialog(this,"Selecione uma linha.", "Pesquisar cliente", JOptionPane.ERROR_MESSAGE  );
-        }
-        */
+        
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -210,21 +219,28 @@ private ControllerView gerIG;
         this.setVisible(false);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
+    private void btListarTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btListarTodosActionPerformed
+
+        formComponentShown(null);
+        //lista todos que estão no banco
+    }//GEN-LAST:event_btListarTodosActionPerformed
+
  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btListarTodos;
+    private javax.swing.JButton btPesquisar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnExcluir;
-    private javax.swing.JButton btnPesquisar;
     private javax.swing.JButton btnRelatorios;
     private javax.swing.JButton btnSelecionar;
-    private javax.swing.JComboBox cmbTipo;
+    private javax.swing.JComboBox cmbOpcao;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable tbMedicos;
     private javax.swing.JTextField txtPesq;
+    private javax.swing.JTable txtPesquisar;
     // End of variables declaration//GEN-END:variables
 
     
