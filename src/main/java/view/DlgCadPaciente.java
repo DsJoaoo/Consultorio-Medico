@@ -447,30 +447,30 @@ public class DlgCadPaciente extends javax.swing.JDialog {
             lbCPF.setForeground(Color.red);
         }
         
-        if(Functions.validarEmail(txtEmail.getText()) == false){
-            msgErro += "Email invalido\n";
+        if(!gerIG.getGerDominio().validarEmail(txtEmail.getText(), Paciente.class)){
+            msgErro += "Email invalido ou já cadastrado\n";
             lbEmail.setForeground(Color.red);
         }
         
-        if((chkMasculino.isSelected() || chkFemino.isSelected()) == false){
+        if(!(chkMasculino.isSelected() || chkFemino.isSelected())){
             msgErro += "Selecione um sexo\n";
             jpSexo.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)), "Sexo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 14))); // NOI18N
 
         }
         
-        if(Functions.verificarFormatoData(txtDataNascimento.getText()) == false){
+        if(!Functions.verificarFormatoData(txtDataNascimento.getText())){
             msgErro += "Data de nascimento invalida\n";
             lbDataNascimento.setForeground(Color.red);
         }
         
-        if(Functions.validarTelefone(txtTelefone.getText()) == false){
+        if(!Functions.validarTelefone(txtTelefone.getText())){
             msgErro += "Telefone ou dd invalido\n";
             lbTelefone.setForeground(Color.red);
         }
         
-        if(Functions.validarCPF(txtCPF.getText()) == false){
+        if(!gerIG.getGerDominio().validarCPF(txtCPF.getText(), Paciente.class)){
             lbCPF.setForeground(Color.red);
-            msgErro += "CPF Invalido\n";
+            msgErro += "CPF Invalido ou já cadastrado\n";
         }
         
         if(msgErro.isEmpty()){

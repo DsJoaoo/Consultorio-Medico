@@ -66,10 +66,7 @@ public class ControllerView {
         return dlg;
     }
     
-    
-    
-    
-    
+
     public void janelaPrincipal() {
         janCadPrincipal = new FrmMenu(this);
         janCadPrincipal.setVisible(true);
@@ -133,7 +130,7 @@ public class ControllerView {
         DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
 
         try {
-            List<Adpater> lista = gerDominio.listar(classe);
+            List<Adapter> lista = gerDominio.listar(classe);
             modelo.setRowCount(0);
             lista.forEach(objeto -> {
                 modelo.addRow(objeto.toArray());

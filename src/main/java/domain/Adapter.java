@@ -8,6 +8,6 @@ package domain;
  *
  * @author joaop
  */
-public interface Adpater {
+public interface Adapter {
     Object[] toArray();
 }

@@ -63,15 +63,12 @@ public class DlgCadConsulta extends javax.swing.JDialog {
         jpDao = new javax.swing.JPanel();
         lbMedico = new javax.swing.JLabel();
         lbPaciente = new javax.swing.JLabel();
-        lbFuncionario = new javax.swing.JLabel();
         jpCombo = new javax.swing.JPanel();
         btPesqMedico = new javax.swing.JButton();
         btPesqPaciente = new javax.swing.JButton();
-        btPesqFuncionario = new javax.swing.JButton();
         jpCombo1 = new javax.swing.JPanel();
         txtMedico = new javax.swing.JTextField();
         txtPaciente = new javax.swing.JTextField();
-        txtFuncionario = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jpID = new javax.swing.JPanel();
         lbID = new javax.swing.JLabel();
@@ -138,10 +135,6 @@ public class DlgCadConsulta extends javax.swing.JDialog {
         lbPaciente.setText("Paciente");
         jpDao.add(lbPaciente);
 
-        lbFuncionario.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        lbFuncionario.setText("Funcionário");
-        jpDao.add(lbFuncionario);
-
         jpTipos.add(jpDao, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 90, 190));
 
         jpCombo.setLayout(new java.awt.GridLayout(3, 2, 0, 30));
@@ -162,20 +155,11 @@ public class DlgCadConsulta extends javax.swing.JDialog {
         });
         jpCombo.add(btPesqPaciente);
 
-        btPesqFuncionario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaces/imgs/icons/lupa24-icon.png"))); // NOI18N
-        btPesqFuncionario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btPesqFuncionarioActionPerformed(evt);
-            }
-        });
-        jpCombo.add(btPesqFuncionario);
-
         jpTipos.add(jpCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 30, 50, 160));
 
         jpCombo1.setLayout(new java.awt.GridLayout(3, 2, 0, 30));
         jpCombo1.add(txtMedico);
         jpCombo1.add(txtPaciente);
-        jpCombo1.add(txtFuncionario);
 
         jpTipos.add(jpCombo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 30, 150, 160));
 
@@ -445,7 +429,6 @@ public class DlgCadConsulta extends javax.swing.JDialog {
        lbMedico.setForeground(Color.black);
        lbPaciente.setForeground(Color.black);
        lbTipoConsulta.setForeground(Color.black);
-       lbFuncionario.setForeground(Color.black);
        lbPesquisar.setForeground(Color.black);
     }
     
@@ -497,9 +480,10 @@ public class DlgCadConsulta extends javax.swing.JDialog {
            msgErro += "selecione o tipo de consulta\n";
        }
        
-       if(funcionarioSelecionado == null){
-           lbFuncionario.setForeground(Color.red);
-           msgErro += "Um funcionário\n";
+       if(gerIG.getGerDominio().getFuncionarioLogado() == null){
+           msgErro += "Funcionario não está habilitada para cadastro\n";
+       }else{
+           funcionarioSelecionado = gerIG.getGerDominio().getFuncionarioLogado();
        }
        
        if(msgErro.isEmpty()){
@@ -517,7 +501,6 @@ public class DlgCadConsulta extends javax.swing.JDialog {
         txtHora.setText("");
         txtMedico.setText("");
         txtPaciente.setText("");
-        txtFuncionario.setText("");
         cmbTipoConsulta.setSelectedIndex(-1);
     }
   
@@ -651,13 +634,6 @@ public class DlgCadConsulta extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btPesqPacienteActionPerformed
 
-    private void btPesqFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPesqFuncionarioActionPerformed
-        funcionarioSelecionado = gerIG.janelaPesqFuncionario();
-        if ( funcionarioSelecionado != null ) {
-            txtFuncionario.setText(funcionarioSelecionado.getNomePessoa());
-        }
-    }//GEN-LAST:event_btPesqFuncionarioActionPerformed
-
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CadastroConsulta;
@@ -670,7 +646,6 @@ public class DlgCadConsulta extends javax.swing.JDialog {
     private javax.swing.JButton btListarTodos;
     private javax.swing.JButton btLupa;
     private javax.swing.JButton btNovo;
-    private javax.swing.JButton btPesqFuncionario;
     private javax.swing.JButton btPesqMedico;
     private javax.swing.JButton btPesqPaciente;
     private javax.swing.JComboBox<String> cmbOpcao;
@@ -695,7 +670,6 @@ public class DlgCadConsulta extends javax.swing.JDialog {
     private javax.swing.JPanel jpTipos;
     private javax.swing.JTabbedPane jtpTelas;
     private javax.swing.JLabel lbData;
-    private javax.swing.JLabel lbFuncionario;
     private javax.swing.JLabel lbHora;
     private javax.swing.JLabel lbID;
     private javax.swing.JLabel lbMedico;
@@ -704,7 +678,6 @@ public class DlgCadConsulta extends javax.swing.JDialog {
     private javax.swing.JLabel lbTipoConsulta;
     private javax.swing.JTable tbConsultas;
     private javax.swing.JFormattedTextField txtData;
-    private javax.swing.JTextField txtFuncionario;
     private javax.swing.JFormattedTextField txtHora;
     private javax.swing.JFormattedTextField txtIdPaciente;
     private javax.swing.JTextField txtMedico;

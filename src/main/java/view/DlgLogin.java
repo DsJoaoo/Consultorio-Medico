@@ -128,7 +128,10 @@ public class DlgLogin extends javax.swing.JDialog {
             msgErro += "Senha invalida\nVerifique se sua senha possui pelo menos:\n    (8) caracteres;\n    (1) caractere especial;\n    (1) número;\n    (1) letra maiúscula;\n    (1) letra minúscula.\n";
             lbSenha.setForeground(Color.red);
         }
-        
+
+        if(msgErro.isEmpty() && !gerIG.getGerDominio().validarFuncionario(txtCPF.getText(), pswUsuario.getText())){
+             msgErro += "Usuário não cadastrado\n";
+        }
         
         if(msgErro.isEmpty()){
             return true;

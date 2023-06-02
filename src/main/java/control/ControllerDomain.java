@@ -23,6 +23,8 @@ public class ControllerDomain {
     private final FuncionarioDao funDao;
     private final ConsultaDao conDao;
     private final TipoConsultaDao tipoDao;
+    private final LoginDao logDao;
+    private Funcionario funcionarioLogado;
     
     
     public ControllerDomain() throws ClassNotFoundException, SQLException {
@@ -34,6 +36,8 @@ public class ControllerDomain {
         funDao = new FuncionarioDao();
         conDao = new ConsultaDao();
         tipoDao = new TipoConsultaDao();
+        logDao = new LoginDao();
+        funcionarioLogado = null;
     }
     
     //<editor-fold defaultstate="collapsed" desc="CODE: Inserções e exclusão ">
@@ -157,4 +161,23 @@ public class ControllerDomain {
         }
         return lista;
     }
+    
+    public boolean validarCPF(String cpf, Class classe){
+        return (genDao.validar(cpf, 0, classe) && Functions.validarCPF(cpf));
+    }
+    
+    public boolean validarEmail(String email, Class classe){
+        return (genDao.validar(email, 1, classe) && Functions.validarEmail(email));
+    }
+    
+    public boolean validarFuncionario(String cpf, String senha){
+        funcionarioLogado = logDao.validarEntrada(cpf, senha);
+        return funcionarioLogado != null;
+    }
+
+    public Funcionario getFuncionarioLogado() {
+        return funcionarioLogado;
+    }
+    
+    
 }

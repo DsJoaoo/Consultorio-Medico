@@ -5,8 +5,12 @@
 package dao;
 
 
-import domain.Paciente;
+import domain.Adapter;
 import java.util.List;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -101,4 +105,41 @@ public class GenericDao {
     }
     
     
+        public boolean validar(String pesq, int tipo, Class classe) throws HibernateException {
+        List<Adapter> lista = null;
+        Session sessao = null;
+        try {
+            sessao = ConexaoHibernate.getSessionFactory().openSession();
+            sessao.beginTransaction();
+
+            // Construtor da CONSULTA
+            CriteriaBuilder builder = sessao.getCriteriaBuilder();
+            CriteriaQuery consulta = builder.createQuery( classe );
+            
+            // FROM
+            Root tabela = consulta.from(classe);
+            
+            // RESTRIÇÕES
+            Predicate restricoes = null;
+            
+            switch (tipo) {
+                case 0: restricoes = builder.equal(tabela.get("cpf"), pesq);
+                        break; 
+                case 1: restricoes = builder.like(tabela.get("email"), pesq + "%"); 
+                        break;
+            }
+                        
+            consulta.where(restricoes);
+            lista = sessao.createQuery(consulta).getResultList();            
+            sessao.getTransaction().commit();
+            sessao.close();
+        } catch (HibernateException ex) {
+            if (sessao != null ) {
+                sessao.getTransaction().rollback();          
+                sessao.close();
+            }
+            throw new HibernateException(ex);
+        }
+        return lista.isEmpty();
+    }    
 }

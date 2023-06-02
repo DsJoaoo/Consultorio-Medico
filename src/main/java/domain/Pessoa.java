@@ -14,7 +14,7 @@ import javax.persistence.*;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Pessoa implements Serializable, Adpater {
+public abstract class Pessoa implements Serializable, Adapter {
     @Id
     @GeneratedValue ( strategy = GenerationType.IDENTITY)
     protected int idPessoa;

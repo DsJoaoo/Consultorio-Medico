@@ -17,7 +17,7 @@ import javax.persistence.*;
  * @author joaop
  */
 @Entity
-public class Consulta implements Serializable, Adpater {
+public class Consulta implements Serializable, Adapter {
     @Id
     @GeneratedValue ( strategy = GenerationType.IDENTITY)
     private int idConsulta;

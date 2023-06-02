@@ -151,14 +151,6 @@
                             <Property name="text" type="java.lang.String" value="Paciente"/>
                           </Properties>
                         </Component>
-                        <Component class="javax.swing.JLabel" name="lbFuncionario">
-                          <Properties>
-                            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                              <Font name="Segoe UI" size="16" style="0"/>
-                            </Property>
-                            <Property name="text" type="java.lang.String" value="Funcion&#xe1;rio"/>
-                          </Properties>
-                        </Component>
                       </SubComponents>
                     </Container>
                     <Container class="javax.swing.JPanel" name="jpCombo">
@@ -194,16 +186,6 @@
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btPesqPacienteActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JButton" name="btPesqFuncionario">
-                          <Properties>
-                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                              <Image iconType="3" name="/interfaces/imgs/icons/lupa24-icon.png"/>
-                            </Property>
-                          </Properties>
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btPesqFuncionarioActionPerformed"/>
-                          </Events>
-                        </Component>
                       </SubComponents>
                     </Container>
                     <Container class="javax.swing.JPanel" name="jpCombo1">
@@ -222,8 +204,6 @@
                         <Component class="javax.swing.JTextField" name="txtMedico">
                         </Component>
                         <Component class="javax.swing.JTextField" name="txtPaciente">
-                        </Component>
-                        <Component class="javax.swing.JTextField" name="txtFuncionario">
                         </Component>
                       </SubComponents>
                     </Container>

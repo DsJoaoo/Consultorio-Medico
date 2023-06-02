@@ -23,15 +23,15 @@ import org.hibernate.HibernateException;
  * @author joaop
  */
 public class DlgCadFuncionario extends javax.swing.JDialog {
-    private ControllerView gerIG;
+    private ControllerView controller;
     private Funcionario funcionarioSelecionado;
     /**
      * Creates new form DlgCliente
      */
-    public DlgCadFuncionario(java.awt.Frame parent, boolean modal, ControllerView controller) {
+    public DlgCadFuncionario(java.awt.Frame parent, boolean modal, ControllerView gerIG) {
         super(parent, modal);
         initComponents();
-        gerIG = controller;
+        controller = gerIG;
         funcionarioSelecionado = null;
     }
 
@@ -448,7 +448,7 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
             lbNome.setForeground(Color.red);
         }
         
-        if(Functions.validarSenha(senha) == false){
+        if(!Functions.validarSenha(senha)){
             msgErro += "Senha invalida\nVerifique se sua senha possui pelo menos:\n    (8) caracteres;\n    (1) caractere especial;\n    (1) número;\n    (1) letra maiúscula;\n    (1) letra minúscula.\n";
             lbSenha.setForeground(Color.red);
             lbConfirmarSenha.setForeground(Color.red);
@@ -460,29 +460,29 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
             lbConfirmarSenha.setForeground(Color.red);
         }
         
-        if(txtCPF.getText().isEmpty()){
-            msgErro += "CPF invalido\n";
+        if(txtCPF.getText().isEmpty() ){
+            msgErro += "Inseria um CPF\n";
             lbCPF.setForeground(Color.red);
         }
         
-        if(Functions.validarEmail(txtEmail.getText()) == false){
-            msgErro += "Email invalido\n";
+        if(!controller.getGerDominio().validarEmail(txtEmail.getText(), Funcionario.class)){
+            msgErro += "Email invalido ou já cadastrado\n";
             lbEmail.setForeground(Color.red);
         }
         
-        if(Functions.verificarFormatoData(txtDataAdmissao.getText()) == false){
+        if(!Functions.verificarFormatoData(txtDataAdmissao.getText())){
             msgErro += "Data de admissao invalida\n";
             lbDataAdmissao.setForeground(Color.red);
         }
         
-        if(Functions.validarTelefone(txtTelefone.getText()) == false){
+        if(!Functions.validarTelefone(txtTelefone.getText())){
             msgErro += "Telefone ou dd invalido\n";
             lbTelefone.setForeground(Color.red);
         }
         
-        if(Functions.validarCPF(txtCPF.getText()) == false){
+        if(!controller.getGerDominio().validarCPF(txtCPF.getText(), Funcionario.class)){
             lbCPF.setForeground(Color.red);
-            msgErro += "CPF Invalido\n";
+            msgErro += "CPF Invalido ou  já cadastrado!\n";
         }
         
         if(msgErro.isEmpty()){
@@ -518,7 +518,7 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
             try {
                 Date dt = Functions.strToDate(dataAdmissao);
                 if(funcionarioSelecionado == null){
-                    gerIG.getGerDominio().inserirFucionario(nome, cpf,dt, email, senha, telefone);
+                    controller.getGerDominio().inserirFucionario(nome, cpf,dt, email, senha, telefone);
                     JOptionPane.showMessageDialog(this, "Funcionario inserido com sucesso.", "Inserir Funcionario", JOptionPane.INFORMATION_MESSAGE  );
                 }
             } catch (HeadlessException | ParseException e) {
@@ -604,7 +604,7 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
     private void btLupa1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLupa1ActionPerformed
         if(validarPesquisa()){
             try {
-                List<Funcionario> lista = gerIG.getGerDominio().pesquisarFuncionario(txtPesquisar.getText(), cmbOpcao.getSelectedIndex());
+                List<Funcionario> lista = controller.getGerDominio().pesquisarFuncionario(txtPesquisar.getText(), cmbOpcao.getSelectedIndex());
 
                 // APAGA as linhas da tabela
                 ( (DefaultTableModel) tbFuncionarios.getModel() ).setNumRows(0);
@@ -622,7 +622,7 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
        try {
-            gerIG.carregarTabela(tbFuncionarios, Funcionario.class);
+            controller.carregarTabela(tbFuncionarios, Funcionario.class);
         } catch (ClassNotFoundException | SQLException ex) {
             JOptionPane.showMessageDialog(this, "Erro ao carregar funcionários " + ex.getMessage() );
         }

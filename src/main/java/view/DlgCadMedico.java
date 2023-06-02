@@ -6,6 +6,7 @@ package view;
 
 import control.ControllerView;
 import control.Functions;
+import domain.Funcionario;
 import domain.Medico;
 import java.awt.Color;
 import java.awt.HeadlessException;
@@ -438,8 +439,8 @@ public class DlgCadMedico extends javax.swing.JDialog {
             lbCPF.setForeground(Color.red);
         }
         
-        if(Functions.validarEmail(txtEmail.getText()) == false){
-            msgErro += "Email invalido\n";
+        if(!gerIG.getGerDominio().validarEmail(txtEmail.getText(), Medico.class)){
+            msgErro += "Email invalido ou já registrado\n";
             lbEmail.setForeground(Color.red);
         }
         
@@ -448,17 +449,17 @@ public class DlgCadMedico extends javax.swing.JDialog {
             lbEspecializacao.setForeground(Color.red);
         }
         
-        if(Functions.validarTelefone(txtTelefone.getText()) == false){
+        if(!Functions.validarTelefone(txtTelefone.getText())){
             msgErro += "Telefone ou dd invalido\n";
             lbTelefone.setForeground(Color.red);
         }
         
-        if(Functions.validarCPF(txtCPF.getText()) == false){
+        if(!gerIG.getGerDominio().validarCPF(txtCPF.getText(), Medico.class)){
             lbCPF.setForeground(Color.red);
-            msgErro += "CPF Invalido\n";
+            msgErro += "CPF Invalido ou já registrado\n";
         }
         
-        if(Functions.validarCRM(txtCRM.getText()) == false){
+        if(!Functions.validarCRM(txtCRM.getText())){
             lbCRM.setForeground(Color.red);
             msgErro += "CRM Invalido\n";
         }
