@@ -125,7 +125,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
 
         jpTipos.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jpDao.setLayout(new java.awt.GridLayout(3, 1, 0, 3));
+        jpDao.setLayout(new java.awt.GridLayout(2, 1, 0, 3));
 
         lbMedico.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         lbMedico.setText("Médico");
@@ -135,9 +135,9 @@ public class DlgCadConsulta extends javax.swing.JDialog {
         lbPaciente.setText("Paciente");
         jpDao.add(lbPaciente);
 
-        jpTipos.add(jpDao, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 90, 190));
+        jpTipos.add(jpDao, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 80, 130));
 
-        jpCombo.setLayout(new java.awt.GridLayout(3, 2, 0, 30));
+        jpCombo.setLayout(new java.awt.GridLayout(2, 2, 0, 30));
 
         btPesqMedico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaces/imgs/icons/lupa24-icon.png"))); // NOI18N
         btPesqMedico.addActionListener(new java.awt.event.ActionListener() {
@@ -155,13 +155,13 @@ public class DlgCadConsulta extends javax.swing.JDialog {
         });
         jpCombo.add(btPesqPaciente);
 
-        jpTipos.add(jpCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 30, 50, 160));
+        jpTipos.add(jpCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 60, 50, 110));
 
-        jpCombo1.setLayout(new java.awt.GridLayout(3, 2, 0, 30));
+        jpCombo1.setLayout(new java.awt.GridLayout(2, 2, 0, 30));
         jpCombo1.add(txtMedico);
         jpCombo1.add(txtPaciente);
 
-        jpTipos.add(jpCombo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 30, 150, 160));
+        jpTipos.add(jpCombo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 60, 150, 110));
 
         jpDados.add(jpTipos, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 20, 330, 220));
 
@@ -236,10 +236,10 @@ public class DlgCadConsulta extends javax.swing.JDialog {
                 .addComponent(jpHora, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jpTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
-        jpDados.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 240, 230));
+        jpDados.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 240, 210));
 
         jpBotoes.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
