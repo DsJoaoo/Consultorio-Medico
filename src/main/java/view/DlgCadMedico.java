@@ -5,7 +5,7 @@
 package view;
 
 import control.ControllerView;
-import control.Functions;
+import control.UtilGeral;
 import domain.Funcionario;
 import domain.Medico;
 import java.awt.Color;
@@ -13,6 +13,7 @@ import java.awt.HeadlessException;
 import java.sql.SQLException;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import org.hibernate.HibernateException;
 
@@ -123,7 +124,6 @@ public class DlgCadMedico extends javax.swing.JDialog {
 
         jpNome.setLayout(new java.awt.GridLayout(1, 2, -120, 15));
 
-        lbNome.setBackground(new java.awt.Color(255, 255, 255));
         lbNome.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         lbNome.setText("Nome");
         jpNome.add(lbNome);
@@ -397,14 +397,15 @@ public class DlgCadMedico extends javax.swing.JDialog {
     }
     
     private void setCor(){
-        lbNome.setForeground(Color.black);
-        lbCPF.setForeground(Color.black);
-        lbEmail.setForeground(Color.black);
-        lbCRM.setForeground(Color.black);
-        lbTelefone.setForeground(Color.black);
-        lbEspecializacao.setForeground(Color.black);
-        txtCRM.setForeground(Color.black);
-        lbPesquisar.setForeground(Color.black);
+        Color defaultLabelColor = UIManager.getColor("Label.foreground");
+        lbNome.setForeground(defaultLabelColor);
+        lbCPF.setForeground(defaultLabelColor);
+        lbEmail.setForeground(defaultLabelColor);
+        lbCRM.setForeground(defaultLabelColor);
+        lbTelefone.setForeground(defaultLabelColor);
+        lbEspecializacao.setForeground(defaultLabelColor);
+        txtCRM.setForeground(defaultLabelColor);
+        lbPesquisar.setForeground(defaultLabelColor);
     }
     
     private boolean validarPesquisa(){
@@ -449,7 +450,7 @@ public class DlgCadMedico extends javax.swing.JDialog {
             lbEspecializacao.setForeground(Color.red);
         }
         
-        if(!Functions.validarTelefone(txtTelefone.getText())){
+        if(!UtilGeral.validarTelefone(txtTelefone.getText())){
             msgErro += "Telefone ou dd invalido\n";
             lbTelefone.setForeground(Color.red);
         }
@@ -459,7 +460,7 @@ public class DlgCadMedico extends javax.swing.JDialog {
             msgErro += "CPF Invalido ou já registrado\n";
         }
         
-        if(!Functions.validarCRM(txtCRM.getText())){
+        if(!UtilGeral.validarCRM(txtCRM.getText())){
             lbCRM.setForeground(Color.red);
             msgErro += "CRM Invalido\n";
         }
@@ -526,8 +527,8 @@ public class DlgCadMedico extends javax.swing.JDialog {
             txtCPF.setText(tbMedicos.getValueAt(opcao, 2).toString());
             txtEmail.setText(tbMedicos.getValueAt(opcao, 3).toString());
 
-            txtCRM.setText(Functions.formatarDataParaInterface(tbMedicos.getValueAt(opcao, 4).toString()));
-            txtTelefone.setText(Functions.removerCaracteresTelefone(tbMedicos.getValueAt(opcao, 6).toString()));
+            txtCRM.setText(UtilGeral.formatarDataParaInterface(tbMedicos.getValueAt(opcao, 4).toString()));
+            txtTelefone.setText(UtilGeral.removerCaracteresTelefone(tbMedicos.getValueAt(opcao, 6).toString()));
            
             btAtualizar.setVisible(true);
             jpID.setVisible(true);
@@ -561,7 +562,7 @@ public class DlgCadMedico extends javax.swing.JDialog {
         String nome = txtNome.getText();
         String cpf = txtCPF.getText();
         String email = txtEmail.getText(); 
-        String dataNascimento = Functions.formatarDataParaSQL(txtCRM.getText());
+        String dataNascimento = UtilGeral.formatarDataParaSQL(txtCRM.getText());
         String telefone = txtTelefone.getText();
         
         if(validarCampos()){

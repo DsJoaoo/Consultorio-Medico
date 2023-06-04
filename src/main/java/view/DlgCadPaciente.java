@@ -5,9 +5,8 @@
 package view;
 
 import control.ControllerView;
-import control.Functions;
+import control.UtilGeral;
 import domain.Paciente;
-import domain.TipoConsulta;
 import java.awt.Color;
 import java.awt.HeadlessException;
 import java.sql.SQLException;
@@ -15,6 +14,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import org.hibernate.HibernateException;
 
@@ -405,14 +405,16 @@ public class DlgCadPaciente extends javax.swing.JDialog {
     
     
     private void setCor(){
-        lbNome.setForeground(Color.black);
-        lbCPF.setForeground(Color.black);
-        lbEmail.setForeground(Color.black);
-        jpSexo.setForeground(Color.black);
-        lbDataNascimento.setForeground(Color.black);
-        lbTelefone.setForeground(Color.black);
+        Color defaultLabelColor = UIManager.getColor("Label.foreground");
+        
+        lbNome.setForeground(defaultLabelColor);
+        lbCPF.setForeground(defaultLabelColor);
+        lbEmail.setForeground(defaultLabelColor);
+        jpSexo.setForeground(defaultLabelColor);
+        lbDataNascimento.setForeground(defaultLabelColor);
+        lbTelefone.setForeground(defaultLabelColor);
         jpSexo.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Sexo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 14))); 
-        cmbOpcao.setForeground(Color.black);
+        cmbOpcao.setForeground(defaultLabelColor);
     }
     
     private boolean validarBusca(){
@@ -458,12 +460,12 @@ public class DlgCadPaciente extends javax.swing.JDialog {
 
         }
         
-        if(!Functions.verificarFormatoData(txtDataNascimento.getText())){
+        if(!UtilGeral.verificarFormatoData(txtDataNascimento.getText())){
             msgErro += "Data de nascimento invalida\n";
             lbDataNascimento.setForeground(Color.red);
         }
         
-        if(!Functions.validarTelefone(txtTelefone.getText())){
+        if(!UtilGeral.validarTelefone(txtTelefone.getText())){
             msgErro += "Telefone ou dd invalido\n";
             lbTelefone.setForeground(Color.red);
         }
@@ -499,11 +501,11 @@ public class DlgCadPaciente extends javax.swing.JDialog {
         String cpf = txtCPF.getText();
         String email = txtEmail.getText(); 
         String telefone = txtTelefone.getText();
-        String sexo = Functions.checarBotao(grpSexo);
+        String sexo = gerIG.checarNomeBotao(grpSexo);
         String data = txtDataNascimento.getText();
         if(validarCampos()){
             try {
-                Date dt = Functions.strToDate(data);
+                Date dt = UtilGeral.strToDate(data);
                 if(pacienteSelecionado == null){
                     gerIG.getGerDominio().inserirPaciente(nome, cpf, email, dt, telefone, sexo);
                     JOptionPane.showMessageDialog(this, "Paciente inserido com sucesso.", "Inserir Paciente", JOptionPane.INFORMATION_MESSAGE  );
@@ -541,8 +543,8 @@ public class DlgCadPaciente extends javax.swing.JDialog {
             }else{
                 chkFemino.setSelected(true);
             }
-            txtDataNascimento.setText(Functions.formatarDataParaInterface(pacienteSelecionado.getDataNascimento().toString()));
-            txtTelefone.setText(Functions.removerCaracteresTelefone(pacienteSelecionado.getTelefone()));
+            txtDataNascimento.setText(UtilGeral.formatarDataParaInterface(pacienteSelecionado.getDataNascimento().toString()));
+            txtTelefone.setText(UtilGeral.removerCaracteresTelefone(pacienteSelecionado.getTelefone()));
             
         }else{
             JOptionPane.showMessageDialog(this,"Selecione uma linha.", "Pesquisar cliente", JOptionPane.ERROR_MESSAGE  );
@@ -565,9 +567,9 @@ public class DlgCadPaciente extends javax.swing.JDialog {
         String nome = txtNome.getText();
         String cpf = txtCPF.getText();
         String email = txtEmail.getText(); 
-        String dataNascimento = Functions.formatarDataParaSQL(txtDataNascimento.getText());
+        String dataNascimento = UtilGeral.formatarDataParaSQL(txtDataNascimento.getText());
         String telefone = txtTelefone.getText();
-        String sexo = Functions.checarBotao(grpSexo);
+        String sexo = gerIG.checarNomeBotao(grpSexo);
         if(validarCampos()){
             //Cadastra no banco
             pacienteSelecionado = null;

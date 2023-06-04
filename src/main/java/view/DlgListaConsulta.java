@@ -5,7 +5,7 @@
 package view;
 
 import control.ControllerView;
-import control.Functions;
+import control.UtilGeral;
 import java.awt.Color;
 import javax.swing.JOptionPane;
 
@@ -182,7 +182,7 @@ public class DlgListaConsulta extends javax.swing.JDialog {
     public boolean validarCampos(){
         lbPesquisar.setForeground(Color.black);
         String msgErro = "";
-        boolean data = Functions.verificarFormatoData(txtPesquisaData.getText());
+        boolean data = UtilGeral.verificarFormatoData(txtPesquisaData.getText());
         if(data == false){
             lbPesquisar.setForeground(Color.red);
             msgErro += "data inválida\n";

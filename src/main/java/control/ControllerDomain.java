@@ -50,7 +50,7 @@ public class ControllerDomain {
     }
     
     public int inserirFucionario(String nome, String cpf, Date dt, String email, String senha, String telefone) {
-        Pessoa p = new Funcionario(nome, telefone,email, cpf, dt, senha);
+        Pessoa p = new Funcionario(nome, telefone,email, cpf, dt, UtilCriptografia.encryptPassword(senha));
         genDao.cadastrar(p);
         return p.getIdPessoa();
     }
@@ -163,15 +163,18 @@ public class ControllerDomain {
     }
     
     public boolean validarCPF(String cpf, Class classe){
-        return (genDao.validar(cpf, 0, classe) && Functions.validarCPF(cpf));
+        return (genDao.validar(cpf, 0, classe) && UtilCPF.validarCPF(cpf));
     }
     
     public boolean validarEmail(String email, Class classe){
-        return (genDao.validar(email, 1, classe) && Functions.validarEmail(email));
+        return (genDao.validar(email, 1, classe) && UtilGeral.validarEmail(email));
     }
     
     public boolean validarFuncionario(String cpf, String senha){
-        funcionarioLogado = logDao.validarEntrada(cpf, senha);
+        Funcionario usuarioRequisicao = logDao.validarUsuario(cpf);
+        //verificando se o cpf cadastrado no banco possuí a mesma senha criptografada que foi que foi inserida na interface
+        if(UtilCriptografia.verifyPassword(senha, usuarioRequisicao.getSenha()))
+            funcionarioLogado = usuarioRequisicao;
         return funcionarioLogado != null;
     }
 

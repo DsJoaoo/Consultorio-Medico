@@ -18,7 +18,7 @@ import org.hibernate.Session;
  * @author joaop
  */
 public class LoginDao {
-    private Funcionario pesquisar(String cpf, String senha) throws HibernateException {
+    private Funcionario pesquisar(String cpf) throws HibernateException {
         List<Funcionario> lista = null;
         Session sessao = null;
         try {
@@ -34,10 +34,9 @@ public class LoginDao {
             
             // RESTRIÇÕES
             
-            Predicate restricao1 = builder.equal(tabela.get("cpf"), cpf); 
-            Predicate restricao2 = builder.equal(tabela.get("senha"), senha);             
+            Predicate restricao1 = builder.equal(tabela.get("cpf"), cpf);             
                         
-            consulta.where(restricao1,restricao2);
+            consulta.where(restricao1);
             lista = sessao.createQuery(consulta).getResultList();            
 
             sessao.getTransaction().commit();
@@ -57,8 +56,8 @@ public class LoginDao {
         }
     }   
     
-    public Funcionario validarEntrada(String cpf, String senha) {
-        return pesquisar(cpf, senha);
+    public Funcionario validarUsuario(String cpf) {
+        return pesquisar(cpf);
     }
 
 }

@@ -4,7 +4,7 @@
  */
 package domain;
 
-import control.Functions;
+import control.UtilGeral;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -66,7 +66,7 @@ public class Paciente extends Pessoa implements Serializable{
     @Override
     public Object[] toArray(){
        return new Object[] {
-            getIdPessoa(), this, getCpf(), getEmail(), Functions.formatarDataParaInterface(this.getDataNascimento().toString()), getSexo(), getTelefone()
+            getIdPessoa(), this, getCpf(), getEmail(), UtilGeral.formatarDataParaInterface(this.getDataNascimento().toString()), getSexo(), getTelefone()
         };    
     };
 

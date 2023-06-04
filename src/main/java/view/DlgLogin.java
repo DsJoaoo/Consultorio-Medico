@@ -5,10 +5,13 @@
 package view;
 
 import control.ControllerView;
-import control.Functions;
+import control.UtilCPF;
+import control.UtilCriptografia;
+import control.UtilGeral;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 /**
  *
@@ -18,6 +21,9 @@ public class DlgLogin extends javax.swing.JDialog {
     private ControllerView gerIG;
     /**
      * Creates new form Loginn
+     * @param parent
+     * @param modal
+     * @param controller
      */
     public DlgLogin(java.awt.Frame parent, boolean modal,ControllerView controller) {
         initComponents();
@@ -42,6 +48,8 @@ public class DlgLogin extends javax.swing.JDialog {
         txtCPF = new javax.swing.JFormattedTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        btCadastro = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -54,7 +62,7 @@ public class DlgLogin extends javax.swing.JDialog {
         lbSenha.setFont(new java.awt.Font("Lucida Sans", 0, 18)); // NOI18N
         lbSenha.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lbSenha.setText("Senha");
-        jPanel1.add(lbSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 70, 50));
+        jPanel1.add(lbSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 170, 70, 40));
 
         pswUsuario.setFont(new java.awt.Font("Segoe UI", 0, 22)); // NOI18N
         pswUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -62,12 +70,12 @@ public class DlgLogin extends javax.swing.JDialog {
                 pswUsuarioKeyPressed(evt);
             }
         });
-        jPanel1.add(pswUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 190, 280, 50));
+        jPanel1.add(pswUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 170, 250, 40));
 
         lbUsuario.setFont(new java.awt.Font("Lucida Sans", 0, 18)); // NOI18N
         lbUsuario.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lbUsuario.setText("CPF");
-        jPanel1.add(lbUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 70, 50));
+        jPanel1.add(lbUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, 70, 40));
 
         btEntrar.setBackground(new java.awt.Color(0, 153, 51));
         btEntrar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -77,7 +85,7 @@ public class DlgLogin extends javax.swing.JDialog {
                 btEntrarActionPerformed(evt);
             }
         });
-        jPanel1.add(btEntrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 260, 110, 50));
+        jPanel1.add(btEntrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 270, 110, 40));
 
         btCancelar.setBackground(new java.awt.Color(102, 102, 102));
         btCancelar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -87,7 +95,7 @@ public class DlgLogin extends javax.swing.JDialog {
                 btCancelarActionPerformed(evt);
             }
         });
-        jPanel1.add(btCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 260, 110, 50));
+        jPanel1.add(btCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 270, 110, 40));
 
         try {
             txtCPF.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
@@ -95,15 +103,29 @@ public class DlgLogin extends javax.swing.JDialog {
             ex.printStackTrace();
         }
         txtCPF.setFont(new java.awt.Font("Segoe UI", 0, 22)); // NOI18N
-        jPanel1.add(txtCPF, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 130, 280, 50));
+        jPanel1.add(txtCPF, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 110, 250, 40));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaces/imgs/icons/logo (2).png"))); // NOI18N
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, -1, 70));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, -1, 70));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Login");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 70, 130, -1));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 30, 130, 50));
+
+        jLabel1.setText("Ainda não possui login?");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 230, -1, -1));
+
+        btCadastro.setBackground(new java.awt.Color(60, 63, 65));
+        btCadastro.setForeground(new java.awt.Color(255, 0, 0));
+        btCadastro.setText("Cadastre-se");
+        btCadastro.setBorder(null);
+        btCadastro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btCadastroActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btCadastro, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 230, 70, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 430, 320));
 
@@ -117,14 +139,16 @@ public class DlgLogin extends javax.swing.JDialog {
     
     private boolean validarCampos(){
         String msgErro = "";
-        lbUsuario.setForeground(Color.black);
-        lbSenha.setForeground(Color.black);
+        Color defaultLabelColor = UIManager.getColor("Label.foreground");
         
-        if(Functions.validarCPF(txtCPF.getText()) == false){
+        lbUsuario.setForeground(defaultLabelColor);
+        lbSenha.setForeground(defaultLabelColor);
+        
+        if(UtilCPF.validarCPF(txtCPF.getText()) == false){
             lbUsuario.setForeground(Color.red);
             msgErro += "CPF Invalido\n";
         }
-        if(Functions.validarSenha(String.valueOf(pswUsuario.getPassword())) == false){
+        if(UtilCriptografia.validarSenha(String.valueOf(pswUsuario.getPassword())) == false){
             msgErro += "Senha invalida\nVerifique se sua senha possui pelo menos:\n    (8) caracteres;\n    (1) caractere especial;\n    (1) número;\n    (1) letra maiúscula;\n    (1) letra minúscula.\n";
             lbSenha.setForeground(Color.red);
         }
@@ -159,9 +183,16 @@ public class DlgLogin extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_pswUsuarioKeyPressed
 
+    private void btCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCadastroActionPerformed
+        gerIG.janelaCadastro();
+            this.dispose();
+    }//GEN-LAST:event_btCadastroActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btCadastro;
     private javax.swing.JButton btCancelar;
     private javax.swing.JButton btEntrar;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

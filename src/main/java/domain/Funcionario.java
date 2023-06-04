@@ -4,7 +4,7 @@
  */
 package domain;
 
-import control.Functions;
+import control.UtilGeral;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,7 +23,7 @@ public class Funcionario extends Pessoa implements Serializable{
     @Temporal (TemporalType.DATE)
     private Date dataAdmissao;
     
-    @Column (length = 30, nullable = false)
+    @Column (length = 255, nullable = false)
     private String senha;
     
     @OneToMany (mappedBy = "funcionario", fetch = FetchType.LAZY)
@@ -66,7 +66,7 @@ public class Funcionario extends Pessoa implements Serializable{
     
     @Override
     public Object[] toArray(){
-        Object dados[] = {getIdPessoa(), this, getCpf(), Functions.formatarDataParaInterface(dataAdmissao.toString()),getEmail(), senha, getTelefone()};
+        Object dados[] = {getIdPessoa(), this, getCpf(), UtilGeral.formatarDataParaInterface(dataAdmissao.toString()),getEmail(), senha, getTelefone()};
         return dados;
     };
 }

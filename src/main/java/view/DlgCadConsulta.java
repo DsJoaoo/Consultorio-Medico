@@ -5,7 +5,7 @@
 package view;
 
 import control.ControllerView;
-import control.Functions;
+import control.UtilGeral;
 import domain.*;
 import java.awt.Color;
 import java.awt.HeadlessException;
@@ -15,6 +15,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import org.hibernate.HibernateException;
 
@@ -424,12 +425,15 @@ public class DlgCadConsulta extends javax.swing.JDialog {
     }
     
     private void setCor(){
-       lbData.setForeground(Color.black);
-       lbHora.setForeground(Color.black);
-       lbMedico.setForeground(Color.black);
-       lbPaciente.setForeground(Color.black);
-       lbTipoConsulta.setForeground(Color.black);
-       lbPesquisar.setForeground(Color.black);
+       Color defaultLabelColor = UIManager.getColor("Label.foreground");
+
+    // Define a cor padrão para o componente de rótulo
+       lbData.setForeground(defaultLabelColor);
+       lbHora.setForeground(defaultLabelColor);
+       lbMedico.setForeground(defaultLabelColor);
+       lbPaciente.setForeground(defaultLabelColor);
+       lbTipoConsulta.setForeground(defaultLabelColor);
+       lbPesquisar.setForeground(defaultLabelColor);
     }
     
     
@@ -459,11 +463,11 @@ public class DlgCadConsulta extends javax.swing.JDialog {
         txtData.getText();      
         txtHora.getText();
       
-       if(Functions.validarHora(txtHora.getText()) == false){
+       if(UtilGeral.validarHora(txtHora.getText()) == false){
           lbHora.setForeground(Color.red);
           msgErro += "horário incorreto\n";
        }
-       if(Functions.verificarFormatoData(txtData.getText()) == false){
+       if(UtilGeral.verificarFormatoData(txtData.getText()) == false){
            lbData.setForeground(Color.red);
            msgErro += "data incorreta\n";
        }
@@ -511,8 +515,8 @@ public class DlgCadConsulta extends javax.swing.JDialog {
         tipoConsultaSelecionado = (TipoConsulta) cmbTipoConsulta.getSelectedItem();
         if(validarCampos()){
             try {
-                Date dt = Functions.strToDate(data);
-                Time hr = Functions.convertStringToTime(hora);
+                Date dt = UtilGeral.strToDate(data);
+                Time hr = UtilGeral.convertStringToTime(hora);
                 gerIG.getGerDominio().inserirConsulta(dt, hr,funcionarioSelecionado, pacienteSelecionado, medicoSelecionado, tipoConsultaSelecionado);
                 JOptionPane.showMessageDialog(this, "Consulta inserida com sucesso.", "Inserir Consulta", JOptionPane.INFORMATION_MESSAGE  );
 

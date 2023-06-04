@@ -10,12 +10,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.HeadlessException;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.List;
 import javax.swing.BorderFactory;
-import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import org.hibernate.HibernateException;
@@ -24,7 +22,7 @@ import org.hibernate.HibernateException;
  * @author joaop
  */
 public class DlgCadTipoConsulta extends javax.swing.JDialog {
-    private ControllerView gerIG;
+    private final ControllerView gerIG;
     private TipoConsulta tipoSelecionado;
     /**
      * Creates new form DlgCliente
@@ -357,9 +355,11 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
     
     
     private void setCor(){
-        lbNome.setForeground(Color.black);
-        lbPreco.setForeground(Color.black);
-        lbPesquisar.setForeground(Color.black);
+        Color defaultLabelColor = UIManager.getColor("Label.foreground");
+        
+        lbNome.setForeground(defaultLabelColor);
+        lbPreco.setForeground(defaultLabelColor);
+        lbPesquisar.setForeground(defaultLabelColor);
         jpPlano.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "É plano de saúde?", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 18))); // NOI18N
         
     }

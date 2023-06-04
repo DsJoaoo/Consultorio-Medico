@@ -24,18 +24,9 @@ import javax.swing.table.DefaultTableCellRenderer;
  *
  * @author jean_
  */
-public class Functions {
+public class UtilGeral {
     
-    public static void centralizarColunas(JTable tabela){
-        int qtdeColunas = tabela.getColumnCount();
-
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-
-        for(int i=0; i < qtdeColunas; i++){
-        tabela.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-        }
-    }
+    
     
     
     
@@ -52,109 +43,7 @@ public class Functions {
         dtForm.setLenient(false);
         return dtForm.parse(strDt);
     }
-    
-    
-    public static  String checarBotao(ButtonGroup group){
-        String nomeBotao = "";
-        Enumeration<AbstractButton> botoes = group.getElements();
-        while (botoes.hasMoreElements()) {
-            AbstractButton botao = botoes.nextElement();
-            if (botao.isSelected()) {
-                nomeBotao = botao.getText();
-                break;
-            }  
-        }
-         return nomeBotao;
-    }
-  
-    
-    public static boolean validarSenha(String senha) {
-        // Verifica se a senha tem pelo menos 8 caracteres
-        if (senha.length() < 8) {
-            return false;
-        }
 
-        // Verifica se a senha contém pelo menos um caractere especial, um caractere em maiúsculo,
-        // um caractere em minúsculo e um número
-        boolean temCaractereEspecial = false;
-        boolean temCaractereMaiusculo = false;
-        boolean temCaractereMinusculo = false;
-        boolean temNumero = false;
-
-        for (int i = 0; i < senha.length(); i++) {
-            char caractere = senha.charAt(i);
-
-            if (!temCaractereEspecial && !Character.isLetterOrDigit(caractere)) {
-                temCaractereEspecial = true;
-            }
-
-            if (!temCaractereMaiusculo && Character.isUpperCase(caractere)) {
-                temCaractereMaiusculo = true;
-            }
-
-            if (!temCaractereMinusculo && Character.isLowerCase(caractere)) {
-                temCaractereMinusculo = true;
-            }
-
-            if (!temNumero && Character.isDigit(caractere)) {
-                temNumero = true;
-            }
-        }
-
-        return !(!temCaractereEspecial || !temCaractereMaiusculo || !temCaractereMinusculo || !temNumero);
-    }
-
-    
-    
-    public static String removerCaracteresCPF(String cpf){
-        // Remove todos os caracteres que não são dígitos
-        cpf = cpf.replaceAll("\\D", "");
-        return cpf;
-    }
-    
-    
-    public static boolean validarCPF(String cpf) {
-        // Remove todos os caracteres que não são dígitos
-        cpf = cpf.replaceAll("\\D", "");
-
-        // Verifica se o CPF possui 11 dígitos
-        if (cpf.length() != 11) {
-            return false;
-        }
-
-        // Verifica se todos os dígitos são iguais
-        boolean todosIguais = true;
-        char primeiroDigito = cpf.charAt(0);
-        for (int i = 1; i < 11; i++) {
-            if (cpf.charAt(i) != primeiroDigito) {
-                todosIguais = false;
-                break;
-            }
-        }
-        if (todosIguais) {
-            return false;
-        }
-
-        // Verifica se os dois dígitos verificadores são válidos
-        int soma = 0;
-        int resto;
-        for (int i = 0; i < 9; i++) {
-            int digito = Integer.parseInt(cpf.substring(i, i + 1));
-            soma += digito * (10 - i);
-        }
-        resto = soma % 11;
-        int primeiroDV = (resto < 2) ? 0 : 11 - resto;
-
-        soma = 0;
-        for (int i = 0; i < 10; i++) {
-            int digito = Integer.parseInt(cpf.substring(i, i + 1));
-            soma += digito * (11 - i);
-        }
-        resto = soma % 11;
-        int segundoDV = (resto < 2) ? 0 : 11 - resto;
-
-        return cpf.substring(9, 11).equals(primeiroDV + "" + segundoDV);
-}
 
     
     public static boolean validarEmail(String email) {

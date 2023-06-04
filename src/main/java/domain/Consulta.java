@@ -5,7 +5,7 @@
 package domain;
 
 
-import control.Functions;
+import control.UtilGeral;
 import java.io.Serializable;
 import java.sql.Time;
 import java.util.Date;
@@ -117,7 +117,7 @@ public class Consulta implements Serializable, Adapter {
     
     @Override
     public Object[] toArray(){
-       return new Object[] {idConsulta, Functions.formatarDataParaInterface(dataConsulta.toString()), hora, paciente, funcionario, medico, tipoConsulta, tipoConsulta.getValor() };
+       return new Object[] {idConsulta, UtilGeral.formatarDataParaInterface(dataConsulta.toString()), hora, paciente, funcionario, medico, tipoConsulta, tipoConsulta.getValor() };
     };
     
 }

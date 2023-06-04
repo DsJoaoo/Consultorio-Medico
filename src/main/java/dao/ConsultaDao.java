@@ -1,6 +1,6 @@
 package dao;
 
-import control.Functions;
+import control.UtilGeral;
 import domain.Consulta;
 import domain.Funcionario;
 import domain.Medico;
@@ -55,7 +55,7 @@ private List<Consulta> pesquisar(String pesq, int tipo) throws HibernateExceptio
                 restricoes = builder.equal(funcionarioJoin.get("nomePessoa"), pesq);
                 break;
             case 5:
-                restricoes = builder.equal(tabela.get("dataConsulta"), Functions.formatarDataParaSQL(pesq));
+                restricoes = builder.equal(tabela.get("dataConsulta"), UtilGeral.formatarDataParaSQL(pesq));
                 break;
         }
 

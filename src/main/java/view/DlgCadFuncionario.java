@@ -5,7 +5,8 @@
 package view;
 
 import control.ControllerView;
-import control.Functions;
+import control.UtilCriptografia;
+import control.UtilGeral;
 import domain.Funcionario;
 import domain.Medico;
 import java.awt.Color;
@@ -15,6 +16,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import org.hibernate.HibernateException;
 
@@ -124,7 +126,6 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
 
         jpNome.setLayout(new java.awt.GridLayout(1, 2, -120, 15));
 
-        lbNome.setBackground(new java.awt.Color(255, 255, 255));
         lbNome.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         lbNome.setText("Nome");
         jpNome.add(lbNome);
@@ -132,7 +133,6 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
 
         jpEmail.setLayout(new java.awt.GridLayout(1, 2, -120, 15));
 
-        lbEmail.setBackground(new java.awt.Color(255, 255, 255));
         lbEmail.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         lbEmail.setText("E-mail");
         jpEmail.add(lbEmail);
@@ -407,15 +407,16 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
     }
     
     private void setCor(){
-        lbNome.setForeground(Color.black);
-        lbCPF.setForeground(Color.black);
-        lbEmail.setForeground(Color.black);
-        lbDataAdmissao.setForeground(Color.black);
-        lbTelefone.setForeground(Color.black);
-        lbPesquisar.setForeground(Color.black);
-        lbPesquisar.setForeground(Color.black);
-        lbSenha.setForeground(Color.black);
-        lbConfirmarSenha.setForeground(Color.black);
+        Color defaultLabelColor = UIManager.getColor("Label.foreground");
+        lbNome.setForeground(defaultLabelColor);
+        lbCPF.setForeground(defaultLabelColor);
+        lbEmail.setForeground(defaultLabelColor);
+        lbDataAdmissao.setForeground(defaultLabelColor);
+        lbTelefone.setForeground(defaultLabelColor);
+        lbPesquisar.setForeground(defaultLabelColor);
+        lbPesquisar.setForeground(defaultLabelColor);
+        lbSenha.setForeground(defaultLabelColor);
+        lbConfirmarSenha.setForeground(defaultLabelColor);
     }
     
     
@@ -448,7 +449,7 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
             lbNome.setForeground(Color.red);
         }
         
-        if(!Functions.validarSenha(senha)){
+        if(!UtilCriptografia.validarSenha(senha)){
             msgErro += "Senha invalida\nVerifique se sua senha possui pelo menos:\n    (8) caracteres;\n    (1) caractere especial;\n    (1) número;\n    (1) letra maiúscula;\n    (1) letra minúscula.\n";
             lbSenha.setForeground(Color.red);
             lbConfirmarSenha.setForeground(Color.red);
@@ -470,12 +471,12 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
             lbEmail.setForeground(Color.red);
         }
         
-        if(!Functions.verificarFormatoData(txtDataAdmissao.getText())){
+        if(!UtilGeral.verificarFormatoData(txtDataAdmissao.getText())){
             msgErro += "Data de admissao invalida\n";
             lbDataAdmissao.setForeground(Color.red);
         }
         
-        if(!Functions.validarTelefone(txtTelefone.getText())){
+        if(!UtilGeral.validarTelefone(txtTelefone.getText())){
             msgErro += "Telefone ou dd invalido\n";
             lbTelefone.setForeground(Color.red);
         }
@@ -516,7 +517,7 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
         String telefone = txtTelefone.getText(); 
         if(validarCampos()){
             try {
-                Date dt = Functions.strToDate(dataAdmissao);
+                Date dt = UtilGeral.strToDate(dataAdmissao);
                 if(funcionarioSelecionado == null){
                     controller.getGerDominio().inserirFucionario(nome, cpf,dt, email, senha, telefone);
                     JOptionPane.showMessageDialog(this, "Funcionario inserido com sucesso.", "Inserir Funcionario", JOptionPane.INFORMATION_MESSAGE  );
@@ -545,8 +546,8 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
             txtCPF.setText(tbFuncionarios.getValueAt(opcao, 2).toString());
             txtEmail.setText(tbFuncionarios.getValueAt(opcao, 3).toString());
 
-            txtDataAdmissao.setText(Functions.formatarDataParaInterface(tbFuncionarios.getValueAt(opcao, 4).toString()));
-            txtTelefone.setText(Functions.removerCaracteresTelefone(tbFuncionarios.getValueAt(opcao, 6).toString()));
+            txtDataAdmissao.setText(UtilGeral.formatarDataParaInterface(tbFuncionarios.getValueAt(opcao, 4).toString()));
+            txtTelefone.setText(UtilGeral.removerCaracteresTelefone(tbFuncionarios.getValueAt(opcao, 6).toString()));
            
             btAtualizar.setVisible(true);
             jpID.setVisible(true);
@@ -572,7 +573,7 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
         String nome = txtNome.getText();
         String cpf = txtCPF.getText();
         String email = txtEmail.getText(); 
-        String dataNascimento = Functions.formatarDataParaSQL(txtDataAdmissao.getText());
+        String dataNascimento = UtilGeral.formatarDataParaSQL(txtDataAdmissao.getText());
         String telefone = txtTelefone.getText();
         
         if(validarCampos()){

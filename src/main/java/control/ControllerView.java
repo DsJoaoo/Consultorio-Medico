@@ -1,19 +1,24 @@
 package control;
 
-import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.FlatDarkLaf;
 import domain.*;
 import view.*;
 import java.awt.Frame;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.List;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import org.hibernate.HibernateException;
 
@@ -35,6 +40,7 @@ public class ControllerView {
     private DlgPesqPaciente janPesqPaciente = null;
     private DlgPesqMedico janPesqMedico = null;
     private DlgPesqFuncionario janPesqFuncionario = null;
+    private DlgCadCadastro janCadastro = null;
     
     
     
@@ -74,6 +80,10 @@ public class ControllerView {
     
     public void janelaLogin() {
         janCadLogin = (DlgLogin) abrirJanela(null, janCadLogin, DlgLogin.class);
+    }
+    
+    public void janelaCadastro() {
+        janCadastro = (DlgCadCadastro) abrirJanela(null, janCadastro, DlgCadCadastro.class);
     }
     
     public void janelaCadPaciente() {
@@ -124,7 +134,29 @@ public class ControllerView {
     
     
     //</editor-fold>
+    public String checarNomeBotao(ButtonGroup group){
+        String nomeBotao = "";
+        Enumeration<AbstractButton> botoes = group.getElements();
+        while (botoes.hasMoreElements()) {
+            AbstractButton botao = botoes.nextElement();
+            if (botao.isSelected()) {
+                nomeBotao = botao.getText();
+                break;
+            }  
+        }
+         return nomeBotao;
+    }
     
+    public void centralizarColunas(JTable tabela){
+        int qtdeColunas = tabela.getColumnCount();
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        for(int i=0; i < qtdeColunas; i++){
+        tabela.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+    }
     
     public void carregarTabela(JTable tabela, Class classe) throws ClassNotFoundException, SQLException {
         DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
@@ -135,7 +167,7 @@ public class ControllerView {
             lista.forEach(objeto -> {
                 modelo.addRow(objeto.toArray());
             });
-            Functions.centralizarColunas(tabela);
+            centralizarColunas(tabela);
         } catch (HibernateException e) {
             JOptionPane.showMessageDialog(janCadPrincipal, "Erro ao tentar listar tabela do banco de dados. " + e.getMessage());
     }
@@ -149,6 +181,17 @@ public class ControllerView {
             JOptionPane.showMessageDialog(janCadPrincipal, "Erro ao carregar informações. " + ex.getMessage() );          
         } 
     }
+    
+    
+     public boolean existeFuncionario() throws ClassNotFoundException, SQLException {
+        List<Funcionario> lista = null;
+        try {
+            lista = gerDominio.listar(Funcionario.class);
+        } catch (HibernateException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao consultar funcionario no banco de dados. " + e.getMessage());
+        }
+        return !(lista == null || lista.isEmpty());
+     }
  
 
     public ControllerDomain getGerDominio() {
@@ -165,7 +208,7 @@ public class ControllerView {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         //Setando um tema de um repositório externo
         try {
-            UIManager.setLookAndFeel( new FlatLightLaf() );
+            UIManager.setLookAndFeel( new FlatDarkLaf() );
         } catch( UnsupportedLookAndFeelException ex ) {
             System.err.println( "Falha ao iniciar tema FlatLightLaf" );
         }catch (Exception ex) {
@@ -179,7 +222,18 @@ public class ControllerView {
         
 
         ControllerView gerIG = new ControllerView();
-        gerIG.janelaLogin();
+        
+        try {
+            if (gerIG.existeFuncionario())
+                gerIG.janelaLogin();
+            else
+                gerIG.janelaCadastro();
+        } catch (ClassNotFoundException | SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao carregar janela de acesso." + e.getMessage());
+        }
+            
+            
+        
     }  
 
     
