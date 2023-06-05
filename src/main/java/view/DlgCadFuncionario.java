@@ -9,6 +9,7 @@ import control.UtilCriptografia;
 import control.UtilGeral;
 import domain.Funcionario;
 import domain.Medico;
+import domain.Pessoa;
 import java.awt.Color;
 import java.awt.HeadlessException;
 import java.sql.SQLException;
@@ -466,7 +467,7 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
             lbCPF.setForeground(Color.red);
         }
         
-        if(!controller.getGerDominio().validarEmail(txtEmail.getText(), Funcionario.class)){
+        if(!controller.getGerDominio().validarEmail(txtEmail.getText(), Pessoa.class)){
             msgErro += "Email invalido ou já cadastrado\n";
             lbEmail.setForeground(Color.red);
         }
@@ -481,7 +482,7 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
             lbTelefone.setForeground(Color.red);
         }
         
-        if(!controller.getGerDominio().validarCPF(txtCPF.getText(), Funcionario.class)){
+        if(!controller.getGerDominio().validarCPF(txtCPF.getText(), Pessoa.class)){
             lbCPF.setForeground(Color.red);
             msgErro += "CPF Invalido ou  já cadastrado!\n";
         }
@@ -560,11 +561,25 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
     }//GEN-LAST:event_btEditarActionPerformed
 
     private void btExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirActionPerformed
-        int opcao = tbFuncionarios.getSelectedRow();
-        if(opcao >= 0){
-            //Exclui do banco
-        }else{
-            JOptionPane.showMessageDialog(null, "Selecione uma linha!");
+        int linha = tbFuncionarios.getSelectedRow();
+        if ( linha >= 0 ) {
+            try {
+                Funcionario fun = (Funcionario) tbFuncionarios.getValueAt(linha, 1);
+                boolean iguais = (fun.getIdPessoa() == controller.getGerDominio().getFuncionarioLogado().getIdPessoa());
+                if ( !iguais &&(JOptionPane.showConfirmDialog(this, "Deseja realmente excluir esse Funcionario?", "Excluir", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION )) {
+                    controller.getGerDominio().excluir(fun);
+                    ( (DefaultTableModel) tbFuncionarios.getModel() ).removeRow(linha);
+                    JOptionPane.showMessageDialog(this, "Funcionario " + fun.getNomePessoa()+ " excluído com sucesso.", "PESQUISAR Funcionario", JOptionPane.INFORMATION_MESSAGE  );
+                }else if(iguais){
+                   JOptionPane.showMessageDialog(this, "Você não pode excluir enquanto estiver logado./n Acesso outro usuário e faça a exclusão", "Excluir Funcionario", JOptionPane.INFORMATION_MESSAGE  );
+                }
+                
+            } catch (HibernateException ex) {
+                JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Funcionario", JOptionPane.ERROR_MESSAGE  );
+            }             
+        }        
+        else {
+            JOptionPane.showMessageDialog(this,"Selecione uma linha.", "Pesquisar Funcionario", JOptionPane.ERROR_MESSAGE  );
         }
     }//GEN-LAST:event_btExcluirActionPerformed
 

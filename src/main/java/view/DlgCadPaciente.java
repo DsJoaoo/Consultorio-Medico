@@ -6,7 +6,9 @@ package view;
 
 import control.ControllerView;
 import control.UtilGeral;
+import domain.Funcionario;
 import domain.Paciente;
+import domain.Pessoa;
 import java.awt.Color;
 import java.awt.HeadlessException;
 import java.sql.SQLException;
@@ -449,7 +451,7 @@ public class DlgCadPaciente extends javax.swing.JDialog {
             lbCPF.setForeground(Color.red);
         }
         
-        if(!gerIG.getGerDominio().validarEmail(txtEmail.getText(), Paciente.class)){
+        if(!gerIG.getGerDominio().validarEmail(txtEmail.getText(), Pessoa.class)){
             msgErro += "Email invalido ou já cadastrado\n";
             lbEmail.setForeground(Color.red);
         }
@@ -470,7 +472,7 @@ public class DlgCadPaciente extends javax.swing.JDialog {
             lbTelefone.setForeground(Color.red);
         }
         
-        if(!gerIG.getGerDominio().validarCPF(txtCPF.getText(), Paciente.class)){
+        if(!gerIG.getGerDominio().validarCPF(txtCPF.getText(), Pessoa.class)){
             lbCPF.setForeground(Color.red);
             msgErro += "CPF Invalido ou já cadastrado\n";
         }
@@ -553,11 +555,22 @@ public class DlgCadPaciente extends javax.swing.JDialog {
 
     
     private void btExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirActionPerformed
-        int opcao = tbPacientes.getSelectedRow();
-        if(opcao >= 0){
-            // excluir do banco
-        }else{
-            JOptionPane.showMessageDialog(null, "Selecione uma linha");
+        int linha = tbPacientes.getSelectedRow();
+        if ( linha >= 0 ) {
+            try {
+                Paciente fun = (Paciente) tbPacientes.getValueAt(linha, 1);
+                if ( JOptionPane.showConfirmDialog(this, "Deseja realmente excluir esse Paciente?", "Título", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION ) {
+                    gerIG.getGerDominio().excluir(fun);
+                    ( (DefaultTableModel) tbPacientes.getModel() ).removeRow(linha);
+                    JOptionPane.showMessageDialog(this, "Paciente " + fun.getNomePessoa()+ " excluído com sucesso.", "PESQUISAR Paciente", JOptionPane.INFORMATION_MESSAGE  );
+                }
+                
+            } catch (HibernateException ex) {
+                JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Paciente", JOptionPane.ERROR_MESSAGE  );
+            }             
+        }        
+        else {
+            JOptionPane.showMessageDialog(this,"Selecione uma linha.", "Pesquisar Paciente", JOptionPane.ERROR_MESSAGE  );
         }
     }//GEN-LAST:event_btExcluirActionPerformed
 

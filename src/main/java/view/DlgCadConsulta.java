@@ -34,6 +34,8 @@ public class DlgCadConsulta extends javax.swing.JDialog {
     /**
      * Creates new form DlgCliente
      * @param parent
+     * @param modal
+     * @param controller
      */
     public DlgCadConsulta(java.awt.Frame parent, boolean modal, ControllerView controller) {
         super(parent, modal);
@@ -218,13 +220,12 @@ public class DlgCadConsulta extends javax.swing.JDialog {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jpID, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jpData, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
-                        .addComponent(jpTipo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jpHora, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jpData, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
+                    .addComponent(jpTipo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jpHora, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jpID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -240,7 +241,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
-        jpDados.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 240, 210));
+        jpDados.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 250, 210));
 
         jpBotoes.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -410,7 +411,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
 
     
      private void habilitarBotoes() {
-        if(tipoConsultaSelecionado == null){
+       if(consultaSelecionada == null){
             limparCampos();
             btAtualizar.setVisible(false);
             btConfirmar.setVisible(true);
@@ -471,14 +472,21 @@ public class DlgCadConsulta extends javax.swing.JDialog {
            lbData.setForeground(Color.red);
            msgErro += "data incorreta\n";
        }
-       if(medicoSelecionado == null){
+       if(medicoSelecionado == null ){
            lbMedico.setForeground(Color.red);
            msgErro += "selecione um medico\n";
+       }else if(gerIG.getGerDominio().verificarDisponibilidade(medicoSelecionado, txtHora.getText(), txtData.getText())){
+           msgErro += "Médico selecionado não está disponível para atender neste horário\n";
        }
+       
+       
        if(pacienteSelecionado == null){
             lbPaciente.setForeground(Color.red);
             msgErro += "selecione um paciente\n";
+       }else if (gerIG.getGerDominio().verificarDisponibilidade(pacienteSelecionado, txtHora.getText(), txtData.getText())){
+           msgErro += "Paciente selecionado está disponível para atender neste horário\n";
        }
+       
        if(tipoConsultaSelecionado == null){
            lbTipoConsulta.setForeground(Color.red);
            msgErro += "selecione o tipo de consulta\n";
@@ -489,6 +497,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
        }else{
            funcionarioSelecionado = gerIG.getGerDominio().getFuncionarioLogado();
        }
+       
        
        if(msgErro.isEmpty()){
             return true;
@@ -517,6 +526,9 @@ public class DlgCadConsulta extends javax.swing.JDialog {
             try {
                 Date dt = UtilGeral.strToDate(data);
                 Time hr = UtilGeral.convertStringToTime(hora);
+                
+                
+                
                 gerIG.getGerDominio().inserirConsulta(dt, hr,funcionarioSelecionado, pacienteSelecionado, medicoSelecionado, tipoConsultaSelecionado);
                 JOptionPane.showMessageDialog(this, "Consulta inserida com sucesso.", "Inserir Consulta", JOptionPane.INFORMATION_MESSAGE  );
 
@@ -558,11 +570,22 @@ public class DlgCadConsulta extends javax.swing.JDialog {
 
     
     private void btExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirActionPerformed
-        int opcao = tbConsultas.getSelectedRow();
-        if(opcao >= 0){
-            //Remove a linha selecionada
-        }else{
-            JOptionPane.showMessageDialog(null, "Selecione uma linha!");
+        int linha = tbConsultas.getSelectedRow();
+        if ( linha >= 0 ) {
+            try {
+                Consulta fun = (Consulta) tbConsultas.getValueAt(linha, 0);
+                if ( JOptionPane.showConfirmDialog(this, "Deseja realmente excluir esse consulta?", "Título", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION ) {
+                    gerIG.getGerDominio().excluir(fun);
+                    ( (DefaultTableModel) tbConsultas.getModel() ).removeRow(linha);
+                    JOptionPane.showMessageDialog(this, "Consulta " + fun.getIdConsulta()+ " excluído com sucesso.", "PESQUISAR consulta", JOptionPane.INFORMATION_MESSAGE  );
+                }
+                
+            } catch (HibernateException ex) {
+                JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR consulta", JOptionPane.ERROR_MESSAGE  );
+            }             
+        }        
+        else {
+            JOptionPane.showMessageDialog(this,"Selecione uma linha.", "Pesquisar consulta", JOptionPane.ERROR_MESSAGE  );
         }
     }//GEN-LAST:event_btExcluirActionPerformed
 

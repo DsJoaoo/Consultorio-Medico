@@ -74,7 +74,7 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
         jSeparator1 = new javax.swing.JSeparator();
         jpServico = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbServicos = new javax.swing.JTable();
+        tbFuncionarios = new javax.swing.JTable();
         jSeparator2 = new javax.swing.JSeparator();
         jpBotoes1 = new javax.swing.JPanel();
         btNovo = new javax.swing.JButton();
@@ -252,7 +252,7 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
         jpServico.setLayout(new java.awt.BorderLayout());
         jpServico.setOpaque(false);
 
-        tbServicos.setModel(new javax.swing.table.DefaultTableModel(
+        tbFuncionarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -268,8 +268,8 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        tbServicos.setOpaque(true);
-        jScrollPane1.setViewportView(tbServicos);
+        tbFuncionarios.setOpaque(true);
+        jScrollPane1.setViewportView(tbFuncionarios);
 
         jpServico.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -458,10 +458,10 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
 
     
     private void btEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEditarActionPerformed
-        int opcao = tbServicos.getSelectedRow();
+        int opcao = tbFuncionarios.getSelectedRow();
         if(opcao >= 0){          
-            txtIdServico.setText(tbServicos.getValueAt(opcao, 0).toString());
-            txtNome.setText(tbServicos.getValueAt(opcao, 1).toString()); 
+            txtIdServico.setText(tbFuncionarios.getValueAt(opcao, 0).toString());
+            txtNome.setText(tbFuncionarios.getValueAt(opcao, 1).toString()); 
             btAtualizar.setVisible(true);
             jpID.setVisible(true);
             btConfirmar.setVisible(false);
@@ -473,11 +473,22 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
 
     
     private void btExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirActionPerformed
-        int opcao = tbServicos.getSelectedRow();
-        if(opcao >= 0){
-            //Exclui do banco de dados
-        }else{
-            JOptionPane.showMessageDialog(null, "Selecione uma linha!");
+        int linha = tbFuncionarios.getSelectedRow();
+        if ( linha >= 0 ) {
+            try {
+                TipoConsulta fun = (TipoConsulta) tbFuncionarios.getValueAt(linha, 1);
+                if ( JOptionPane.showConfirmDialog(this, "Deseja realmente excluir esse Tipo de consulta?", "Tipo de consulta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION ) {
+                    gerIG.getGerDominio().excluir(fun);
+                    ( (DefaultTableModel) tbFuncionarios.getModel() ).removeRow(linha);
+                    JOptionPane.showMessageDialog(this, "Tipo de consulta " + fun.getDescricao()+ " excluído com sucesso.", "PESQUISAR Tipo de consulta", JOptionPane.INFORMATION_MESSAGE  );
+                }
+                
+            } catch (HibernateException ex) {
+                JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Tipo de consulta", JOptionPane.ERROR_MESSAGE  );
+            }             
+        }        
+        else {
+            JOptionPane.showMessageDialog(this,"Selecione uma linha.", "Pesquisar Tipo de consulta", JOptionPane.ERROR_MESSAGE  );
         }
     }//GEN-LAST:event_btExcluirActionPerformed
 
@@ -505,11 +516,11 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
                 List<TipoConsulta> lista = gerIG.getGerDominio().pesquisarTipoConsulta(txtPesquisar.getText(), comboTipo.getSelectedIndex() );
 
                 // APAGA as linhas da tabela
-                ( (DefaultTableModel) tbServicos.getModel() ).setNumRows(0);
+                ( (DefaultTableModel) tbFuncionarios.getModel() ).setNumRows(0);
 
                 for (TipoConsulta cli : lista ) {
                     // ADICIONAR LINHA NA TABELA        
-                    ( (DefaultTableModel) tbServicos.getModel() ).addRow( cli.toArray() );                
+                    ( (DefaultTableModel) tbFuncionarios.getModel() ).addRow( cli.toArray() );                
                 }
 
             
@@ -536,7 +547,7 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         try {
-            gerIG.carregarTabela(tbServicos, TipoConsulta.class);
+            gerIG.carregarTabela(tbFuncionarios, TipoConsulta.class);
         } catch (ClassNotFoundException | SQLException ex) {
             JOptionPane.showMessageDialog(this, "Erro ao carregar Lista de tipos de consultas disponíveis " + ex.getMessage() );
         }
@@ -577,7 +588,7 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
     private javax.swing.JLabel lbNome;
     private javax.swing.JLabel lbPesquisar;
     private javax.swing.JLabel lbPreco;
-    private javax.swing.JTable tbServicos;
+    private javax.swing.JTable tbFuncionarios;
     private javax.swing.JFormattedTextField txtIdServico;
     private javax.swing.JTextField txtNome;
     private javax.swing.JTextField txtPesquisar;

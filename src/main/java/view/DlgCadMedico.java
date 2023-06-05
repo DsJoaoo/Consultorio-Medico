@@ -8,6 +8,7 @@ import control.ControllerView;
 import control.UtilGeral;
 import domain.Funcionario;
 import domain.Medico;
+import domain.Pessoa;
 import java.awt.Color;
 import java.awt.HeadlessException;
 import java.sql.SQLException;
@@ -440,7 +441,7 @@ public class DlgCadMedico extends javax.swing.JDialog {
             lbCPF.setForeground(Color.red);
         }
         
-        if(!gerIG.getGerDominio().validarEmail(txtEmail.getText(), Medico.class)){
+        if(!gerIG.getGerDominio().validarEmail(txtEmail.getText(), Pessoa.class)){
             msgErro += "Email invalido ou já registrado\n";
             lbEmail.setForeground(Color.red);
         }
@@ -455,7 +456,7 @@ public class DlgCadMedico extends javax.swing.JDialog {
             lbTelefone.setForeground(Color.red);
         }
         
-        if(!gerIG.getGerDominio().validarCPF(txtCPF.getText(), Medico.class)){
+        if(!gerIG.getGerDominio().validarCPF(txtCPF.getText(), Pessoa.class)){
             lbCPF.setForeground(Color.red);
             msgErro += "CPF Invalido ou já registrado\n";
         }
@@ -541,19 +542,22 @@ public class DlgCadMedico extends javax.swing.JDialog {
     }//GEN-LAST:event_btEditarActionPerformed
 
     private void btExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirActionPerformed
-        int opcao = tbMedicos.getSelectedRow();
-        if(opcao >= 0){
-            String sexo = "";
-             if(tbMedicos.getValueAt(opcao, 5).toString().equals("Masculino")){
-                sexo = "Masculino";
-            }else{
-                sexo = "Feminino";
-            }
-            if(validarCampos()){
-                //remover do banco
-            }
-        }else{
-            JOptionPane.showMessageDialog(null, "Selecione uma linha!");
+        int linha = tbMedicos.getSelectedRow();
+        if ( linha >= 0 ) {
+            try {
+                Medico fun = (Medico) tbMedicos.getValueAt(linha, 1);
+                if ( JOptionPane.showConfirmDialog(this, "Deseja realmente excluir esse Medico?", "Título", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION ) {
+                    gerIG.getGerDominio().excluir(fun);
+                    ( (DefaultTableModel) tbMedicos.getModel() ).removeRow(linha);
+                    JOptionPane.showMessageDialog(this, "Medico " + fun.getNomePessoa()+ " excluído com sucesso.", "PESQUISAR Medico", JOptionPane.INFORMATION_MESSAGE  );
+                }
+                
+            } catch (HibernateException ex) {
+                JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Medico", JOptionPane.ERROR_MESSAGE  );
+            }             
+        }        
+        else {
+            JOptionPane.showMessageDialog(this,"Selecione uma linha.", "Pesquisar Medico", JOptionPane.ERROR_MESSAGE  );
         }
     }//GEN-LAST:event_btExcluirActionPerformed
 

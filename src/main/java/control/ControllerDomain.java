@@ -162,6 +162,18 @@ public class ControllerDomain {
         return lista;
     }
     
+    public boolean verificarDisponibilidade(Medico medico, String hora, String data){
+        
+        return false;
+        
+    }
+    
+    public boolean verificarDisponibilidade( Paciente paciente, String hora, String data){
+        
+        return false;
+        
+    }
+    
     public boolean validarCPF(String cpf, Class classe){
         return (genDao.validar(cpf, 0, classe) && UtilCPF.validarCPF(cpf));
     }
@@ -173,7 +185,7 @@ public class ControllerDomain {
     public boolean validarFuncionario(String cpf, String senha){
         Funcionario usuarioRequisicao = logDao.validarUsuario(cpf);
         //verificando se o cpf cadastrado no banco possuí a mesma senha criptografada que foi que foi inserida na interface
-        if(UtilCriptografia.verifyPassword(senha, usuarioRequisicao.getSenha()))
+        if(usuarioRequisicao!= null && UtilCriptografia.verifyPassword(senha, usuarioRequisicao.getSenha()))
             funcionarioLogado = usuarioRequisicao;
         return funcionarioLogado != null;
     }

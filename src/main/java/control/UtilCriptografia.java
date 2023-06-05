@@ -57,4 +57,15 @@ public class UtilCriptografia {
 
         return !(!temCaractereEspecial || !temCaractereMaiusculo || !temCaractereMinusculo || !temNumero);
     }
+    
+    public static String formatarSenhaParaInterface(String senha) {
+        int tamanhoSenha = senha.length();
+        StringBuilder senhaFormatada = new StringBuilder();
+        
+        for (int i = 0; i < tamanhoSenha; i++) {
+            senhaFormatada.append("*");
+        }
+        
+        return senhaFormatada.toString();
+    }
 }

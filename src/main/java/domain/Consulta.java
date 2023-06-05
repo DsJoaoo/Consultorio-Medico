@@ -116,8 +116,13 @@ public class Consulta implements Serializable, Adapter {
     }
     
     @Override
+    public String toString(){
+        return String.valueOf(idConsulta);
+    }   
+    
+    @Override
     public Object[] toArray(){
-       return new Object[] {idConsulta, UtilGeral.formatarDataParaInterface(dataConsulta.toString()), hora, paciente, funcionario, medico, tipoConsulta, tipoConsulta.getValor() };
+       return new Object[] {this, UtilGeral.formatarDataParaInterface(dataConsulta.toString()), hora, paciente, funcionario, medico, tipoConsulta, tipoConsulta.getValor() };
     };
     
 }

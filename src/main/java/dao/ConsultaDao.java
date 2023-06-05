@@ -6,7 +6,6 @@ import domain.Funcionario;
 import domain.Medico;
 import domain.Paciente;
 import domain.TipoConsulta;
-import java.util.Date;
 
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -72,6 +71,39 @@ private List<Consulta> pesquisar(String pesq, int tipo) throws HibernateExceptio
         throw new HibernateException(ex);
     }
     return lista;
+    }
+
+    private boolean validar(String pesq, int tipo) throws HibernateException {
+        List<Consulta> lista = null;
+        Session sessao = null;
+        try {
+            sessao = ConexaoHibernate.getSessionFactory().openSession();
+            sessao.beginTransaction();
+
+            CriteriaBuilder builder = sessao.getCriteriaBuilder();
+            CriteriaQuery<Consulta> consulta = builder.createQuery(Consulta.class);
+            Root<Consulta> tabela = consulta.from(Consulta.class);
+            
+            Predicate restricoes1 = null;
+
+
+            restricoes1 = builder.equal(tabela.get("dataConsulta"), UtilGeral.formatarDataParaSQL(pesq));
+            
+
+
+            consulta.where(restricoes1);
+            lista = sessao.createQuery(consulta).getResultList();
+
+            sessao.getTransaction().commit();
+            sessao.close();
+        } catch (HibernateException ex) {
+            if (sessao != null) {
+                sessao.getTransaction().rollback();
+                sessao.close();
+            }
+            throw new HibernateException(ex);
+        }
+        return (lista != null && !lista.isEmpty());
     }
 
     public List<Consulta> pesquisarID(String pesq) {
