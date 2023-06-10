@@ -63,11 +63,7 @@ public class ControllerDomain {
 
     public void inserirConsulta(Date dt, Time hr, Funcionario fun, Paciente pac, Medico med, TipoConsulta tipo) throws RuntimeException {
         Consulta p = new Consulta(dt, hr, pac,fun, med, tipo);
-        if(conDao.verificarMedicoDisponivel(med, dt, hr) && conDao.verificarFuncionarioDisponivel(fun, dt, hr)){
-            genDao.cadastrar(p);
-        }else{
-            throw new RuntimeException("\nErro, paciente ou médico já possui atendimento nesse dia e horário");
-        }
+        genDao.cadastrar(p);
     }
 
     public int inserirTipo(String nome, Double preco, boolean selecionado) {
@@ -164,17 +160,7 @@ public class ControllerDomain {
         }
         return lista;
     }
-    
-    public boolean verificarDisponibilidade(Medico medico, String hora, String data){
-        
-        return false;
-    }
-    
-    public boolean verificarDisponibilidade( Paciente paciente, String hora, String data){
-        
-        return false;
-        
-    }
+ 
     
     public boolean validarCPF(String cpf, Class classe, Adapter objeto){
          if (objeto == null)
@@ -222,15 +208,15 @@ public class ControllerDomain {
         genDao.atualizar(medicoSelecionado);
     }
 
-    public void alterarConsulta(Consulta consultaSelecionada, Date dt, Time hr, Funcionario funcionarioSelecionado, Paciente pacienteSelecionado, Medico medicoSelecionado, TipoConsulta tipoConsultaSelecionado) {
+    public void alterarConsulta(Consulta consultaSelecionada, Date dt, Time hr, Funcionario funcionarioSelecionado, Paciente pacienteSelecionado, Medico medicoSelecionado, TipoConsulta tipoConsultaSelecionado) throws RuntimeException{
         consultaSelecionada.setDataConsulta(dt);
         consultaSelecionada.setHora(hr);
         consultaSelecionada.setFuncionario(funcionarioSelecionado);
         consultaSelecionada.setPaciente(pacienteSelecionado);
         consultaSelecionada.setMedico(medicoSelecionado);
         consultaSelecionada.setTipoConsulta(tipoConsultaSelecionado);
-        
         genDao.atualizar(consultaSelecionada);
+        
     }
 
     public void alterarFucionario(Funcionario funcionarioSelecionado, String nome, String cpf, Date dt, String email, String senha, String telefone) {
@@ -248,6 +234,14 @@ public class ControllerDomain {
         tipoSelecionado.setValor(preco);
         tipoSelecionado.setIsPlano(selecionado);
         genDao.atualizar(tipoSelecionado);
+    }
+
+    public boolean verificarDisponibilidadeMedica(Medico pessoa, Date dataConsulta, Time horaConsulta) {
+        return conDao.verificarMedicoDisponivel(pessoa, dataConsulta, horaConsulta);
+    }
+    
+    public boolean verificarDisponibilidadePaciente(Paciente pessoa, Date dataConsulta, Time horaConsulta) {
+        return conDao.verificarPacienteDisponivel(pessoa, dataConsulta, horaConsulta);
     }
     
     

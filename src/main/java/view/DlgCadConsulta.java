@@ -14,6 +14,8 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
@@ -455,10 +457,13 @@ public class DlgCadConsulta extends javax.swing.JDialog {
     }
     
     
-    private boolean validarCampos(){
+    private boolean validarCampos() throws ParseException{
        setCor();
        String msgErro = "";
        
+       
+       Date dt = UtilGeral.strToDate(txtData.getText());
+       Time hr = UtilGeral.convertStringToTime(txtHora.getText());
         
         txtIdConsulta.getText();
         txtData.getText();      
@@ -475,16 +480,16 @@ public class DlgCadConsulta extends javax.swing.JDialog {
        if(medicoSelecionado == null ){
            lbMedico.setForeground(Color.red);
            msgErro += "selecione um medico\n";
-       }else if(gerIG.getGerDominio().verificarDisponibilidade(medicoSelecionado, txtHora.getText(), txtData.getText())){
-           msgErro += "Médico selecionado não está disponível para atender neste horário\n";
+       }else if(!gerIG.getGerDominio().verificarDisponibilidadeMedica(medicoSelecionado, dt, hr)){
+           msgErro += "Médico selecionado não está disponível para atender neste dia e horário\n";
        }
        
        
        if(pacienteSelecionado == null){
             lbPaciente.setForeground(Color.red);
             msgErro += "selecione um paciente\n";
-       }else if (gerIG.getGerDominio().verificarDisponibilidade(pacienteSelecionado, txtHora.getText(), txtData.getText())){
-           msgErro += "Paciente selecionado está disponível para atender neste horário\n";
+       }else if (!gerIG.getGerDominio().verificarDisponibilidadePaciente(pacienteSelecionado, dt, hr)){
+           msgErro += "Paciente selecionado está disponível para atender neste dia e horário\n";
        }
        
        if(tipoConsultaSelecionado == null){
@@ -519,14 +524,13 @@ public class DlgCadConsulta extends javax.swing.JDialog {
   
     
     private void btConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btConfirmarActionPerformed
-        String data = txtData.getText();
-        String hora = txtHora.getText();
+
         tipoConsultaSelecionado = (TipoConsulta) cmbTipoConsulta.getSelectedItem();
-        if(validarCampos()){
-            try {
-                Date dt = UtilGeral.strToDate(data);
-                Time hr = UtilGeral.convertStringToTime(hora);
-                
+        try {
+            if(validarCampos()){
+                Date dt = UtilGeral.strToDate(txtData.getText());
+                Time hr = UtilGeral.convertStringToTime(txtHora.getText());
+
                 if(consultaSelecionada == null){
                     gerIG.getGerDominio().inserirConsulta(dt, hr,funcionarioSelecionado, pacienteSelecionado, medicoSelecionado, tipoConsultaSelecionado);
                     JOptionPane.showMessageDialog(this, "Consulta inserida com sucesso.", "Inserir Consulta", JOptionPane.INFORMATION_MESSAGE  );
@@ -536,14 +540,12 @@ public class DlgCadConsulta extends javax.swing.JDialog {
                     consultaSelecionada = null;
                     habilitarBotoes();
                 }
-            } catch (HeadlessException | ParseException e) {
-               JOptionPane.showMessageDialog(this, e, "ERRO Consulta", JOptionPane.ERROR_MESSAGE  );
-            } catch (RuntimeException e) {   
-                JOptionPane.showMessageDialog(this, e, "ERRO Disponibilidade", JOptionPane.ERROR_MESSAGE  );
-            }
             habilitarBotoes();
             formComponentShown(null);
             limparCampos();
+            }
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(this, "Erro ao converter formatos de dada ou hora, verifique os valores inseridos", "ERRO de conversão", JOptionPane.ERROR_MESSAGE  );
         }
     }//GEN-LAST:event_btConfirmarActionPerformed
 

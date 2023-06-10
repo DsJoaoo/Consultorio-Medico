@@ -24,13 +24,13 @@ public class ConsultaDao extends GenericDao {
         
     }
     
-    public boolean verificarFuncionarioDisponivel(Funcionario medico, Date dataConsulta, Time horaConsulta) throws HibernateException{
+    public boolean verificarPacienteDisponivel(Paciente paciente, Date dataConsulta, Time horaConsulta) throws HibernateException{
         try (Session session = ConexaoHibernate.getSessionFactory().openSession()) {
                 CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
                 CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
 
                 Root<Consulta> consultaRoot = criteriaQuery.from(Consulta.class);
-                Predicate funcionarioPredicate = criteriaBuilder.equal(consultaRoot.get("funcionario"), medico);
+                Predicate funcionarioPredicate = criteriaBuilder.equal(consultaRoot.get("paciente"), paciente);
                 Predicate dataPredicate = criteriaBuilder.equal(consultaRoot.get("dataConsulta"), dataConsulta);
                 Predicate horaPredicate = criteriaBuilder.equal(consultaRoot.get("hora"), horaConsulta);
 
