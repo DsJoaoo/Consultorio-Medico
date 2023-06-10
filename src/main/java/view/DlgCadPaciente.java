@@ -241,7 +241,7 @@ public class DlgCadPaciente extends javax.swing.JDialog {
         btAtualizar.setText("Atualizar");
         btAtualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btAtualizarActionPerformed(evt);
+                btConfirmarActionPerformed(evt);
             }
         });
         jpBotoes.add(btAtualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 150, 40));
@@ -451,7 +451,7 @@ public class DlgCadPaciente extends javax.swing.JDialog {
             lbCPF.setForeground(Color.red);
         }
         
-        if(!gerIG.getGerDominio().validarEmail(txtEmail.getText(), Pessoa.class)){
+        if(!gerIG.getGerDominio().validarEmail(txtEmail.getText(), Pessoa.class, pacienteSelecionado)){
             msgErro += "Email invalido ou já cadastrado\n";
             lbEmail.setForeground(Color.red);
         }
@@ -472,7 +472,7 @@ public class DlgCadPaciente extends javax.swing.JDialog {
             lbTelefone.setForeground(Color.red);
         }
         
-        if(!gerIG.getGerDominio().validarCPF(txtCPF.getText(), Pessoa.class)){
+        if(!gerIG.getGerDominio().validarCPF(txtCPF.getText(), Pessoa.class, pacienteSelecionado)){
             lbCPF.setForeground(Color.red);
             msgErro += "CPF Invalido ou já cadastrado\n";
         }
@@ -511,6 +511,11 @@ public class DlgCadPaciente extends javax.swing.JDialog {
                 if(pacienteSelecionado == null){
                     gerIG.getGerDominio().inserirPaciente(nome, cpf, email, dt, telefone, sexo);
                     JOptionPane.showMessageDialog(this, "Paciente inserido com sucesso.", "Inserir Paciente", JOptionPane.INFORMATION_MESSAGE  );
+                }else{
+                    gerIG.getGerDominio().alterarPaciente(pacienteSelecionado, nome, cpf, email, dt, telefone, sexo);
+                    JOptionPane.showMessageDialog(this, "Paciente alterado com sucesso.", "alterado Paciente", JOptionPane.INFORMATION_MESSAGE  );
+                    pacienteSelecionado = null;
+                    habilitarBotoes();
                 }
             } catch (HeadlessException | ParseException e) {
                JOptionPane.showMessageDialog(this, e, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );
@@ -548,6 +553,7 @@ public class DlgCadPaciente extends javax.swing.JDialog {
             txtDataNascimento.setText(UtilGeral.formatarDataParaInterface(pacienteSelecionado.getDataNascimento().toString()));
             txtTelefone.setText(UtilGeral.removerCaracteresTelefone(pacienteSelecionado.getTelefone()));
             
+            jtpTelas.setSelectedIndex(0);
         }else{
             JOptionPane.showMessageDialog(this,"Selecione uma linha.", "Pesquisar cliente", JOptionPane.ERROR_MESSAGE  );
         }
@@ -575,21 +581,6 @@ public class DlgCadPaciente extends javax.swing.JDialog {
     }//GEN-LAST:event_btExcluirActionPerformed
 
     
-    private void btAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAtualizarActionPerformed
-        int idPaciente = Integer.parseInt(txtIdPaciente.getText());
-        String nome = txtNome.getText();
-        String cpf = txtCPF.getText();
-        String email = txtEmail.getText(); 
-        String dataNascimento = UtilGeral.formatarDataParaSQL(txtDataNascimento.getText());
-        String telefone = txtTelefone.getText();
-        String sexo = gerIG.checarNomeBotao(grpSexo);
-        if(validarCampos()){
-            //Cadastra no banco
-            pacienteSelecionado = null;
-            habilitarBotoes();
-        }
-    }//GEN-LAST:event_btAtualizarActionPerformed
-
     
     private void btLupaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLupaActionPerformed
         if(validarBusca()){
@@ -620,6 +611,7 @@ public class DlgCadPaciente extends javax.swing.JDialog {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         try {
+            btLimparActionPerformed(null);
             gerIG.carregarTabela(tbPacientes, Paciente.class);
         } catch (ClassNotFoundException | SQLException ex) {
             JOptionPane.showMessageDialog(this, "Erro ao carregar pacientes " + ex.getMessage() );
@@ -627,7 +619,9 @@ public class DlgCadPaciente extends javax.swing.JDialog {
     }//GEN-LAST:event_formComponentShown
 
     private void btLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLimparActionPerformed
+        pacienteSelecionado = null;
         habilitarBotoes();
+        limparCampos();
     }//GEN-LAST:event_btLimparActionPerformed
 
     

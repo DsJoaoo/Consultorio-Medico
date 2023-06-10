@@ -75,7 +75,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
         jPanel2 = new javax.swing.JPanel();
         jpID = new javax.swing.JPanel();
         lbID = new javax.swing.JLabel();
-        txtIdPaciente = new javax.swing.JFormattedTextField();
+        txtIdConsulta = new javax.swing.JFormattedTextField();
         jpData = new javax.swing.JPanel();
         lbData = new javax.swing.JLabel();
         txtData = new javax.swing.JFormattedTextField();
@@ -166,7 +166,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
 
         jpTipos.add(jpCombo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 60, 150, 110));
 
-        jpDados.add(jpTipos, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 20, 330, 220));
+        jpDados.add(jpTipos, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 20, 340, 220));
 
         jpID.setLayout(new java.awt.GridLayout(1, 2, -50, 15));
         jpID.setVisible(false);
@@ -175,9 +175,9 @@ public class DlgCadConsulta extends javax.swing.JDialog {
         lbID.setText("ID");
         jpID.add(lbID);
 
-        txtIdPaciente.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
-        txtIdPaciente.setEnabled(false);
-        jpID.add(txtIdPaciente);
+        txtIdConsulta.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        txtIdConsulta.setEnabled(false);
+        jpID.add(txtIdConsulta);
 
         jpData.setLayout(new java.awt.GridLayout(1, 2, -50, 15));
 
@@ -225,7 +225,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
                     .addComponent(jpTipo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jpHora, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jpID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -241,7 +241,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
-        jpDados.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 250, 210));
+        jpDados.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 230, 210));
 
         jpBotoes.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -259,7 +259,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
         btAtualizar.setText("Atualizar");
         btAtualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btAtualizarActionPerformed(evt);
+                btConfirmarActionPerformed(evt);
             }
         });
         jpBotoes.add(btAtualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 150, 40));
@@ -460,7 +460,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
        String msgErro = "";
        
         
-        txtIdPaciente.getText();
+        txtIdConsulta.getText();
         txtData.getText();      
         txtHora.getText();
       
@@ -509,7 +509,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
     
     private void limparCampos(){
         setCor();
-        txtIdPaciente.setText("");
+        txtIdConsulta.setText("");
         txtData.setText("");      
         txtHora.setText("");
         txtMedico.setText("");
@@ -527,13 +527,19 @@ public class DlgCadConsulta extends javax.swing.JDialog {
                 Date dt = UtilGeral.strToDate(data);
                 Time hr = UtilGeral.convertStringToTime(hora);
                 
-                
-                
-                gerIG.getGerDominio().inserirConsulta(dt, hr,funcionarioSelecionado, pacienteSelecionado, medicoSelecionado, tipoConsultaSelecionado);
-                JOptionPane.showMessageDialog(this, "Consulta inserida com sucesso.", "Inserir Consulta", JOptionPane.INFORMATION_MESSAGE  );
-
+                if(consultaSelecionada == null){
+                    gerIG.getGerDominio().inserirConsulta(dt, hr,funcionarioSelecionado, pacienteSelecionado, medicoSelecionado, tipoConsultaSelecionado);
+                    JOptionPane.showMessageDialog(this, "Consulta inserida com sucesso.", "Inserir Consulta", JOptionPane.INFORMATION_MESSAGE  );
+                }else{
+                    gerIG.getGerDominio().alterarConsulta(consultaSelecionada, dt, hr,funcionarioSelecionado, pacienteSelecionado, medicoSelecionado, tipoConsultaSelecionado);
+                    JOptionPane.showMessageDialog(this, "Consulta alterada com sucesso.", "Alterar Consulta", JOptionPane.INFORMATION_MESSAGE  );
+                    consultaSelecionada = null;
+                    habilitarBotoes();
+                }
             } catch (HeadlessException | ParseException e) {
-               JOptionPane.showMessageDialog(this, e, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );
+               JOptionPane.showMessageDialog(this, e, "ERRO Consulta", JOptionPane.ERROR_MESSAGE  );
+            } catch (RuntimeException e) {   
+                JOptionPane.showMessageDialog(this, e, "ERRO Disponibilidade", JOptionPane.ERROR_MESSAGE  );
             }
             habilitarBotoes();
             formComponentShown(null);
@@ -551,16 +557,16 @@ public class DlgCadConsulta extends javax.swing.JDialog {
     private void btEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEditarActionPerformed
 
         int opcao = tbConsultas.getSelectedRow();
-        if(opcao >= 0){         
+        if(opcao >= 0){   
+            consultaSelecionada = (Consulta) tbConsultas.getValueAt(opcao, 0);
+            habilitarBotoes();
             setCor();
-            txtIdPaciente.setText(tbConsultas.getValueAt(opcao, 0).toString());
-            txtData.setText(tbConsultas.getValueAt(opcao, 1).toString());
-            txtHora.setText(tbConsultas.getValueAt(opcao, 2).toString());
-
-            btAtualizar.setVisible(true);
-            jpID.setVisible(true);
-            btConfirmar.setVisible(false);
-            
+            txtIdConsulta.setText(String.valueOf(consultaSelecionada.toString()));
+            txtData.setText(UtilGeral.formatarDataParaInterface(consultaSelecionada.getData().toString()));
+            txtHora.setText(consultaSelecionada.getHora().toString());
+            cmbTipoConsulta.setSelectedItem(consultaSelecionada.getObjetoConsulta()); 
+            txtMedico.setText(consultaSelecionada.getObjetoMedico().toString());
+            txtPaciente.setText(consultaSelecionada.getObjetoPaciente().toString());
             jtpTelas.setSelectedIndex(0);
         }else{
             JOptionPane.showMessageDialog(null, "Selecione uma linha");
@@ -589,26 +595,11 @@ public class DlgCadConsulta extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btExcluirActionPerformed
 
-    
-    private void btAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAtualizarActionPerformed
-
-        if(validarCampos()){
-            //Atualiza o cliente
-            formComponentShown(null);
-            jtpTelas.setSelectedIndex(1);
-            jpID.setVisible(false);
-            btConfirmar.setVisible(true);
-            btAtualizar.setVisible(false);
-            limparCampos();
-            jtpTelas.setSelectedIndex(1);
-        }
-    }//GEN-LAST:event_btAtualizarActionPerformed
-    
+        
     private void btLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLimparActionPerformed
+        consultaSelecionada = null;
+        habilitarBotoes();
         limparCampos();
-        btAtualizar.setVisible(false);
-        btConfirmar.setVisible(true);
-        jpID.setVisible(false);
     }//GEN-LAST:event_btLimparActionPerformed
 
     private void btLupaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLupaActionPerformed
@@ -631,14 +622,26 @@ public class DlgCadConsulta extends javax.swing.JDialog {
     }//GEN-LAST:event_btLupaActionPerformed
 
     private void btListarTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btListarTodosActionPerformed
+        try {
+                List<Consulta> lista = gerIG.getGerDominio().pesquisarConsulta(txtPesquisar.getText(), 6);
 
+                // APAGA as linhas da tabela
+                ( (DefaultTableModel) tbConsultas.getModel() ).setNumRows(0);
+
+                for (Consulta cli : lista ) {
+                    // ADICIONAR LINHA NA TABELA        
+                    ( (DefaultTableModel) tbConsultas.getModel() ).addRow( cli.toArray() );                
+                }
+            } catch (HibernateException  ex) {
+                JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Consulta", JOptionPane.ERROR_MESSAGE  );
+            }
         limparCampos();
         //lista todos que estão no banco
     }//GEN-LAST:event_btListarTodosActionPerformed
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         try {
-            
+            btLimparActionPerformed(null);
             gerIG.carregarTabela(tbConsultas, Consulta.class);
             gerIG.carregarCombo(cmbTipoConsulta, TipoConsulta.class);
             cmbTipoConsulta.setSelectedIndex(-1);
@@ -706,7 +709,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
     private javax.swing.JTable tbConsultas;
     private javax.swing.JFormattedTextField txtData;
     private javax.swing.JFormattedTextField txtHora;
-    private javax.swing.JFormattedTextField txtIdPaciente;
+    private javax.swing.JFormattedTextField txtIdConsulta;
     private javax.swing.JTextField txtMedico;
     private javax.swing.JTextField txtPaciente;
     private javax.swing.JTextField txtPesquisar;

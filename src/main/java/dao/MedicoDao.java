@@ -34,7 +34,7 @@ public class MedicoDao extends GenericDao{
             Root tabela = consulta.from(Medico.class);
             
             // RESTRIÇÕES
-            Predicate restricoes = null;
+            Predicate restricoes;
             
             switch (tipo) {
                 case 0: restricoes = builder.like(tabela.get("nomePessoa"), pesq + "%"); 
@@ -49,6 +49,8 @@ public class MedicoDao extends GenericDao{
                         break;  
                 case 5: restricoes = builder.equal(tabela.get("idPessoa"), Integer.valueOf(pesq) ); 
                         break;  
+                default:
+                    restricoes = null;
             }
                         
             consulta.where(restricoes);

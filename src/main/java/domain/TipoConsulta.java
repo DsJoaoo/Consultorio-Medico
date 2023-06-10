@@ -32,7 +32,7 @@ public class TipoConsulta implements Serializable, Adapter{
     private boolean isPlano;
     
     
-    @OneToMany (mappedBy = "tipoConsulta", fetch = FetchType.LAZY)
+    @OneToMany (mappedBy = "tipoConsulta", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Consulta> consulta = new ArrayList();
 
     public TipoConsulta() {
@@ -97,5 +97,18 @@ public class TipoConsulta implements Serializable, Adapter{
        return new Object[] {idTipoConsulta, this, valor, isPlano};  
     };
     
-    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final TipoConsulta other = (TipoConsulta) obj;
+        return this.idTipoConsulta == other.idTipoConsulta;
+    }
 }

@@ -27,7 +27,7 @@ public class Paciente extends Pessoa implements Serializable{
     @Column ( length = 10, nullable = false)
     private String sexo;
 
-    @OneToMany (mappedBy = "paciente", fetch = FetchType.LAZY)
+    @OneToMany (mappedBy = "paciente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Consulta> consulta = new ArrayList();
 
     public Paciente() {

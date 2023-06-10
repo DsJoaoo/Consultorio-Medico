@@ -256,7 +256,7 @@ public class DlgCadCadastro extends javax.swing.JDialog {
             lbCPF.setForeground(Color.red);
         }
         
-        if(!gerIG.getGerDominio().validarEmail(txtEmail.getText(), Funcionario.class)){
+        if(!gerIG.getGerDominio().validarEmail(txtEmail.getText(), Funcionario.class, null)){
             msgErro += "Email invalido ou já cadastrado\n";
             lbEmail.setForeground(Color.red);
         }
@@ -271,7 +271,7 @@ public class DlgCadCadastro extends javax.swing.JDialog {
             lbTelefone.setForeground(Color.red);
         }
         
-        if(!gerIG.getGerDominio().validarCPF(txtCPF.getText(), Funcionario.class)){
+        if(!gerIG.getGerDominio().validarCPF(txtCPF.getText(), Funcionario.class, null)){
             lbCPF.setForeground(Color.red);
             msgErro += "CPF Invalido ou  já cadastrado!\n";
         }

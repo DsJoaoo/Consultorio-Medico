@@ -35,7 +35,7 @@ public class PacienteDao{
             Root tabela = consulta.from(Paciente.class);
             
             // RESTRIÇÕES
-            Predicate restricoes = null;
+            Predicate restricoes;
             
             switch (tipo) {
                 case 0: restricoes = builder.like(tabela.get("nomePessoa"), pesq + "%"); 
@@ -47,7 +47,9 @@ public class PacienteDao{
                         break;
                 case 3: 
                         restricoes = builder.equal(tabela.get("cpf"), pesq);
-                        break;          
+                        break; 
+                default:
+                    restricoes = null;
             }
                         
             consulta.where(restricoes);

@@ -61,10 +61,13 @@ public class ControllerDomain {
         return p.getIdPessoa();
     }
 
-    public int inserirConsulta(Date dt, Time hr, Funcionario fun, Paciente pac, Medico med, TipoConsulta tipo) {
+    public void inserirConsulta(Date dt, Time hr, Funcionario fun, Paciente pac, Medico med, TipoConsulta tipo) throws RuntimeException {
         Consulta p = new Consulta(dt, hr, pac,fun, med, tipo);
-        genDao.cadastrar(p);
-        return p.getIdConsulta();
+        if(conDao.verificarMedicoDisponivel(med, dt, hr) && conDao.verificarFuncionarioDisponivel(fun, dt, hr)){
+            genDao.cadastrar(p);
+        }else{
+            throw new RuntimeException("\nErro, paciente ou médico já possui atendimento nesse dia e horário");
+        }
     }
 
     public int inserirTipo(String nome, Double preco, boolean selecionado) {
@@ -101,7 +104,7 @@ public class ControllerDomain {
         switch (tipo) {
             case 0: lista = pacDao.pesquisarNome(pesq); break;
 
-            case 1: lista = pacDao.pesquisarData(pesq); break;
+            case 1: lista = pacDao.pesquisarData(UtilGeral.formatarDataParaSQL(pesq)); break;
 
             case 2: lista = pacDao.pesquisarID(pesq); break;
             
@@ -135,7 +138,7 @@ public class ControllerDomain {
 
             case 1: lista = funDao.pesquisarCPF(pesq); break;
 
-            case 2: lista = funDao.pesquisarData(pesq); break;
+            case 2: lista = funDao.pesquisarData(UtilGeral.formatarDataParaSQL(pesq)); break;
             
             case 3: lista = funDao.pesquisarEmail(pesq); break;
             
@@ -157,7 +160,7 @@ public class ControllerDomain {
             
             case 4: lista = conDao.pesquisarFuncionario(pesq); break;
             
-            case 5: lista = conDao.pesquisarData(pesq); break;
+            case 5: lista = conDao.pesquisarData(UtilGeral.formatarDataParaSQL(pesq)); break;
         }
         return lista;
     }
@@ -165,7 +168,6 @@ public class ControllerDomain {
     public boolean verificarDisponibilidade(Medico medico, String hora, String data){
         
         return false;
-        
     }
     
     public boolean verificarDisponibilidade( Paciente paciente, String hora, String data){
@@ -174,12 +176,18 @@ public class ControllerDomain {
         
     }
     
-    public boolean validarCPF(String cpf, Class classe){
-        return (genDao.validar(cpf, 0, classe) && UtilCPF.validarCPF(cpf));
+    public boolean validarCPF(String cpf, Class classe, Adapter objeto){
+         if (objeto == null)
+             return (genDao.validar(cpf, 0, classe) && UtilCPF.validarCPF(cpf));
+        else
+             return (UtilCPF.validarCPF(cpf));
     }
     
-    public boolean validarEmail(String email, Class classe){
-        return (genDao.validar(email, 1, classe) && UtilGeral.validarEmail(email));
+    public boolean validarEmail(String email, Class classe, Adapter objeto){
+        if (objeto == null)
+            return (genDao.validar(email, 1, classe) && UtilGeral.validarEmail(email));
+        else
+             return (UtilGeral.validarEmail(email));
     }
     
     public boolean validarFuncionario(String cpf, String senha){
@@ -192,6 +200,54 @@ public class ControllerDomain {
 
     public Funcionario getFuncionarioLogado() {
         return funcionarioLogado;
+    }
+
+    public void alterarPaciente(Paciente pacienteSelecionado, String nome, String cpf, String email, Date dt, String telefone, String sexo) {
+        pacienteSelecionado.setNomePessoa(nome);
+        pacienteSelecionado.setCpf(cpf);
+        pacienteSelecionado.setEmail(email);
+        pacienteSelecionado.setDataNascimento(dt);
+        pacienteSelecionado.setTelefone(telefone);
+        pacienteSelecionado.setSexo(sexo);
+        genDao.atualizar(pacienteSelecionado);
+    }
+
+    public void aterarMedico(Medico medicoSelecionado, String nome, String telefone, String email, String cpf, String crm, String especializacao) {
+        medicoSelecionado.setNomePessoa(nome);
+        medicoSelecionado.setTelefone(telefone);
+        medicoSelecionado.setEmail(email);
+        medicoSelecionado.setCpf(cpf);
+        medicoSelecionado.setCrm(crm);
+        medicoSelecionado.setEspecializacao(especializacao);
+        genDao.atualizar(medicoSelecionado);
+    }
+
+    public void alterarConsulta(Consulta consultaSelecionada, Date dt, Time hr, Funcionario funcionarioSelecionado, Paciente pacienteSelecionado, Medico medicoSelecionado, TipoConsulta tipoConsultaSelecionado) {
+        consultaSelecionada.setDataConsulta(dt);
+        consultaSelecionada.setHora(hr);
+        consultaSelecionada.setFuncionario(funcionarioSelecionado);
+        consultaSelecionada.setPaciente(pacienteSelecionado);
+        consultaSelecionada.setMedico(medicoSelecionado);
+        consultaSelecionada.setTipoConsulta(tipoConsultaSelecionado);
+        
+        genDao.atualizar(consultaSelecionada);
+    }
+
+    public void alterarFucionario(Funcionario funcionarioSelecionado, String nome, String cpf, Date dt, String email, String senha, String telefone) {
+        funcionarioSelecionado.setNomePessoa(nome);
+        funcionarioSelecionado.setCpf(cpf);
+        funcionarioSelecionado.setDataAdmissao(dt);
+        funcionarioSelecionado.setEmail(email);
+        funcionarioSelecionado.setSenha(UtilCriptografia.encryptPassword(senha));
+        funcionarioSelecionado.setTelefone(telefone);
+        genDao.atualizar(funcionarioSelecionado);
+    }
+
+    public void alterarTipo(TipoConsulta tipoSelecionado, String nome, Double preco, boolean selecionado) {
+        tipoSelecionado.setDescricao(nome);
+        tipoSelecionado.setValor(preco);
+        tipoSelecionado.setIsPlano(selecionado);
+        genDao.atualizar(tipoSelecionado);
     }
     
     

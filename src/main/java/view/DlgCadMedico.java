@@ -235,7 +235,7 @@ public class DlgCadMedico extends javax.swing.JDialog {
         btAtualizar.setText("Atualizar");
         btAtualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btAtualizarActionPerformed(evt);
+                btConfirmarActionPerformed(evt);
             }
         });
         jpBotoes.add(btAtualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 150, 40));
@@ -441,7 +441,7 @@ public class DlgCadMedico extends javax.swing.JDialog {
             lbCPF.setForeground(Color.red);
         }
         
-        if(!gerIG.getGerDominio().validarEmail(txtEmail.getText(), Pessoa.class)){
+        if(!gerIG.getGerDominio().validarEmail(txtEmail.getText(), Pessoa.class, medicoSelecionado)){
             msgErro += "Email invalido ou já registrado\n";
             lbEmail.setForeground(Color.red);
         }
@@ -456,7 +456,7 @@ public class DlgCadMedico extends javax.swing.JDialog {
             lbTelefone.setForeground(Color.red);
         }
         
-        if(!gerIG.getGerDominio().validarCPF(txtCPF.getText(), Pessoa.class)){
+        if(!gerIG.getGerDominio().validarCPF(txtCPF.getText(), Pessoa.class, medicoSelecionado)){
             lbCPF.setForeground(Color.red);
             msgErro += "CPF Invalido ou já registrado\n";
         }
@@ -489,9 +489,6 @@ public class DlgCadMedico extends javax.swing.JDialog {
     
     
     private void btConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btConfirmarActionPerformed
-
-        
-        
         if(validarCampos()){
             String nome = txtNome.getText();
             String telefone = txtTelefone.getText();
@@ -502,8 +499,13 @@ public class DlgCadMedico extends javax.swing.JDialog {
         
             try {
                 if(medicoSelecionado == null){
-                    int id = gerIG.getGerDominio().inserirMedico(nome, telefone,email, cpf, crm, especializacao);
+                    gerIG.getGerDominio().inserirMedico(nome, telefone,email, cpf, crm, especializacao);
                     JOptionPane.showMessageDialog(this, "Médico inserido com sucesso.", "Inserir Médico", JOptionPane.INFORMATION_MESSAGE  );
+                }else{
+                    gerIG.getGerDominio().aterarMedico(medicoSelecionado, nome, telefone,email, cpf, crm, especializacao);
+                    JOptionPane.showMessageDialog(this, "Médico alterado com sucesso.", "Alterar Médico", JOptionPane.INFORMATION_MESSAGE  );
+                    medicoSelecionado = null;
+                    habilitarBotoes();
                 }
             } catch (HeadlessException e) {
                JOptionPane.showMessageDialog(this, e, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );
@@ -522,18 +524,18 @@ public class DlgCadMedico extends javax.swing.JDialog {
 
     private void btEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEditarActionPerformed
         int opcao = tbMedicos.getSelectedRow();
-        if(opcao >= 0){          
-            txtIdMedico.setText(tbMedicos.getValueAt(opcao, 0).toString());
-            txtNome.setText(tbMedicos.getValueAt(opcao, 1).toString());
-            txtCPF.setText(tbMedicos.getValueAt(opcao, 2).toString());
-            txtEmail.setText(tbMedicos.getValueAt(opcao, 3).toString());
-
-            txtCRM.setText(UtilGeral.formatarDataParaInterface(tbMedicos.getValueAt(opcao, 4).toString()));
-            txtTelefone.setText(UtilGeral.removerCaracteresTelefone(tbMedicos.getValueAt(opcao, 6).toString()));
-           
-            btAtualizar.setVisible(true);
-            jpID.setVisible(true);
-            btConfirmar.setVisible(false);
+        if(opcao >= 0){
+            
+            medicoSelecionado = (Medico) tbMedicos.getValueAt(opcao, 1);
+            setCor();
+            habilitarBotoes();
+            txtIdMedico.setText(String.valueOf(medicoSelecionado.getIdPessoa()));
+            txtNome.setText(medicoSelecionado.getNomePessoa());
+            txtCPF.setText(medicoSelecionado.getCpf());
+            txtEmail.setText(medicoSelecionado.getEmail());
+            cmbEspecializacao.setSelectedItem(medicoSelecionado.getEspecializacao());
+            txtCRM.setText(medicoSelecionado.getCrm());
+            txtTelefone.setText(UtilGeral.removerCaracteresTelefone(medicoSelecionado.getTelefone()));
             
             jtpTelas.setSelectedIndex(0);
         }else{
@@ -561,24 +563,10 @@ public class DlgCadMedico extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btExcluirActionPerformed
 
-    private void btAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAtualizarActionPerformed
-        int idPaciente = Integer.parseInt(txtIdMedico.getText());
-        String nome = txtNome.getText();
-        String cpf = txtCPF.getText();
-        String email = txtEmail.getText(); 
-        String dataNascimento = UtilGeral.formatarDataParaSQL(txtCRM.getText());
-        String telefone = txtTelefone.getText();
-        
-        if(validarCampos()){
-            //atualizar no banco
-        }
-    }//GEN-LAST:event_btAtualizarActionPerformed
-
     private void btLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLimparActionPerformed
+        medicoSelecionado = null;
+        habilitarBotoes();
         limparCampos();
-        btAtualizar.setVisible(false);
-        btConfirmar.setVisible(true);
-        jpID.setVisible(false);
     }//GEN-LAST:event_btLimparActionPerformed
 
     private void btLupaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLupaActionPerformed
@@ -607,6 +595,7 @@ public class DlgCadMedico extends javax.swing.JDialog {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         try {
+            btLimparActionPerformed(null);
             gerIG.carregarTabela(tbMedicos, Medico.class);
         } catch (ClassNotFoundException | SQLException ex) {
             JOptionPane.showMessageDialog(this, "Erro ao carregar funcionários " + ex.getMessage() );

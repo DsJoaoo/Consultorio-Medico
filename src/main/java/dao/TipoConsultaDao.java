@@ -8,7 +8,6 @@ import domain.TipoConsulta;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.hibernate.HibernateException;
@@ -35,7 +34,7 @@ public class TipoConsultaDao extends GenericDao{
             Root tabela = consulta.from(TipoConsulta.class);
             
             // RESTRIÇÕES
-            Predicate restricoes = null;
+            Predicate restricoes;
             
             switch (tipo) {
                 case 0: restricoes = builder.equal(tabela.get("idTipoConsulta"), Integer.valueOf(pesq) ); 
@@ -44,7 +43,9 @@ public class TipoConsultaDao extends GenericDao{
                         break;
                 case 2: 
                         restricoes = builder.equal(tabela.get("isPlano"), pesq);
-                        break;                       
+                        break;  
+                default:
+                    restricoes = null;
             }
                         
             consulta.where(restricoes);

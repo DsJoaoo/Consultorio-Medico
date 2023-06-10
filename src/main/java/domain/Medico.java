@@ -25,7 +25,7 @@ public class Medico extends Pessoa implements Serializable{
     private String especializacao;
     
     
-    @OneToMany (mappedBy = "medico", fetch = FetchType.LAZY)
+    @OneToMany (mappedBy = "medico", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Consulta> consulta = new ArrayList();
 
     public Medico() {

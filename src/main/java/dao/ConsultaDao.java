@@ -6,6 +6,8 @@ import domain.Funcionario;
 import domain.Medico;
 import domain.Paciente;
 import domain.TipoConsulta;
+import java.sql.Time;
+import java.util.Date;
 
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -19,9 +21,47 @@ import org.hibernate.Session;
 public class ConsultaDao extends GenericDao {
 
     public ConsultaDao() {
+        
+    }
+    
+    public boolean verificarFuncionarioDisponivel(Funcionario medico, Date dataConsulta, Time horaConsulta) throws HibernateException{
+        try (Session session = ConexaoHibernate.getSessionFactory().openSession()) {
+                CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+                CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+
+                Root<Consulta> consultaRoot = criteriaQuery.from(Consulta.class);
+                Predicate funcionarioPredicate = criteriaBuilder.equal(consultaRoot.get("funcionario"), medico);
+                Predicate dataPredicate = criteriaBuilder.equal(consultaRoot.get("dataConsulta"), dataConsulta);
+                Predicate horaPredicate = criteriaBuilder.equal(consultaRoot.get("hora"), horaConsulta);
+
+                criteriaQuery.select(criteriaBuilder.count(consultaRoot));
+                criteriaQuery.where(criteriaBuilder.and(funcionarioPredicate, dataPredicate, horaPredicate));
+
+                Long count = session.createQuery(criteriaQuery).getSingleResult();
+                return count == 0;
+        }
+    }
+    
+    
+    public boolean verificarMedicoDisponivel(Medico medico, Date dataConsulta, Time horaConsulta) throws HibernateException{
+        try (Session session = ConexaoHibernate.getSessionFactory().openSession()) {
+                CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+                CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+
+                Root<Consulta> consultaRoot = criteriaQuery.from(Consulta.class);
+                Predicate medicoPredicate = criteriaBuilder.equal(consultaRoot.get("medico"), medico);
+                Predicate dataPredicate = criteriaBuilder.equal(consultaRoot.get("dataConsulta"), dataConsulta);
+                Predicate horaPredicate = criteriaBuilder.equal(consultaRoot.get("hora"), horaConsulta);
+
+                criteriaQuery.select(criteriaBuilder.count(consultaRoot));
+                criteriaQuery.where(criteriaBuilder.and(medicoPredicate, dataPredicate, horaPredicate));
+
+                Long count = session.createQuery(criteriaQuery).getSingleResult();
+                return count == 0;
+        }
     }
 
-private List<Consulta> pesquisar(String pesq, int tipo) throws HibernateException {
+    private List<Consulta> pesquisar(String pesq, int tipo) throws HibernateException {
         List<Consulta> lista = null;
         Session sessao = null;
         try {
@@ -31,31 +71,33 @@ private List<Consulta> pesquisar(String pesq, int tipo) throws HibernateExceptio
             CriteriaBuilder builder = sessao.getCriteriaBuilder();
             CriteriaQuery<Consulta> consulta = builder.createQuery(Consulta.class);
             Root<Consulta> tabela = consulta.from(Consulta.class);
-            Predicate restricoes = null;
+            Predicate restricoes;
 
             switch (tipo) {
-            case 0:
-                restricoes = builder.equal(tabela.get("idConsulta"), Integer.valueOf(pesq));
-                break;
-            case 1:
-                Join<Consulta, TipoConsulta> tipoConsultaJoin = tabela.join("tipoConsulta");
-                restricoes = builder.equal(tipoConsultaJoin.get("descricao"), pesq);
-                break;
-            case 2:
-                Join<Consulta, Medico> medicoJoin = tabela.join("medico");
-                restricoes = builder.equal(medicoJoin.get("nomePessoa"), pesq);
-                break;
-            case 3:
-                Join<Consulta, Paciente> pacienteJoin = tabela.join("paciente");
-                restricoes = builder.equal(pacienteJoin.get("nomePessoa"), pesq);
-                break;
-            case 4:
-                Join<Consulta, Funcionario> funcionarioJoin = tabela.join("funcionario");
-                restricoes = builder.equal(funcionarioJoin.get("nomePessoa"), pesq);
-                break;
-            case 5:
-                restricoes = builder.equal(tabela.get("dataConsulta"), UtilGeral.formatarDataParaSQL(pesq));
-                break;
+                case 0:
+                    restricoes = builder.equal(tabela.get("idConsulta"), Integer.valueOf(pesq));
+                    break;
+                case 1:
+                    Join<Consulta, TipoConsulta> tipoConsultaJoin = tabela.join("tipoConsulta");
+                    restricoes = builder.equal(tipoConsultaJoin.get("descricao"), pesq);
+                    break;
+                case 2:
+                    Join<Consulta, Medico> medicoJoin = tabela.join("medico");
+                    restricoes = builder.equal(medicoJoin.get("nomePessoa"), pesq);
+                    break;
+                case 3:
+                    Join<Consulta, Paciente> pacienteJoin = tabela.join("paciente");
+                    restricoes = builder.equal(pacienteJoin.get("nomePessoa"), pesq);
+                    break;
+                case 4:
+                    Join<Consulta, Funcionario> funcionarioJoin = tabela.join("funcionario");
+                    restricoes = builder.equal(funcionarioJoin.get("nomePessoa"), pesq);
+                    break;
+                case 5:
+                    restricoes = builder.equal(tabela.get("dataConsulta"), UtilGeral.formatarDataParaSQL(pesq));
+                    break;
+                default:
+                    restricoes = null;
         }
 
         consulta.where(restricoes);
@@ -73,38 +115,6 @@ private List<Consulta> pesquisar(String pesq, int tipo) throws HibernateExceptio
     return lista;
     }
 
-    private boolean validar(String pesq, int tipo) throws HibernateException {
-        List<Consulta> lista = null;
-        Session sessao = null;
-        try {
-            sessao = ConexaoHibernate.getSessionFactory().openSession();
-            sessao.beginTransaction();
-
-            CriteriaBuilder builder = sessao.getCriteriaBuilder();
-            CriteriaQuery<Consulta> consulta = builder.createQuery(Consulta.class);
-            Root<Consulta> tabela = consulta.from(Consulta.class);
-            
-            Predicate restricoes1 = null;
-
-
-            restricoes1 = builder.equal(tabela.get("dataConsulta"), UtilGeral.formatarDataParaSQL(pesq));
-            
-
-
-            consulta.where(restricoes1);
-            lista = sessao.createQuery(consulta).getResultList();
-
-            sessao.getTransaction().commit();
-            sessao.close();
-        } catch (HibernateException ex) {
-            if (sessao != null) {
-                sessao.getTransaction().rollback();
-                sessao.close();
-            }
-            throw new HibernateException(ex);
-        }
-        return (lista != null && !lista.isEmpty());
-    }
 
     public List<Consulta> pesquisarID(String pesq) {
         return pesquisar(pesq, 0);

@@ -34,7 +34,7 @@ public class FuncionarioDao {
             Root tabela = consulta.from(Funcionario.class);
             
             // RESTRIÇÕES
-            Predicate restricoes = null;
+            Predicate restricoes;
             
             switch (tipo) {
                 case 0: restricoes = builder.like(tabela.get("nomePessoa"), pesq + "%"); 
@@ -46,7 +46,9 @@ public class FuncionarioDao {
                 case 3: restricoes = builder.like(tabela.get("email"), pesq + "%"); 
                         break;
                 case 4: restricoes = builder.equal(tabela.get("idPessoa"), Integer.valueOf(pesq) ); 
-                        break;  
+                        break;
+                default:
+                    restricoes = null;
             }
                         
             consulta.where(restricoes);

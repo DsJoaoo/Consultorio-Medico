@@ -204,14 +204,14 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
                 btConfirmarActionPerformed(evt);
             }
         });
-        jpBotoes.add(btConfirmar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, -1, 40));
+        jpBotoes.add(btConfirmar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 140, 40));
 
         btAtualizar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btAtualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaces/imgs/icons/atualizar 24x24.png"))); // NOI18N
         btAtualizar.setText("Atualizar");
         btAtualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btAtualizarActionPerformed(evt);
+                btConfirmarActionPerformed(evt);
             }
         });
         jpBotoes.add(btAtualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 140, 40));
@@ -437,8 +437,13 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
             }
             try {
                 if(tipoSelecionado == null){
-                    int id = gerIG.getGerDominio().inserirTipo(nome, preco, selecionado);
+                    gerIG.getGerDominio().inserirTipo(nome, preco, selecionado);
                     JOptionPane.showMessageDialog(this, "Tipo de consulta inserido com sucesso.", "Inserir Tipo de consulta", JOptionPane.INFORMATION_MESSAGE  );
+                }else{
+                    gerIG.getGerDominio().alterarTipo(tipoSelecionado, nome, preco, selecionado);
+                    JOptionPane.showMessageDialog(this, "Tipo de consulta alterado com sucesso.", "Alterar Tipo de consulta", JOptionPane.INFORMATION_MESSAGE  );
+                    tipoSelecionado = null;
+                    habilitarBotoes();
                 }
             } catch (HeadlessException e) {
                JOptionPane.showMessageDialog(this, e, "ERRO Tipo de Consulta", JOptionPane.ERROR_MESSAGE  );
@@ -459,12 +464,18 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
     
     private void btEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEditarActionPerformed
         int opcao = tbFuncionarios.getSelectedRow();
-        if(opcao >= 0){          
-            txtIdServico.setText(tbFuncionarios.getValueAt(opcao, 0).toString());
-            txtNome.setText(tbFuncionarios.getValueAt(opcao, 1).toString()); 
-            btAtualizar.setVisible(true);
-            jpID.setVisible(true);
-            btConfirmar.setVisible(false);
+        if(opcao >= 0){  
+            tipoSelecionado = (TipoConsulta) tbFuncionarios.getValueAt(opcao, 1);
+            habilitarBotoes();
+            txtIdServico.setText(String.valueOf(tipoSelecionado.getIdTipoConsulta()));
+            txtNome.setText(tipoSelecionado.getDescricao()); 
+            txtPreco.setText(String.valueOf(tipoSelecionado.getValor()));
+            if(tipoSelecionado.getIsPlano()){
+                btSim.setSelected(true);
+            }else{
+                btNao.setSelected(true);
+            }
+            
             jtpTelas.setSelectedIndex(0);
         }else{
             JOptionPane.showMessageDialog(null, "Selecione uma linha!");
@@ -493,19 +504,11 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
     }//GEN-LAST:event_btExcluirActionPerformed
 
     
-    private void btAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAtualizarActionPerformed
-        int idPaciente = Integer.parseInt(txtIdServico.getText());
-        if(validarCampos()){
-            //Atualiza no banco
-        }
-    }//GEN-LAST:event_btAtualizarActionPerformed
-
     
     private void btLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLimparActionPerformed
+        tipoSelecionado = null;
+        habilitarBotoes();
         limparCampos();
-        btAtualizar.setVisible(false);
-        btConfirmar.setVisible(true);
-        jpID.setVisible(false);
     }//GEN-LAST:event_btLimparActionPerformed
 
     
@@ -547,6 +550,7 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         try {
+            btLimparActionPerformed(null);
             gerIG.carregarTabela(tbFuncionarios, TipoConsulta.class);
         } catch (ClassNotFoundException | SQLException ex) {
             JOptionPane.showMessageDialog(this, "Erro ao carregar Lista de tipos de consultas disponíveis " + ex.getMessage() );

@@ -8,7 +8,6 @@ import control.ControllerView;
 import control.UtilCriptografia;
 import control.UtilGeral;
 import domain.Funcionario;
-import domain.Medico;
 import domain.Pessoa;
 import java.awt.Color;
 import java.awt.HeadlessException;
@@ -241,7 +240,7 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
         btAtualizar.setText("Atualizar");
         btAtualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btAtualizarActionPerformed(evt);
+                btConfirmarActionPerformed(evt);
             }
         });
         jpBotoes.add(btAtualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 150, 40));
@@ -467,7 +466,7 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
             lbCPF.setForeground(Color.red);
         }
         
-        if(!controller.getGerDominio().validarEmail(txtEmail.getText(), Pessoa.class)){
+        if(!controller.getGerDominio().validarEmail(txtEmail.getText(), Pessoa.class, funcionarioSelecionado)){
             msgErro += "Email invalido ou já cadastrado\n";
             lbEmail.setForeground(Color.red);
         }
@@ -482,7 +481,7 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
             lbTelefone.setForeground(Color.red);
         }
         
-        if(!controller.getGerDominio().validarCPF(txtCPF.getText(), Pessoa.class)){
+        if(!controller.getGerDominio().validarCPF(txtCPF.getText(), Pessoa.class, funcionarioSelecionado)){
             lbCPF.setForeground(Color.red);
             msgErro += "CPF Invalido ou  já cadastrado!\n";
         }
@@ -522,6 +521,11 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
                 if(funcionarioSelecionado == null){
                     controller.getGerDominio().inserirFucionario(nome, cpf,dt, email, senha, telefone);
                     JOptionPane.showMessageDialog(this, "Funcionario inserido com sucesso.", "Inserir Funcionario", JOptionPane.INFORMATION_MESSAGE  );
+                }else{
+                    controller.getGerDominio().alterarFucionario(funcionarioSelecionado, nome, cpf,dt, email, senha, telefone);
+                    JOptionPane.showMessageDialog(this, "Funcionario alterado com sucesso.", "Alterar Funcionario", JOptionPane.INFORMATION_MESSAGE  );
+                    funcionarioSelecionado = null;
+                    habilitarBotoes();
                 }
             } catch (HeadlessException | ParseException e) {
                JOptionPane.showMessageDialog(this, e, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );
@@ -541,18 +545,18 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
 
     private void btEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEditarActionPerformed
         int opcao = tbFuncionarios.getSelectedRow();
-        if(opcao >= 0){          
-            txtIdFuncionario.setText(tbFuncionarios.getValueAt(opcao, 0).toString());
-            txtNome.setText(tbFuncionarios.getValueAt(opcao, 1).toString());
-            txtCPF.setText(tbFuncionarios.getValueAt(opcao, 2).toString());
-            txtEmail.setText(tbFuncionarios.getValueAt(opcao, 3).toString());
-
-            txtDataAdmissao.setText(UtilGeral.formatarDataParaInterface(tbFuncionarios.getValueAt(opcao, 4).toString()));
-            txtTelefone.setText(UtilGeral.removerCaracteresTelefone(tbFuncionarios.getValueAt(opcao, 6).toString()));
+        if(opcao >= 0){      
+            funcionarioSelecionado = (Funcionario) tbFuncionarios.getValueAt(opcao, 1);
+            setCor();
+            habilitarBotoes();
+            txtIdFuncionario.setText(String.valueOf(funcionarioSelecionado.getNomePessoa()));
+            txtNome.setText(funcionarioSelecionado.getNomePessoa());
+            txtCPF.setText(funcionarioSelecionado.getCpf());
+            txtEmail.setText(funcionarioSelecionado.getEmail());
+            txtDataAdmissao.setText(UtilGeral.formatarDataParaInterface(funcionarioSelecionado.getDataAdmissao().toString()));
+            txtTelefone.setText(UtilGeral.removerCaracteresTelefone(funcionarioSelecionado.getTelefone()));
            
-            btAtualizar.setVisible(true);
-            jpID.setVisible(true);
-            btConfirmar.setVisible(false);
+            
             
             jtpTelas.setSelectedIndex(0);
         }else{
@@ -571,7 +575,7 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
                     ( (DefaultTableModel) tbFuncionarios.getModel() ).removeRow(linha);
                     JOptionPane.showMessageDialog(this, "Funcionario " + fun.getNomePessoa()+ " excluído com sucesso.", "PESQUISAR Funcionario", JOptionPane.INFORMATION_MESSAGE  );
                 }else if(iguais){
-                   JOptionPane.showMessageDialog(this, "Você não pode excluir enquanto estiver logado./n Acesso outro usuário e faça a exclusão", "Excluir Funcionario", JOptionPane.INFORMATION_MESSAGE  );
+                   JOptionPane.showMessageDialog(this, "Você não permissão para excluir seu próprio usuário dentro da aplicação. \n Solicite a remoção na base de dados!", "Excluir Funcionario", JOptionPane.INFORMATION_MESSAGE  );
                 }
                 
             } catch (HibernateException ex) {
@@ -583,36 +587,14 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btExcluirActionPerformed
 
-    private void btAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAtualizarActionPerformed
-        int idPaciente = Integer.parseInt(txtIdFuncionario.getText());
-        String nome = txtNome.getText();
-        String cpf = txtCPF.getText();
-        String email = txtEmail.getText(); 
-        String dataNascimento = UtilGeral.formatarDataParaSQL(txtDataAdmissao.getText());
-        String telefone = txtTelefone.getText();
-        
-        if(validarCampos()){
-            //Insere no banco
-            formComponentShown(null);
-            jtpTelas.setSelectedIndex(1);
-            jpID.setVisible(false);
-            btConfirmar.setVisible(true);
-            btAtualizar.setVisible(false);
-            limparCampos();
-            jtpTelas.setSelectedIndex(1);
-        }
-        
-    }//GEN-LAST:event_btAtualizarActionPerformed
-
     private void btLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLimparActionPerformed
+        funcionarioSelecionado = null;
+        habilitarBotoes();
         limparCampos();
-        btAtualizar.setVisible(false);
-        btConfirmar.setVisible(true);
-        jpID.setVisible(false);
     }//GEN-LAST:event_btLimparActionPerformed
 
     private void btListarTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btListarTodosActionPerformed
-
+        formComponentShown(null);
         limparCampos();
         //lista todos que estão no banco
     }//GEN-LAST:event_btListarTodosActionPerformed
@@ -638,7 +620,8 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
        try {
-            controller.carregarTabela(tbFuncionarios, Funcionario.class);
+           btLimparActionPerformed(null); 
+           controller.carregarTabela(tbFuncionarios, Funcionario.class);
         } catch (ClassNotFoundException | SQLException ex) {
             JOptionPane.showMessageDialog(this, "Erro ao carregar funcionários " + ex.getMessage() );
         }

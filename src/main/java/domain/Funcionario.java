@@ -27,7 +27,7 @@ public class Funcionario extends Pessoa implements Serializable{
     @Column (length = 255, nullable = false)
     private String senha;
     
-    @OneToMany (mappedBy = "funcionario", fetch = FetchType.LAZY)
+    @OneToMany (mappedBy = "funcionario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Consulta> consulta = new ArrayList();
 
     public Funcionario() {
