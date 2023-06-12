@@ -476,7 +476,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
       
        if(UtilGeral.validarHora(txtHora.getText()) == false){
           lbHora.setForeground(Color.red);
-          msgErro += "horário incorreto\n";
+          msgErro += "horário incorreto (8:00 ás 18:00)\n";
        }
        if(UtilGeral.verificarFormatoData(txtData.getText()) == false){
            lbData.setForeground(Color.red);

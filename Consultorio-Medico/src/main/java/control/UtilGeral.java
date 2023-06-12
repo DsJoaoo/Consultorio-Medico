@@ -83,7 +83,7 @@ public class UtilGeral {
         // Verifica se as horas e minutos são válidos
         // Se chegou aqui, é porque a hora é válida
 
-        return !(horas < 0 || horas > 23 || minutos < 0 || minutos > 59);
+        return !(horas < 7 || horas > 18 || minutos < 0 || minutos > 59);
     }
     
     

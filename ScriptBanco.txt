@@ -70,7 +70,6 @@ CREATE TABLE `funcionario` (
 
 LOCK TABLES `funcionario` WRITE;
 /*!40000 ALTER TABLE `funcionario` DISABLE KEYS */;
-INSERT INTO `funcionario` VALUES ('2001-10-29','$2a$10$ysReGZKlenPrVTEYOfIWO.rjlSJvAlmYODTigpmQPXHnnFbhfLSpa',1);
 /*!40000 ALTER TABLE `funcionario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -150,7 +149,7 @@ CREATE TABLE `pessoa` (
 
 LOCK TABLES `pessoa` WRITE;
 /*!40000 ALTER TABLE `pessoa` DISABLE KEYS */;
-INSERT INTO `pessoa` VALUES (1,'955.027.852-20','joaopaulo.eu29@hotmail.com','João Paulo da Silva','(27) 23840-2839'),(2,'595.274.667-50','vinicius.gustavo.costa@acquire.com.br','Vinicius Gustavo Pedro Costa','(27) 93485-7892'),(3,'534.155.637-23','caiojorgedapaz@skyzepp.com','Caio Jorge da Paz','(27) 94574-8907'),(4,'728.528.917-51','brenda-ferreira99@solviagens.com','Brenda Caroline Ferreira','(27) 39148-7239'),(5,'509.791.057-57','marcos-aparicio76@vetech.vet.br','Marcos Filipe Aparício','(27) 92348-2038'),(6,'335.388.627-37','calebbernardopires@oxiteno.com','Caleb Bernardo Pietro Pires','(27) 29384-7239'),(7,'981.887.947-32','augustoenzodasilva@fundasa.com.br','Augusto Enzo da Silva','(27) 29384-7239');
+INSERT INTO `pessoa` VALUES (2,'595.274.667-50','vinicius.gustavo.costa@acquire.com.br','Vinicius Gustavo Pedro Costa','(27) 93485-7892'),(3,'534.155.637-23','caiojorgedapaz@skyzepp.com','Caio Jorge da Paz','(27) 94574-8907'),(4,'728.528.917-51','brenda-ferreira99@solviagens.com','Brenda Caroline Ferreira','(27) 39148-7239'),(5,'509.791.057-57','marcos-aparicio76@vetech.vet.br','Marcos Filipe Apar?cio','(27) 92348-2038'),(6,'335.388.627-37','calebbernardopires@oxiteno.com','Caleb Bernardo Pietro Pires','(27) 29384-7239'),(7,'981.887.947-32','augustoenzodasilva@fundasa.com.br','Augusto Enzo da Silva','(27) 29384-7239');
 /*!40000 ALTER TABLE `pessoa` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -176,7 +175,7 @@ CREATE TABLE `tipoconsulta` (
 
 LOCK TABLES `tipoconsulta` WRITE;
 /*!40000 ALTER TABLE `tipoconsulta` DISABLE KEYS */;
-INSERT INTO `tipoconsulta` VALUES (1,'Exame de Sangue',_binary '\0',80),(2,'Revisão',_binary '',0),(3,'Consulta',_binary '\0',500);
+INSERT INTO `tipoconsulta` VALUES (1,'Exame de Sangue',_binary '\0',80),(2,'Revis?o',_binary '\0',0),(3,'Consulta',_binary '\0',500);
 /*!40000 ALTER TABLE `tipoconsulta` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -189,4 +188,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-11 19:25:10
+-- Dump completed on 2023-06-11 23:35:38
