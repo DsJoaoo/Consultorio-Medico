@@ -5,6 +5,7 @@
 package view;
 
 import control.ControllerView;
+import control.UtilGeral;
 import domain.TipoConsulta;
 import java.awt.Color;
 import java.awt.Font;
@@ -370,10 +371,12 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
         setCor();
                
         if(txtPesquisar.getText().isEmpty()){
-            lbPesquisar.setForeground(Color.red);
             msgErro += "Nome invalido\n";
         }      
         
+        if(comboTipo.getSelectedIndex() == 0 && !UtilGeral.validarTelefone(txtPesquisar.getText())){
+            msgErro += "ID invalido!\n";
+        }
         
         if(msgErro.isEmpty()){
             return true;

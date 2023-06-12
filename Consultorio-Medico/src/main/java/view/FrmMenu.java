@@ -390,7 +390,7 @@ public class FrmMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jmiAgendarConsultasActionPerformed
 
     private void jmiListarConsultasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiListarConsultasActionPerformed
-        gerIG.janelaListaConsulta();
+        gerIG.janelaCadConsulta();
     }//GEN-LAST:event_jmiListarConsultasActionPerformed
 
     private void jmiSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiSairActionPerformed

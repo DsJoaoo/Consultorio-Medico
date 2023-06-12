@@ -31,7 +31,6 @@ public class ControllerView {
     // JANELAS
     private FrmMenu janCadPrincipal = null;
     private DlgCadPaciente janCadPaciente = null;
-    private DlgListaConsulta janListaConsulta = null;
     private DlgCadMedico janCadMedico = null;
     private DlgCadFuncionario janCadFuncionario = null;
     private DlgCadConsulta janCadConsulta = null;
@@ -39,7 +38,6 @@ public class ControllerView {
     private DlgCadTipoConsulta janCadServico = null;
     private DlgPesqPaciente janPesqPaciente = null;
     private DlgPesqMedico janPesqMedico = null;
-    private DlgPesqFuncionario janPesqFuncionario = null;
     private DlgCadCadastro janCadastro = null;
     
     
@@ -56,6 +54,7 @@ public class ControllerView {
         } 
     }
  
+    
     //<editor-fold defaultstate="collapsed" desc="CODE: Abertura de interfaces DLG e FRM ">
     
    // ABRIR JDIALOG
@@ -99,10 +98,6 @@ public class ControllerView {
         janCadMedico = (DlgCadMedico) abrirJanela(janCadPrincipal, janCadMedico, DlgCadMedico.class);
     }
     
-    public void janelaListaConsulta() {
-        janListaConsulta = (DlgListaConsulta) abrirJanela(janCadPrincipal, janListaConsulta, DlgListaConsulta.class);
-    }
-    
     public void janelaCadFuncionario() {
         janCadFuncionario = (DlgCadFuncionario) abrirJanela(janCadPrincipal, janCadFuncionario, DlgCadFuncionario.class);
     }
@@ -124,16 +119,12 @@ public class ControllerView {
         return janPesqMedico.getMedico();
     }
     
-    public Funcionario janelaPesqFuncionario() {
-        janPesqFuncionario = (DlgPesqFuncionario) abrirJanela(janCadPrincipal, janPesqFuncionario, DlgPesqFuncionario.class);
-        return janPesqFuncionario.getFuncionario();
-    }
-    
     
     
     
     
     //</editor-fold>
+    
     public String checarNomeBotao(ButtonGroup group){
         String nomeBotao = "";
         Enumeration<AbstractButton> botoes = group.getElements();
@@ -147,6 +138,7 @@ public class ControllerView {
          return nomeBotao;
     }
     
+    
     public void centralizarColunas(JTable tabela){
         int qtdeColunas = tabela.getColumnCount();
 
@@ -157,6 +149,7 @@ public class ControllerView {
         tabela.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
+    
     
     public void carregarTabela(JTable tabela, Class classe) throws ClassNotFoundException, SQLException {
         DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
@@ -172,6 +165,7 @@ public class ControllerView {
             JOptionPane.showMessageDialog(janCadPrincipal, "Erro ao tentar listar tabela do banco de dados. " + e.getMessage());
     }
 }
+    
     
     public void carregarCombo(JComboBox cmb, Class classe){
         try {

@@ -6,6 +6,8 @@
 package view;
 
 import control.ControllerView;
+import control.UtilCPF;
+import control.UtilGeral;
 import domain.Medico;
 import java.awt.Color;
 import java.sql.SQLException;
@@ -191,11 +193,24 @@ private ControllerView gerIG;
 
     private boolean validarPesquisa(){
         String msgErro = "";
-        if(btPesquisar.getText().isEmpty()){
-            btPesquisar.setForeground(Color.red);
-            msgErro += "Insira um nome!\n";
-        }else{
-            btPesquisar.setForeground(Color.black);
+        if(txtPesq.getText().isEmpty()){
+            msgErro += "Insira um valor!\n";
+        }
+        
+        if(cmbOpcao.getSelectedIndex() == 4 && !UtilGeral.isInteger(txtPesq.getText())){
+            msgErro += "ID invalido!\n";
+        }
+        
+        if(cmbOpcao.getSelectedIndex() == 5 && !UtilGeral.isInteger(txtPesq.getText())){
+            msgErro += "ID invalido!\n";
+        }
+        
+        if(cmbOpcao.getSelectedIndex() == 3 && !UtilGeral.validarTelefone(txtPesq.getText())){
+            msgErro += "ID invalido!\n";
+        }
+        
+        if(cmbOpcao.getSelectedIndex() == 1 && !UtilCPF.validarCPF(txtPesq.getText())){
+            msgErro += "CPF Invalido \n";
         }
         
         if(msgErro.isEmpty()){

@@ -6,12 +6,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Enumeration;
-import javax.swing.AbstractButton;
-import javax.swing.ButtonGroup;
-import javax.swing.JLabel;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -26,8 +20,22 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class UtilGeral {
     
+    public static boolean isInteger(String str) {
+        try {
+            int numero = Integer.parseInt(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
     
-    
+    public static boolean isFloat(String str) {
+        return str != null && str.matches("^\\s\\d+(\\.\\d+)?\\s*$");
+    }
+
+    public static boolean isData(String str) {
+        return str != null && str.matches("\\d{2}/\\d{2}/\\d{4}");
+    }
     
     
     public static Time convertStringToTime(String timeString) throws ParseException {
@@ -155,12 +163,8 @@ public class UtilGeral {
     }
 
     
-    public static String formatarDataParaSQL(String data){
-        String dia = data.substring(0, 2);
-        String mes = data.substring(3,5);
-        String ano = data.substring(6, 10);
-        String dataFormatada = ano + "-" + mes + "-" + dia;
-        return dataFormatada;
+    public static String formatarDataParaSQL(String data) throws ParseException{
+        return new SimpleDateFormat("yyyy/MM/dd").format(strToDate(data));
     }
     
     

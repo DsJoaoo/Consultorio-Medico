@@ -34,7 +34,7 @@
     <Property name="useNullLayout" type="boolean" value="false"/>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JTabbedPane" name="jtpTelas">
+    <Container class="javax.swing.JTabbedPane" name="jpTelas">
       <Properties>
         <Property name="alignmentX" type="float" value="0.1"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">

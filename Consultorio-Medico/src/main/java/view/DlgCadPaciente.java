@@ -5,8 +5,8 @@
 package view;
 
 import control.ControllerView;
+import control.UtilCPF;
 import control.UtilGeral;
-import domain.Funcionario;
 import domain.Paciente;
 import domain.Pessoa;
 import java.awt.Color;
@@ -423,8 +423,19 @@ public class DlgCadPaciente extends javax.swing.JDialog {
         setCor();
         String msgErro = "";
         if(txtPesquisar.getText().isEmpty()){
-            cmbOpcao.setForeground(Color.red);
-            msgErro += "Insira um nome!\n";
+            msgErro += "Insira um valor!\n";
+        }
+        
+        if(cmbOpcao.getSelectedIndex() == 1 && !UtilGeral.verificarFormatoData(txtPesquisar.getText())){
+            msgErro += "Data invalida!\n";
+        }
+        
+        if(cmbOpcao.getSelectedIndex() == 2 && !UtilGeral.validarTelefone(txtPesquisar.getText())){
+            msgErro += "ID invalido!\n";
+        }
+        
+        if(cmbOpcao.getSelectedIndex() == 3 && !UtilCPF.validarCPF(txtPesquisar.getText())){
+            msgErro += "CPF Invalido \n";
         }
         
         if(msgErro.isEmpty()){
@@ -596,7 +607,7 @@ public class DlgCadPaciente extends javax.swing.JDialog {
                 }
 
             
-            } catch (HibernateException  ex) {
+            } catch (HibernateException | ParseException  ex) {
                 JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Tipo Consulta", JOptionPane.ERROR_MESSAGE  );
             } 
         }

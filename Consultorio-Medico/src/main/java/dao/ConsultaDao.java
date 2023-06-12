@@ -7,6 +7,7 @@ import domain.Medico;
 import domain.Paciente;
 import domain.TipoConsulta;
 import java.sql.Time;
+import java.text.ParseException;
 import java.util.Date;
 
 import java.util.List;
@@ -61,7 +62,7 @@ public class ConsultaDao extends GenericDao {
         }
     }
 
-    private List<Consulta> pesquisar(String pesq, int tipo) throws HibernateException {
+    private List<Consulta> pesquisar(String pesq, int tipo) throws HibernateException, ParseException {
         List<Consulta> lista = null;
         Session sessao = null;
         try {
@@ -79,22 +80,22 @@ public class ConsultaDao extends GenericDao {
                     break;
                 case 1:
                     Join<Consulta, TipoConsulta> tipoConsultaJoin = tabela.join("tipoConsulta");
-                    restricoes = builder.equal(tipoConsultaJoin.get("descricao"), pesq);
+                    restricoes = builder.like(tipoConsultaJoin.get("descricao" ), pesq + "%");
                     break;
                 case 2:
                     Join<Consulta, Medico> medicoJoin = tabela.join("medico");
-                    restricoes = builder.equal(medicoJoin.get("nomePessoa"), pesq);
+                    restricoes = builder.like(medicoJoin.get("nomePessoa"), pesq + "%");
                     break;
                 case 3:
                     Join<Consulta, Paciente> pacienteJoin = tabela.join("paciente");
-                    restricoes = builder.equal(pacienteJoin.get("nomePessoa"), pesq);
+                    restricoes = builder.like(pacienteJoin.get("nomePessoa"), pesq + "%");
                     break;
                 case 4:
                     Join<Consulta, Funcionario> funcionarioJoin = tabela.join("funcionario");
-                    restricoes = builder.equal(funcionarioJoin.get("nomePessoa"), pesq);
+                    restricoes = builder.like(funcionarioJoin.get("nomePessoa"), pesq + "%");
                     break;
                 case 5:
-                    restricoes = builder.equal(tabela.get("dataConsulta"), UtilGeral.formatarDataParaSQL(pesq));
+                    restricoes = builder.equal(tabela.get("dataConsulta"),pesq);
                     break;
                 default:
                     restricoes = null;
@@ -116,27 +117,27 @@ public class ConsultaDao extends GenericDao {
     }
 
 
-    public List<Consulta> pesquisarID(String pesq) {
+    public List<Consulta> pesquisarID(String pesq) throws HibernateException, ParseException{
         return pesquisar(pesq, 0);
     }
 
-    public List<Consulta> pesquisarTIPO(String pesq) {
+    public List<Consulta> pesquisarTIPO(String pesq) throws HibernateException, ParseException {
         return pesquisar(pesq, 1);
     }
 
-    public List<Consulta> pesquisarMedico(String pesq) {
+    public List<Consulta> pesquisarMedico(String pesq)throws HibernateException, ParseException {
         return pesquisar(pesq, 2);
     }
 
-    public List<Consulta> pesquisarPaciente(String pesq) {
+    public List<Consulta> pesquisarPaciente(String pesq)throws HibernateException, ParseException {
         return pesquisar(pesq, 3);
     }
 
-    public List<Consulta> pesquisarFuncionario(String pesq) {
+    public List<Consulta> pesquisarFuncionario(String pesq)throws HibernateException, ParseException {
         return pesquisar(pesq, 4);
     }
 
-    public List<Consulta> pesquisarData(String pesq) {
+    public List<Consulta> pesquisarData(String pesq) throws HibernateException, ParseException{
         return pesquisar(pesq, 5);
     }
 }

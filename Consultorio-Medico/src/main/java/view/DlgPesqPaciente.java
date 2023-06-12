@@ -6,9 +6,12 @@
 package view;
 
 import control.ControllerView;
+import control.UtilCPF;
+import control.UtilGeral;
 import domain.Paciente;
 import java.awt.Color;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -19,7 +22,7 @@ import org.hibernate.HibernateException;
  * @author Usuario
  */
 public class DlgPesqPaciente extends javax.swing.JDialog {
-    private ControllerView gerIG;
+    private final ControllerView gerIG;
     private Paciente paciente;
 
     public DlgPesqPaciente(java.awt.Frame parent, boolean modal, ControllerView gerIG) {
@@ -146,10 +149,19 @@ public class DlgPesqPaciente extends javax.swing.JDialog {
     private boolean validarBusca(){
         String msgErro = "";
         if(btPesquisar.getText().isEmpty()){
-            btPesquisar.setForeground(Color.red);
-            msgErro += "Insira um nome!\n";
-        }else{
-            btPesquisar.setForeground(Color.black);
+            msgErro += "Insira um valor!\n";
+        }
+        
+        if(cmbOpcao.getSelectedIndex() == 1 && !UtilGeral.verificarFormatoData(txtPesq.getText())){
+            msgErro += "Data invalida!\n";
+        }
+        
+        if(cmbOpcao.getSelectedIndex() == 2 && !UtilGeral.validarTelefone(txtPesq.getText())){
+            msgErro += "ID invalido!\n";
+        }
+        
+        if(cmbOpcao.getSelectedIndex() == 3 && !UtilCPF.validarCPF(txtPesq.getText())){
+            msgErro += "CPF Invalido \n";
         }
         
         if(msgErro.isEmpty()){
@@ -174,7 +186,7 @@ public class DlgPesqPaciente extends javax.swing.JDialog {
                 }
 
             
-            } catch (HibernateException  ex) {
+            } catch (HibernateException | ParseException  ex) {
                 JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Tipo Consulta", JOptionPane.ERROR_MESSAGE  );
             } 
         }

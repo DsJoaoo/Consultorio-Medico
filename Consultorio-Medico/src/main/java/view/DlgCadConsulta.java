@@ -8,14 +8,11 @@ import control.ControllerView;
 import control.UtilGeral;
 import domain.*;
 import java.awt.Color;
-import java.awt.HeadlessException;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
@@ -61,7 +58,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jtpTelas = new javax.swing.JTabbedPane();
+        jpTelas = new javax.swing.JTabbedPane();
         CadastroConsulta = new javax.swing.JPanel();
         jpDados = new javax.swing.JPanel();
         jpTipos = new javax.swing.JPanel();
@@ -121,8 +118,8 @@ public class DlgCadConsulta extends javax.swing.JDialog {
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jtpTelas.setAlignmentX(0.1F);
-        jtpTelas.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jpTelas.setAlignmentX(0.1F);
+        jpTelas.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         jpDados.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Dados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 14))); // NOI18N
         jpDados.setPreferredSize(new java.awt.Dimension(570, 130));
@@ -307,7 +304,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        jtpTelas.addTab("Cadastrar Consulta", CadastroConsulta);
+        jpTelas.addTab("Cadastrar Consulta", CadastroConsulta);
 
         ListaConsulta.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -400,9 +397,9 @@ public class DlgCadConsulta extends javax.swing.JDialog {
         cmbOpcao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Tipo", "Medico", "Paciente", "Funcionario", "Data" }));
         ListaConsulta.add(cmbOpcao, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, 90, 40));
 
-        jtpTelas.addTab("Listar Consultas", ListaConsulta);
+        jpTelas.addTab("Listar Consultas", ListaConsulta);
 
-        getContentPane().add(jtpTelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 610, 390));
+        getContentPane().add(jpTelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 610, 390));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaces/imgs/TelaMedico.png"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 460));
@@ -420,7 +417,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
             jpID.setVisible(false);
         }else{
             limparCampos();
-            jtpTelas.setSelectedIndex(0);
+            jpTelas.setSelectedIndex(0);
             btAtualizar.setVisible(true);
             btConfirmar.setVisible(false);
             jpID.setVisible(false);
@@ -446,6 +443,14 @@ public class DlgCadConsulta extends javax.swing.JDialog {
         if(txtPesquisar.getText().isEmpty()){
             lbPesquisar.setForeground(Color.red);
             msgErro += "Insira um nome!\n";
+        }
+        
+        if(cmbOpcao.getSelectedIndex() == 0 && !UtilGeral.isInteger(txtPesquisar.getText())){
+            msgErro += "ID invalido!\n";
+        }
+        
+        if(cmbOpcao.getSelectedIndex() == 5 && !UtilGeral.isData(txtData.getText())){
+            msgErro += "Data invalido!\n";
         }
         
         if(msgErro.isEmpty()){
@@ -552,7 +557,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
     
     private void btNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNovoActionPerformed
         limparCampos();
-        jtpTelas.setSelectedIndex(0);
+        jpTelas.setSelectedIndex(0);
     }//GEN-LAST:event_btNovoActionPerformed
 
     
@@ -567,9 +572,11 @@ public class DlgCadConsulta extends javax.swing.JDialog {
             txtData.setText(UtilGeral.formatarDataParaInterface(consultaSelecionada.getData().toString()));
             txtHora.setText(consultaSelecionada.getHora().toString());
             cmbTipoConsulta.setSelectedItem(consultaSelecionada.getObjetoConsulta()); 
+            pacienteSelecionado = consultaSelecionada.getObjetoPaciente();
+            medicoSelecionado = consultaSelecionada.getObjetoMedico();
             txtMedico.setText(consultaSelecionada.getObjetoMedico().toString());
             txtPaciente.setText(consultaSelecionada.getObjetoPaciente().toString());
-            jtpTelas.setSelectedIndex(0);
+            jpTelas.setSelectedIndex(0);
         }else{
             JOptionPane.showMessageDialog(null, "Selecione uma linha");
         }
@@ -616,7 +623,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
                     // ADICIONAR LINHA NA TABELA        
                     ( (DefaultTableModel) tbConsultas.getModel() ).addRow( cli.toArray() );                
                 }
-            } catch (HibernateException  ex) {
+            } catch (HibernateException | ParseException  ex) {
                 JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Consulta", JOptionPane.ERROR_MESSAGE  );
             } 
         }
@@ -625,30 +632,21 @@ public class DlgCadConsulta extends javax.swing.JDialog {
 
     private void btListarTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btListarTodosActionPerformed
         try {
-                List<Consulta> lista = gerIG.getGerDominio().pesquisarConsulta(txtPesquisar.getText(), 6);
-
-                // APAGA as linhas da tabela
-                ( (DefaultTableModel) tbConsultas.getModel() ).setNumRows(0);
-
-                for (Consulta cli : lista ) {
-                    // ADICIONAR LINHA NA TABELA        
-                    ( (DefaultTableModel) tbConsultas.getModel() ).addRow( cli.toArray() );                
-                }
-            } catch (HibernateException  ex) {
-                JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Consulta", JOptionPane.ERROR_MESSAGE  );
-            }
-        limparCampos();
-        //lista todos que estão no banco
+            gerIG.carregarTabela(tbConsultas, Consulta.class);
+        } catch (ClassNotFoundException | SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Erro ao carregar consultas " + ex.getMessage() );
+    }
     }//GEN-LAST:event_btListarTodosActionPerformed
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         try {
+            jpTelas.setSelectedIndex(1);
             btLimparActionPerformed(null);
             gerIG.carregarTabela(tbConsultas, Consulta.class);
             gerIG.carregarCombo(cmbTipoConsulta, TipoConsulta.class);
             cmbTipoConsulta.setSelectedIndex(-1);
         } catch (ClassNotFoundException | SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Erro ao carregar funcionários " + ex.getMessage() );
+            JOptionPane.showMessageDialog(this, "Erro ao carregar consultas " + ex.getMessage() );
     }
     }//GEN-LAST:event_formComponentShown
 
@@ -698,9 +696,9 @@ public class DlgCadConsulta extends javax.swing.JDialog {
     private javax.swing.JPanel jpData;
     private javax.swing.JPanel jpHora;
     private javax.swing.JPanel jpID;
+    private javax.swing.JTabbedPane jpTelas;
     private javax.swing.JPanel jpTipo;
     private javax.swing.JPanel jpTipos;
-    private javax.swing.JTabbedPane jtpTelas;
     private javax.swing.JLabel lbData;
     private javax.swing.JLabel lbHora;
     private javax.swing.JLabel lbID;

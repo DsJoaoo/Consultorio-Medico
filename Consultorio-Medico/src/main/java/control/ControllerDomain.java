@@ -8,6 +8,7 @@ import domain.*;
 import dao.*;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.HibernateException;
@@ -39,6 +40,7 @@ public class ControllerDomain {
         logDao = new LoginDao();
         funcionarioLogado = null;
     }
+    
     
     //<editor-fold defaultstate="collapsed" desc="CODE: Inserções e exclusão ">
     
@@ -83,6 +85,7 @@ public class ControllerDomain {
     
         //</editor-fold>
 
+    
     public List<TipoConsulta> pesquisarTipoConsulta(String pesq, int tipo) {
         List<TipoConsulta> lista = null;
         switch (tipo) {
@@ -95,7 +98,8 @@ public class ControllerDomain {
         return lista;
     }
 
-    public List<Paciente> pesquisarPaciente(String pesq, int tipo) {
+    
+    public List<Paciente> pesquisarPaciente(String pesq, int tipo) throws ParseException {
         List<Paciente> lista = null;
         switch (tipo) {
             case 0: lista = pacDao.pesquisarNome(pesq); break;
@@ -109,6 +113,7 @@ public class ControllerDomain {
         return lista;
     }
 
+    
     public List<Medico> pesquisarMedico(String pesq, int tipo) {
         List<Medico> lista = null;
         switch (tipo) {
@@ -120,14 +125,15 @@ public class ControllerDomain {
             
             case 3: lista = medDao.pesquisarTEL(pesq); break;
             
-            case 5: lista = medDao.pesquisarCRM(pesq); break;
+            case 4: lista = medDao.pesquisarCRM(pesq); break;
             
-            case 6: lista = medDao.pesquisarID(pesq); break;
+            case 5: lista = medDao.pesquisarID(pesq); break;
         }
         return lista;
     }
+    
 
-    public List<Funcionario> pesquisarFuncionario(String pesq, int tipo) {
+    public List<Funcionario> pesquisarFuncionario(String pesq, int tipo) throws ParseException {
         List<Funcionario> lista = null;
         switch (tipo) {
             case 0: lista = funDao.pesquisarNome(pesq); break;
@@ -143,7 +149,8 @@ public class ControllerDomain {
         return lista;
     }
 
-    public List<Consulta> pesquisarConsulta(String pesq, int tipo) {
+    
+    public List<Consulta> pesquisarConsulta(String pesq, int tipo) throws ParseException {
         List<Consulta> lista = null;
         switch (tipo) {
             case 0: lista = conDao.pesquisarID(pesq); break;
@@ -169,6 +176,7 @@ public class ControllerDomain {
              return (UtilCPF.validarCPF(cpf));
     }
     
+    
     public boolean validarEmail(String email, Class classe, Adapter objeto){
         if (objeto == null)
             return (genDao.validar(email, 1, classe) && UtilGeral.validarEmail(email));
@@ -184,10 +192,12 @@ public class ControllerDomain {
         return funcionarioLogado != null;
     }
 
+    
     public Funcionario getFuncionarioLogado() {
         return funcionarioLogado;
     }
 
+    
     public void alterarPaciente(Paciente pacienteSelecionado, String nome, String cpf, String email, Date dt, String telefone, String sexo) {
         pacienteSelecionado.setNomePessoa(nome);
         pacienteSelecionado.setCpf(cpf);
@@ -197,7 +207,7 @@ public class ControllerDomain {
         pacienteSelecionado.setSexo(sexo);
         genDao.atualizar(pacienteSelecionado);
     }
-
+    
     public void aterarMedico(Medico medicoSelecionado, String nome, String telefone, String email, String cpf, String crm, String especializacao) {
         medicoSelecionado.setNomePessoa(nome);
         medicoSelecionado.setTelefone(telefone);
@@ -208,6 +218,7 @@ public class ControllerDomain {
         genDao.atualizar(medicoSelecionado);
     }
 
+    
     public void alterarConsulta(Consulta consultaSelecionada, Date dt, Time hr, Funcionario funcionarioSelecionado, Paciente pacienteSelecionado, Medico medicoSelecionado, TipoConsulta tipoConsultaSelecionado) throws RuntimeException{
         consultaSelecionada.setDataConsulta(dt);
         consultaSelecionada.setHora(hr);
@@ -219,6 +230,7 @@ public class ControllerDomain {
         
     }
 
+    
     public void alterarFucionario(Funcionario funcionarioSelecionado, String nome, String cpf, Date dt, String email, String senha, String telefone) {
         funcionarioSelecionado.setNomePessoa(nome);
         funcionarioSelecionado.setCpf(cpf);
@@ -229,6 +241,7 @@ public class ControllerDomain {
         genDao.atualizar(funcionarioSelecionado);
     }
 
+    
     public void alterarTipo(TipoConsulta tipoSelecionado, String nome, Double preco, boolean selecionado) {
         tipoSelecionado.setDescricao(nome);
         tipoSelecionado.setValor(preco);
@@ -236,9 +249,11 @@ public class ControllerDomain {
         genDao.atualizar(tipoSelecionado);
     }
 
+    
     public boolean verificarDisponibilidadeMedica(Medico pessoa, Date dataConsulta, Time horaConsulta) {
         return conDao.verificarMedicoDisponivel(pessoa, dataConsulta, horaConsulta);
     }
+    
     
     public boolean verificarDisponibilidadePaciente(Paciente pessoa, Date dataConsulta, Time horaConsulta) {
         return conDao.verificarPacienteDisponivel(pessoa, dataConsulta, horaConsulta);

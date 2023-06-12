@@ -5,6 +5,7 @@
 package view;
 
 import control.ControllerView;
+import control.UtilCPF;
 import control.UtilCriptografia;
 import control.UtilGeral;
 import domain.Funcionario;
@@ -25,7 +26,7 @@ import org.hibernate.HibernateException;
  * @author joaop
  */
 public class DlgCadFuncionario extends javax.swing.JDialog {
-    private ControllerView controller;
+    private final ControllerView controller;
     private Funcionario funcionarioSelecionado;
     /**
      * Creates new form DlgCliente
@@ -428,6 +429,18 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
             msgErro += "Insira um nome!\n";
         }
         
+        if(cmbOpcao.getSelectedIndex() == 4 && !UtilGeral.isInteger(txtPesquisar.getText())){
+            msgErro += "ID invalido!\n";
+        }
+        
+        if(cmbOpcao.getSelectedIndex() == 2 && !UtilGeral.isData(txtDataAdmissao.getText())){
+            msgErro += "Data invalida!\n";
+        }
+
+        if(cmbOpcao.getSelectedIndex() == 1 && !UtilCPF.validarCPF(txtPesquisar.getText())){
+            msgErro += "CPF Invalido \n";
+        }
+        
         if(msgErro.isEmpty()){
             return true;
         }else{
@@ -611,7 +624,7 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
                     // ADICIONAR LINHA NA TABELA        
                     ( (DefaultTableModel) tbFuncionarios.getModel() ).addRow( cli.toArray() );                
                 }
-            } catch (HibernateException  ex) {
+            } catch (HibernateException | ParseException  ex) {
                 JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Tipo Consulta", JOptionPane.ERROR_MESSAGE  );
             } 
         }

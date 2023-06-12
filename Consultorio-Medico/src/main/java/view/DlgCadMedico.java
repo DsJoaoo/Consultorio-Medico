@@ -5,6 +5,7 @@
 package view;
 
 import control.ControllerView;
+import control.UtilCPF;
 import control.UtilGeral;
 import domain.Funcionario;
 import domain.Medico;
@@ -23,7 +24,7 @@ import org.hibernate.HibernateException;
  * @author joaop
  */
 public class DlgCadMedico extends javax.swing.JDialog {
-    private ControllerView gerIG;
+    private final ControllerView gerIG;
     private Medico medicoSelecionado;
     /**
      * Creates new form DlgCliente
@@ -415,6 +416,22 @@ public class DlgCadMedico extends javax.swing.JDialog {
         if(txtPesquisar.getText().isEmpty()){
             lbPesquisar.setForeground(Color.red);
             msgErro += "Insira um nome!\n";
+        }
+        
+        if(cmbOpcao.getSelectedIndex() == 4 && !UtilGeral.isInteger(txtPesquisar.getText())){
+            msgErro += "CRM invalido!\n";
+        }
+        
+        if(cmbOpcao.getSelectedIndex() == 5 && !UtilGeral.isInteger(txtPesquisar.getText())){
+            msgErro += "ID invalido!\n";
+        }
+        
+        if(cmbOpcao.getSelectedIndex() == 3 && !UtilGeral.validarTelefone(txtPesquisar.getText())){
+            msgErro += "Telefone invalido!\n";
+        }
+        
+        if(cmbOpcao.getSelectedIndex() == 1 && !UtilCPF.validarCPF(txtPesquisar.getText())){
+            msgErro += "CPF Invalido \n";
         }
         
         if(msgErro.isEmpty()){
