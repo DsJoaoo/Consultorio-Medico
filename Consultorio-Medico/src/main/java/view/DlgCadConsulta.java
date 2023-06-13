@@ -449,7 +449,7 @@ public class DlgCadConsulta extends javax.swing.JDialog {
             msgErro += "ID invalido!\n";
         }
         
-        if(cmbOpcao.getSelectedIndex() == 5 && !UtilGeral.isData(txtData.getText())){
+        if(cmbOpcao.getSelectedIndex() == 5 && !UtilGeral.verificarFormatoData(txtPesquisar.getText())){
             msgErro += "Data invalido!\n";
         }
         

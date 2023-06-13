@@ -166,7 +166,6 @@ public class ControllerView {
     }
 }
     
-    
     public void carregarCombo(JComboBox cmb, Class classe){
         try {
             List<Class> listaObjetos = gerDominio.listar(classe);

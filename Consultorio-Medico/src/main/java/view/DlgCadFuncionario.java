@@ -433,7 +433,7 @@ public class DlgCadFuncionario extends javax.swing.JDialog {
             msgErro += "ID invalido!\n";
         }
         
-        if(cmbOpcao.getSelectedIndex() == 2 && !UtilGeral.isData(txtDataAdmissao.getText())){
+        if(cmbOpcao.getSelectedIndex() == 2 && !UtilGeral.verificarFormatoData(txtPesquisar.getText())){
             msgErro += "Data invalida!\n";
         }
 
