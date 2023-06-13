@@ -198,7 +198,7 @@ private ControllerView gerIG;
         }
         
         if(cmbOpcao.getSelectedIndex() == 4 && !UtilGeral.isInteger(txtPesq.getText())){
-            msgErro += "ID invalido!\n";
+            msgErro += "CRM invalido!\n";
         }
         
         if(cmbOpcao.getSelectedIndex() == 5 && !UtilGeral.isInteger(txtPesq.getText())){
@@ -206,7 +206,7 @@ private ControllerView gerIG;
         }
         
         if(cmbOpcao.getSelectedIndex() == 3 && !UtilGeral.validarTelefone(txtPesq.getText())){
-            msgErro += "ID invalido!\n";
+            msgErro += "Telefone invalido!\n";
         }
         
         if(cmbOpcao.getSelectedIndex() == 1 && !UtilCPF.validarCPF(txtPesq.getText())){

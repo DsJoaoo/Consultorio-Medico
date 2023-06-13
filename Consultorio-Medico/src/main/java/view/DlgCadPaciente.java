@@ -430,7 +430,7 @@ public class DlgCadPaciente extends javax.swing.JDialog {
             msgErro += "Data invalida!\n";
         }
         
-        if(cmbOpcao.getSelectedIndex() == 2 && !UtilGeral.validarTelefone(txtPesquisar.getText())){
+        if(cmbOpcao.getSelectedIndex() == 2 && !UtilGeral.isInteger(txtPesquisar.getText())){
             msgErro += "ID invalido!\n";
         }
         

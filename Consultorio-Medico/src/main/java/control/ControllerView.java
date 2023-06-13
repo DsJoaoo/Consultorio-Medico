@@ -106,9 +106,6 @@ public class ControllerView {
         janCadServico = (DlgCadTipoConsulta) abrirJanela(janCadPrincipal, janCadServico, DlgCadTipoConsulta.class);
     }
     
-    
-    
-    
     public Paciente janelaPesqPaciente() {
         janPesqPaciente = (DlgPesqPaciente) abrirJanela(janCadPrincipal, janPesqPaciente, DlgPesqPaciente.class);
         return janPesqPaciente.getPaciente();

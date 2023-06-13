@@ -374,7 +374,7 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
             msgErro += "Nome invalido\n";
         }      
         
-        if(comboTipo.getSelectedIndex() == 0 && !UtilGeral.validarTelefone(txtPesquisar.getText())){
+        if(comboTipo.getSelectedIndex() == 0 && !UtilGeral.isInteger(txtPesquisar.getText())){
             msgErro += "ID invalido!\n";
         }
         
@@ -425,6 +425,7 @@ public class DlgCadTipoConsulta extends javax.swing.JDialog {
         setCor();
         txtIdServico.setText("");
         txtNome.setText("");
+        txtPreco.setText("");
         grpSimNao.clearSelection();
     }
 

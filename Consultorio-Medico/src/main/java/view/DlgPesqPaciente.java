@@ -9,7 +9,6 @@ import control.ControllerView;
 import control.UtilCPF;
 import control.UtilGeral;
 import domain.Paciente;
-import java.awt.Color;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.List;
@@ -148,7 +147,7 @@ public class DlgPesqPaciente extends javax.swing.JDialog {
 
     private boolean validarBusca(){
         String msgErro = "";
-        if(btPesquisar.getText().isEmpty()){
+        if(txtPesq.getText().isEmpty()){
             msgErro += "Insira um valor!\n";
         }
         
@@ -156,7 +155,7 @@ public class DlgPesqPaciente extends javax.swing.JDialog {
             msgErro += "Data invalida!\n";
         }
         
-        if(cmbOpcao.getSelectedIndex() == 2 && !UtilGeral.validarTelefone(txtPesq.getText())){
+        if(cmbOpcao.getSelectedIndex() == 2 && !UtilGeral.isInteger(txtPesq.getText())){
             msgErro += "ID invalido!\n";
         }
         

@@ -154,7 +154,7 @@ public class DlgLogin extends javax.swing.JDialog {
         }
 
         if(msgErro.isEmpty() && !gerIG.getGerDominio().validarFuncionario(txtCPF.getText(), pswUsuario.getText())){
-             msgErro += "Usuário não cadastrado\n";
+             msgErro += "Usuário não cadastrado ou senha incorreta\n";
         }
         
         if(msgErro.isEmpty()){
